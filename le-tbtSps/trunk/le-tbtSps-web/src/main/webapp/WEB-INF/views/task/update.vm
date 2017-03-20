@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+			function getTaskIndexUrl(){
+				var url="$basePath/taskMail/mail";
+				if($("#taskType").val()=="20"){
+					url="$basePath/taskMail/sms";
+				}
+				return url;
+			}
+            $(function() {
+				$('#updateForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+						taskType: {required: true},
+						queueId: {required: true},
+						keyword1: {required: true},
+						keyword2: {required: true},
+						ownSign: {required: true},
+						taskStatus: {required: true},
+						executeCount: {required: true}
+					},
+			
+					messages: {
+						taskType: { required: "请输入任务类型"},
+						queueId: { required: "请输入队列ID"},
+						keyword1: { required: "请输入关键字1"},
+						keyword2: { required: "请输入关键字2"},
+						ownSign: { required: "请输入环境标识"},
+						taskStatus: { required: "请输入任务状态"},
+						executeCount: { required: "请输入执行次数"}
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=getTaskIndexUrl();
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#updateForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/taskMail/update',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, getTaskIndexUrl()); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>邮件任务&nbsp;&gt;&nbsp;修改
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="updateForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="taskType">任务类型</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="taskType" id="taskType" class="col-xs-12 col-sm-12" value="$!taskMail.taskType" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="queueId">队列ID</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="queueId" id="queueId" class="col-xs-12 col-sm-12" value="$!taskMail.queueId" />
+                                    </div>
+                                </div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="keyword1">关键字1</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="keyword1" id="keyword1" class="col-xs-12 col-sm-12" value="$!taskMail.keyword1" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="keyword2">关键字2</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="keyword2" id="keyword2" class="col-xs-12 col-sm-12" value="$!taskMail.keyword2" />
+                                    </div>
+                                </div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="ownSign">环境标识</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="ownSign" id="ownSign" class="col-xs-12 col-sm-12" value="$!taskMail.ownSign" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="taskStatus">任务状态</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="taskStatus" id="taskStatus" class="col-xs-12 col-sm-12" value="$!taskMail.taskStatus" />
+                                    </div>
+                                </div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="executeCount">执行次数</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="executeCount" id="executeCount" class="col-xs-12 col-sm-12" value="$!taskMail.executeCount" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="taskPriority">任务优先级</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="taskPriority" id="taskPriority" class="col-xs-12 col-sm-12" value="$!taskMail.taskPriority" />
+                                    </div>
+                                </div>
+								<div class="form-group">
+									<input type="hidden" name="taskId" id="taskId" value="$!taskMail.taskId" />
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>返回</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>重置</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

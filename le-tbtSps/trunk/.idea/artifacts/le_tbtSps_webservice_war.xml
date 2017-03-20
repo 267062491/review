@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="le-tbtSps-webservice:war">
+    <output-path>$PROJECT_DIR$/le-tbtSps-webservice/target</output-path>
+    <root id="archive" name="le-tbtSps-webservice.war">
+      <element id="artifact" artifact-name="le-tbtSps-webservice:war exploded" />
+    </root>
+  </artifact>
+</component>

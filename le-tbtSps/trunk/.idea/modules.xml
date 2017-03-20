@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps.iml" filepath="$PROJECT_DIR$/le-tbtSps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps-dao/le-tbtSps-dao.iml" filepath="$PROJECT_DIR$/le-tbtSps-dao/le-tbtSps-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps-domain/le-tbtSps-domain.iml" filepath="$PROJECT_DIR$/le-tbtSps-domain/le-tbtSps-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps-manager/le-tbtSps-manager.iml" filepath="$PROJECT_DIR$/le-tbtSps-manager/le-tbtSps-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps-proxy/le-tbtSps-proxy.iml" filepath="$PROJECT_DIR$/le-tbtSps-proxy/le-tbtSps-proxy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps-service/le-tbtSps-service.iml" filepath="$PROJECT_DIR$/le-tbtSps-service/le-tbtSps-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps-util/le-tbtSps-util.iml" filepath="$PROJECT_DIR$/le-tbtSps-util/le-tbtSps-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps-web/le-tbtSps-web.iml" filepath="$PROJECT_DIR$/le-tbtSps-web/le-tbtSps-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/le-tbtSps-webservice/le-tbtSps-webservice.iml" filepath="$PROJECT_DIR$/le-tbtSps-webservice/le-tbtSps-webservice.iml" />
+    </modules>
+  </component>
+</project>
+
