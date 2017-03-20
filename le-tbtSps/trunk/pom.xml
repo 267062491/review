@@ -458,9 +458,9 @@
 			<properties>
 				<!--数据库配置 -->
 				<profile.db.driver>com.mysql.jdbc.Driver</profile.db.driver>
-				<profile.db.url>jdbc:mysql://10.140.35.211:3306/wms_stock?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</profile.db.url>
-				<profile.db.username>zxadmin</profile.db.username>
-				<profile.db.password>2ee8c137b56f2ec</profile.db.password>
+				<profile.db.url>jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</profile.db.url>
+				<profile.db.username>root</profile.db.username>
+				<profile.db.password>root</profile.db.password>
 
 				<!-- 服务器日志配置 -->
 				<profile.log.root.level>INFO</profile.log.root.level>
