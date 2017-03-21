@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
     <head>
+        <link rel="icon" href="https://static.jianshukeji.com/hcode/images/favicon.ico">
+        <script src="https://img.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+        <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+        <script src="https://img.hcharts.cn/highcharts/themes/grid-light.js"></script>
         #parse("/layout/head.vm")
 		<script language="javascript"> 
 			$(function() {
@@ -10,6 +16,52 @@
 				$("#btn-add").click(function() {
         			window.location.href=("$basePath/systemPar/addForward");
    				});
+
+                $.ajax({
+                    url: "$basePath/systemPar/highChartsColumn",
+                    context: document.body,
+                    success: function(data){
+                        debugger ;
+                        var title = data.result.title  ;
+                        var arr = data.result.arr  ;
+                        $('#container').highcharts({
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: '月平均降雨量'
+                            },
+                            subtitle: {
+                                text: '数据来源: WorldClimate.com'
+                            },
+                            xAxis: {
+                                categories:title ,
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: '降雨量 (mm)'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                        '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            series:arr
+                        });
+                    }
+                });
 			});
         	// Submit Search Form
         	function pageSubmit(pageNoParam) {
@@ -92,31 +144,15 @@
 							<th class="center">#springMessage('tbtSps.systemPar.id')</th>
 							<th class="center">#springMessage('tbtSps.systemPar.warehouseNo')</th>
 							<th class="center">#springMessage('tbtSps.systemPar.parCode')</th>
-							<th class="center">#springMessage('tbtSps.systemPar.partModule')</th>
-							<th class="center">#springMessage('tbtSps.systemPar.parValue')</th>
-							<th class="center">#springMessage('tbtSps.systemPar.note')</th>
-							<th class="center">#springMessage('tbtSps.systemPar.createTime')</th>
-							<th class="center">#springMessage('tbtSps.systemPar.createUser')</th>
-    						<th class="center">#springMessage('view.lable.operate')</th>
                         </tr>
                     </thead>
                     <tbody>
                         #foreach( $item in $dataList)
-                            <tr>
-                                <td>$!item.id</td>
-                                <td>$!item.warehouseNo</td>
-                                <td>$!item.parCode</td>
-                                <td>$!item.partModule</td>
-                                <td>$!item.parValue</td>
-                                <td>$!item.note</td>
-                                <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>
-                                <td>$!item.createUser</td>
-                                <td>
-									<a href="javascript:void(0)" onclick="toDetail($!item.id);" data-toggle="modal"><i class="icon-list">#springMessage('view.lable.detail')</i></a>
-									<a href="javascript:void(0)" onclick="toUpdate($!item.id)"><i class="icon-pencil pink">#springMessage('view.lable.update')</i></a>
-									<a href="javascript:void(0)" onclick="toDelete($!item.id)"><i class="icon-remove red">#springMessage('view.lable.delete')</i></a>
-								</td>
-                            </tr>
+                        <tr>
+                            <td>$!item.id</td>
+                            <td>$!item.name</td>
+                            <td>$!item.description</td>
+                        </tr>
                         #end
                     </tbody>
                 </table>
@@ -126,5 +162,7 @@
 			</div>
         </div>
 		#parse("/systemPar/detailModal.vm")
+
+        <div id="container" style="min-width:400px;height:400px"></div>
     </body>
 </html>

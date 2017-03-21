@@ -1,8 +1,15 @@
 package com.letv.tbtSps.controller;
    
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.letv.tbtSps.service.test.HighChartsDomain;
+import com.letv.tbtSps.service.test.Person;
+import com.letv.tbtSps.service.test.SolrJTest;
+import com.letv.tbtSps.utils.solr.SolrUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +51,6 @@ public class SystemParController extends BaseController {
      * 首页
      * 
      * @param model
-     * @param page
-     * @param query
      * @return
      */
     @RequestMapping(value = "")
@@ -64,8 +69,12 @@ public class SystemParController extends BaseController {
     @RequestMapping(value = "queryByPage")
     public String queryByPage(Model model, PageUtil page, SystemParQuery query) {
         try {
+            SolrJTest solr = new SolrJTest();
+            List<Person> list = solr.querySolr();
+
+
             List<SystemPar> dataList = systemParService.querySystemParListWithPage(query, page);
-            model.addAttribute("dataList", dataList);// 数据集合
+            model.addAttribute("dataList", list);// 数据集合
             model.addAttribute("query", query);// 查询参数
             model.addAttribute("page", page);// 分页
         } catch (Exception e) {
@@ -77,7 +86,6 @@ public class SystemParController extends BaseController {
     /**
      * 系统参数表----添加跳转
      * 
-     * @param model
      * @return
      */
     @RequestMapping(value = "addForward")
@@ -220,4 +228,47 @@ public class SystemParController extends BaseController {
             return error();
         }
     }
+
+    /**
+     * highCharts 柱状图 例子
+     * @return
+     */
+    @RequestMapping(value = "highChartsColumn")
+    @ResponseBody
+    public Wrapper<?> highChartsColumn(){
+
+        List<String> title = new ArrayList<String>() ;
+        title.add("一月");
+        title.add("二月");
+        title.add("三月");
+        title.add("四月");
+        title.add("五月");
+        title.add("六月");
+        title.add("七月");
+        title.add("八月");
+        title.add("九月");
+        title.add("十月");
+        title.add("十一月");
+        title.add("十二月");
+
+        List<HighChartsDomain> arrs = new ArrayList<HighChartsDomain>() ;
+        for(int i = 0 ; i<4 ; i++){
+            HighChartsDomain highChartsDomain = new HighChartsDomain();
+            highChartsDomain.setName("name"+i);
+            List<Integer> data = new ArrayList<Integer>() ;
+            for(int j = 0 ; j<12 ; j++){
+                data.add(123);
+            }
+            highChartsDomain.setData(data);
+            arrs.add(highChartsDomain);
+        }
+
+        Map<String , Object> map = new HashMap<String,Object>();
+        map.put("title",title);
+        map.put("arr",arrs);
+        return new Wrapper<Map<String , Object>>().result(map);
+    }
+
+
+
 }
