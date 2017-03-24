@@ -25,6 +25,9 @@
                         var title = data.result.title  ;
                         var arr = data.result.arr  ;
                         $('#container').highcharts({
+                            credits: {
+                                enabled: false //不显示右下角 LOGO  Highcharts
+                            },
                             chart: {
                                 type: 'column'
                             },

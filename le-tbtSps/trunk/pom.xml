@@ -52,6 +52,11 @@
 		<xmemcached.version>1.3.8</xmemcached.version>
 		<poi.version>3.10.1</poi.version>
 		<commons-httpclient.version>3.1</commons-httpclient.version>
+		<commons-logging>1.1.3</commons-logging>
+		<org.apache.solr>5.5.4</org.apache.solr>
+		<com.google.guava>11.0.1</com.google.guava>
+		<commons-collections>3.2.1</commons-collections>
+		<commons-jexl>1.1</commons-jexl>
 	</properties>
 
 	<dependencyManagement>
@@ -398,7 +403,7 @@
 			<dependency>
 				<groupId>commons-jexl</groupId>
 				<artifactId>commons-jexl</artifactId>
-				<version>1.1</version>
+				<version>${commons-jexl}</version>
 			</dependency>
 
 			<dependency>
@@ -411,17 +416,17 @@
             <dependency>
                 <groupId>org.apache.solr</groupId>
                 <artifactId>solr-solrj</artifactId>
-                <version>5.5.4</version>
-            </dependency>
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.11</version>
+                <version>${org.apache.solr}</version>
             </dependency>
             <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
-                <version>1.1.3</version>
+                <version>${commons-logging}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${com.google.guava}</version>
             </dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -477,7 +482,7 @@
 				<!--<profile.db.url>jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</profile.db.url>-->
 				<!--<profile.db.username>root</profile.db.username>-->
 				<!--<profile.db.password>root</profile.db.password>-->
-
+               
 
 
 				<!-- 服务器日志配置 -->
