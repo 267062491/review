@@ -1,0 +1,73 @@
+<!-- Modal -->
+<div class="modal fade" id="myRoleModal" tabindex="-1" role="dialog" aria-labelledby="myRoleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myRoleModalLabel">#springMessage('tbtSps.role')#springMessage('view.lable.detail')</h4>
+			</div>
+			<div class="modal-body"> 
+				<table class="table table-striped table-bordered table-condensed table-hover">
+					<tbody>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.id')</th><td id="r_id" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.roleName')</th><td id="r_roleName" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.roleCode')</th><td id="r_roleCode" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.note')</th><td id="r_note" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.createUser')</th><td id="r_createUser" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.role.yn')</th><td id="r_yn" style='width:25%;'></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">         	
+    function toDetail(parameterId){
+		$("#tab_online_tbody").html("");
+		$("#tab_config_tbody").html("");
+		$("#tab_log_tbody").html("");
+    	jQuery.ajax({
+    		type: "GET",
+    		url: basePath + "/role/detail",
+    		dataType : 'json',
+    		data: "id=" + parameterId,
+    		
+    		success: function(data){
+    			if(data!=null && data.code==200 && data.result!=null){
+    				var r = data.result;
+    				$("#r_id").text(r.id==null?"":r.id);
+    				$("#r_roleName").text(r.roleName==null?"":r.roleName);
+    				$("#r_roleCode").text(r.roleCode==null?"":r.roleCode);
+    				$("#r_note").text(r.note==null?"":r.note);
+    				$("#r_createTime").text(r.createTime==null?"":r.createTime);
+    				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
+    				$("#r_createUser").text(r.createUser==null?"":r.createUser);
+    				$("#r_updateUser").text(r.updateUser==null?"":r.updateUser);
+    				$("#r_yn").text(r.yn==null?"":r.yn);
+    			} else {
+    				alert("#springMessage('view.lable.detail.fail')");
+    			}
+    		},
+    		
+    		error : function(data) {
+    			alert("#springMessage('view.lable.detail.error')");
+    		}
+    	});
+		
+    	$('#myRoleModal').modal('show');
+    }
+</script>

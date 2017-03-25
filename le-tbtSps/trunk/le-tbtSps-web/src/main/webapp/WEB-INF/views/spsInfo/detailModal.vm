@@ -1,0 +1,137 @@
+<!-- Modal -->
+<div class="modal fade" id="mySpsInfoModal" tabindex="-1" role="dialog" aria-labelledby="mySpsInfoModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="mySpsInfoModalLabel">#springMessage('tbtSps.spsInfo')#springMessage('view.lable.detail')</h4>
+			</div>
+			<div class="modal-body"> 
+				<table class="table table-striped table-bordered table-condensed table-hover">
+					<tbody>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.id')</th><td id="r_id" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.spsCode')</th><td id="r_spsCode" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.countryCode')</th><td id="r_countryCode" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.publishDate')</th><td id="r_publishDate" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.spsOrg')</th><td id="r_spsOrg" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.coverProduct')</th><td id="r_coverProduct" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.fileTitle')</th><td id="r_fileTitle" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.contentDes')</th><td id="r_contentDes" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.standardYn')</th><td id="r_standardYn" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.oraLink')</th><td id="r_oraLink" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.fileCode')</th><td id="r_fileCode" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.affectCountry')</th><td id="r_affectCountry" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.expectApprovalDate')</th><td id="r_expectApprovalDate" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.expectEffectiveDate')</th><td id="r_expectEffectiveDate" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.expectPublishDate')</th><td id="r_expectPublishDate" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.feedbackEndDate')</th><td id="r_feedbackEndDate" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.fileGetOrg')</th><td id="r_fileGetOrg" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.parSpsCode')</th><td id="r_parSpsCode" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.errorReason')</th><td id="r_errorReason" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.state')</th><td id="r_state" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.back1')</th><td id="r_back1" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.back2')</th><td id="r_back2" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.back3')</th><td id="r_back3" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.back4')</th><td id="r_back4" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.back5')</th><td id="r_back5" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.createUser')</th><td id="r_createUser" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfo.yn')</th><td id="r_yn" style='width:25%;'></td>
+						</tr>
+						<tr>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">         	
+    function toDetail(parameterId){
+		$("#tab_online_tbody").html("");
+		$("#tab_config_tbody").html("");
+		$("#tab_log_tbody").html("");
+    	jQuery.ajax({
+    		type: "GET",
+    		url: basePath + "/spsInfo/detail",
+    		dataType : 'json',
+    		data: "id=" + parameterId,
+    		
+    		success: function(data){
+    			if(data!=null && data.code==200 && data.result!=null){
+    				var r = data.result;
+    				$("#r_id").text(r.id==null?"":r.id);
+    				$("#r_spsCode").text(r.spsCode==null?"":r.spsCode);
+    				$("#r_countryCode").text(r.countryCode==null?"":r.countryCode);
+    				$("#r_publishDate").text(r.publishDate==null?"":r.publishDate);
+    				$("#r_spsOrg").text(r.spsOrg==null?"":r.spsOrg);
+    				$("#r_coverProduct").text(r.coverProduct==null?"":r.coverProduct);
+    				$("#r_fileTitle").text(r.fileTitle==null?"":r.fileTitle);
+    				$("#r_contentDes").text(r.contentDes==null?"":r.contentDes);
+    				$("#r_standardYn").text(r.standardYn==null?"":r.standardYn);
+    				$("#r_oraLink").text(r.oraLink==null?"":r.oraLink);
+    				$("#r_fileCode").text(r.fileCode==null?"":r.fileCode);
+    				$("#r_affectCountry").text(r.affectCountry==null?"":r.affectCountry);
+    				$("#r_expectApprovalDate").text(r.expectApprovalDate==null?"":r.expectApprovalDate);
+    				$("#r_expectEffectiveDate").text(r.expectEffectiveDate==null?"":r.expectEffectiveDate);
+    				$("#r_expectPublishDate").text(r.expectPublishDate==null?"":r.expectPublishDate);
+    				$("#r_feedbackEndDate").text(r.feedbackEndDate==null?"":r.feedbackEndDate);
+    				$("#r_fileGetOrg").text(r.fileGetOrg==null?"":r.fileGetOrg);
+    				$("#r_parSpsCode").text(r.parSpsCode==null?"":r.parSpsCode);
+    				$("#r_errorReason").text(r.errorReason==null?"":r.errorReason);
+    				$("#r_state").text(r.state==null?"":r.state);
+    				$("#r_back1").text(r.back1==null?"":r.back1);
+    				$("#r_back2").text(r.back2==null?"":r.back2);
+    				$("#r_back3").text(r.back3==null?"":r.back3);
+    				$("#r_back4").text(r.back4==null?"":r.back4);
+    				$("#r_back5").text(r.back5==null?"":r.back5);
+    				$("#r_createTime").text(r.createTime==null?"":r.createTime);
+    				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
+    				$("#r_createUser").text(r.createUser==null?"":r.createUser);
+    				$("#r_updateUser").text(r.updateUser==null?"":r.updateUser);
+    				$("#r_yn").text(r.yn==null?"":r.yn);
+    			} else {
+    				alert("#springMessage('view.lable.detail.fail')");
+    			}
+    		},
+    		
+    		error : function(data) {
+    			alert("#springMessage('view.lable.detail.error')");
+    		}
+    	});
+		
+    	$('#mySpsInfoModal').modal('show');
+    }
+</script>

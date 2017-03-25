@@ -1,0 +1,95 @@
+<!-- Modal -->
+<div class="modal fade" id="mySpsInfoLogModal" tabindex="-1" role="dialog" aria-labelledby="mySpsInfoLogModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="mySpsInfoLogModalLabel">#springMessage('tbtSps.spsInfoLog')#springMessage('view.lable.detail')</h4>
+			</div>
+			<div class="modal-body"> 
+				<table class="table table-striped table-bordered table-condensed table-hover">
+					<tbody>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.id')</th><td id="r_id" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.spsCode')</th><td id="r_spsCode" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.state')</th><td id="r_state" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.oraState')</th><td id="r_oraState" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.content')</th><td id="r_content" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.logAttrRelation')</th><td id="r_logAttrRelation" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.opertOrder')</th><td id="r_opertOrder" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.back1')</th><td id="r_back1" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.back2')</th><td id="r_back2" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.back3')</th><td id="r_back3" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.back4')</th><td id="r_back4" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.createUser')</th><td id="r_createUser" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.spsInfoLog.yn')</th><td id="r_yn" style='width:25%;'></td>
+						</tr>
+						<tr>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">         	
+    function toDetail(parameterId){
+		$("#tab_online_tbody").html("");
+		$("#tab_config_tbody").html("");
+		$("#tab_log_tbody").html("");
+    	jQuery.ajax({
+    		type: "GET",
+    		url: basePath + "/spsInfoLog/detail",
+    		dataType : 'json',
+    		data: "id=" + parameterId,
+    		
+    		success: function(data){
+    			if(data!=null && data.code==200 && data.result!=null){
+    				var r = data.result;
+    				$("#r_id").text(r.id==null?"":r.id);
+    				$("#r_spsCode").text(r.spsCode==null?"":r.spsCode);
+    				$("#r_state").text(r.state==null?"":r.state);
+    				$("#r_oraState").text(r.oraState==null?"":r.oraState);
+    				$("#r_content").text(r.content==null?"":r.content);
+    				$("#r_logAttrRelation").text(r.logAttrRelation==null?"":r.logAttrRelation);
+    				$("#r_opertOrder").text(r.opertOrder==null?"":r.opertOrder);
+    				$("#r_back1").text(r.back1==null?"":r.back1);
+    				$("#r_back2").text(r.back2==null?"":r.back2);
+    				$("#r_back3").text(r.back3==null?"":r.back3);
+    				$("#r_back4").text(r.back4==null?"":r.back4);
+    				$("#r_createTime").text(r.createTime==null?"":r.createTime);
+    				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
+    				$("#r_createUser").text(r.createUser==null?"":r.createUser);
+    				$("#r_updateUser").text(r.updateUser==null?"":r.updateUser);
+    				$("#r_yn").text(r.yn==null?"":r.yn);
+    			} else {
+    				alert("#springMessage('view.lable.detail.fail')");
+    			}
+    		},
+    		
+    		error : function(data) {
+    			alert("#springMessage('view.lable.detail.error')");
+    		}
+    	});
+		
+    	$('#mySpsInfoLogModal').modal('show');
+    }
+</script>

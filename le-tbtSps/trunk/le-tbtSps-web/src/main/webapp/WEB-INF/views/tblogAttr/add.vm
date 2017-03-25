@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#addForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												tbtCode: {required: true},
+						fileName: {required: true},
+						filePath: {required: true},
+						fileAliasName: {required: true},
+						logAttrRelation: {required: true},
+					},
+			
+					messages: {
+						tbtCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tblogAttr.tbtCode')"},
+						fileName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tblogAttr.fileName')"},
+						filePath: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tblogAttr.filePath')"},
+						fileAliasName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tblogAttr.fileAliasName')"},
+						logAttrRelation: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tblogAttr.logAttrRelation')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/tblogAttr");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#addForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/tblogAttr/add',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/tblogAttr"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.tblogAttr')&nbsp;&gt;&nbsp;#springMessage('view.lable.add')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="addForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="tbtCode">#springMessage('tbtSps.tblogAttr.tbtCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="tbtCode" id="tbtCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileName">#springMessage('tbtSps.tblogAttr.fileName')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="fileName" id="fileName" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="filePath">#springMessage('tbtSps.tblogAttr.filePath')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="filePath" id="filePath" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileAliasName">#springMessage('tbtSps.tblogAttr.fileAliasName')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="fileAliasName" id="fileAliasName" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="logAttrRelation">#springMessage('tbtSps.tblogAttr.logAttrRelation')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="logAttrRelation" id="logAttrRelation" class="col-xs-12 col-sm-12" />
+                                    </div>
+                                </div>
+								<div class="form-group">
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

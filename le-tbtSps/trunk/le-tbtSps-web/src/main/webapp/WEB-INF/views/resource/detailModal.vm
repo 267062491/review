@@ -1,0 +1,101 @@
+<!-- Modal -->
+<div class="modal fade" id="myResourceModal" tabindex="-1" role="dialog" aria-labelledby="myResourceModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myResourceModalLabel">#springMessage('tbtSps.resource')#springMessage('view.lable.detail')</h4>
+			</div>
+			<div class="modal-body"> 
+				<table class="table table-striped table-bordered table-condensed table-hover">
+					<tbody>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.id')</th><td id="r_id" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.resourceName')</th><td id="r_resourceName" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.resourceCode')</th><td id="r_resourceCode" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.url')</th><td id="r_url" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.parentCode')</th><td id="r_parentCode" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.level')</th><td id="r_level" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.orders')</th><td id="r_orders" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.icon')</th><td id="r_icon" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.platfrom')</th><td id="r_platfrom" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.buttonflag')</th><td id="r_buttonflag" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.opens')</th><td id="r_opens" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.parentflag')</th><td id="r_parentflag" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.note')</th><td id="r_note" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.createUser')</th><td id="r_createUser" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.yn')</th><td id="r_yn" style='width:25%;'></td>
+						</tr>
+						<tr>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">         	
+    function toDetail(parameterId){
+		$("#tab_online_tbody").html("");
+		$("#tab_config_tbody").html("");
+		$("#tab_log_tbody").html("");
+    	jQuery.ajax({
+    		type: "GET",
+    		url: basePath + "/resource/detail",
+    		dataType : 'json',
+    		data: "id=" + parameterId,
+    		
+    		success: function(data){
+    			if(data!=null && data.code==200 && data.result!=null){
+    				var r = data.result;
+    				$("#r_id").text(r.id==null?"":r.id);
+    				$("#r_resourceName").text(r.resourceName==null?"":r.resourceName);
+    				$("#r_resourceCode").text(r.resourceCode==null?"":r.resourceCode);
+    				$("#r_url").text(r.url==null?"":r.url);
+    				$("#r_parentCode").text(r.parentCode==null?"":r.parentCode);
+    				$("#r_level").text(r.level==null?"":r.level);
+    				$("#r_orders").text(r.orders==null?"":r.orders);
+    				$("#r_icon").text(r.icon==null?"":r.icon);
+    				$("#r_platfrom").text(r.platfrom==null?"":r.platfrom);
+    				$("#r_buttonflag").text(r.buttonflag==null?"":r.buttonflag);
+    				$("#r_opens").text(r.opens==null?"":r.opens);
+    				$("#r_parentflag").text(r.parentflag==null?"":r.parentflag);
+    				$("#r_note").text(r.note==null?"":r.note);
+    				$("#r_createTime").text(r.createTime==null?"":r.createTime);
+    				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
+    				$("#r_createUser").text(r.createUser==null?"":r.createUser);
+    				$("#r_updateUser").text(r.updateUser==null?"":r.updateUser);
+    				$("#r_yn").text(r.yn==null?"":r.yn);
+    			} else {
+    				alert("#springMessage('view.lable.detail.fail')");
+    			}
+    		},
+    		
+    		error : function(data) {
+    			alert("#springMessage('view.lable.detail.error')");
+    		}
+    	});
+		
+    	$('#myResourceModal').modal('show');
+    }
+</script>

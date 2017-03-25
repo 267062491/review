@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.letv.tbtSps.dao.impl.MedicineProduccategoryDaoImpl">
+    <resultMap id="MedicineProduccategoryMap" type="MedicineProduccategory">
+		<result column="id" property="id" jdbcType="DECIMAL" />
+		<result column="ca_name" property="caName" jdbcType="VARCHAR" />
+		<result column="ca_code" property="caCode" jdbcType="VARCHAR" />
+		<result column="p_code" property="pCode" jdbcType="VARCHAR" />
+		<result column="ca_order" property="caOrder" jdbcType="DECIMAL" />
+		<result column="ca_code_num" property="caCodeNum" jdbcType="DECIMAL" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="yn" property="yn" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <sql id="medicineProduccategoryColumns">
+    	id,ca_name,ca_code,p_code,ca_order,ca_code_num,create_time,update_time,create_user,update_user,yn
+    </sql>
+    
+     <sql id="medicineProduccategoryUsedColumns">
+    	ca_name,ca_code,p_code,ca_order,ca_code_num,create_time,update_time,create_user,update_user,yn
+    </sql>
+
+    <!-- 创建信息 -->
+    <insert id="insert" parameterType="MedicineProduccategory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_medicine_product_category(<include refid="medicineProduccategoryUsedColumns"/>) 
+        VALUES (#{caName},#{caCode},#{pCode},#{caOrder},#{caCodeNum},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+	</insert>
+	
+    <!-- 修改信息 -->
+    <update id="update" parameterType="MedicineProduccategory">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update t_medicine_product_category set
+		        <if test="caName != null and caName != ''">
+                	ca_name = #{caName,jdbcType=VARCHAR},
+		        </if>
+		        <if test="caCode != null and caCode != ''">
+                	ca_code = #{caCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="pCode != null and pCode != ''">
+                	p_code = #{pCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="caOrder != null and caOrder != ''">
+                	ca_order = #{caOrder,jdbcType=DECIMAL},
+		        </if>
+		        <if test="caCodeNum != null and caCodeNum != ''">
+                	ca_code_num = #{caCodeNum,jdbcType=DECIMAL},
+		        </if>
+		        <if test="updateUser != null and updateUser != ''">
+                	update_user = #{updateUser,jdbcType=VARCHAR},
+		        </if>
+                	update_time = now()
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取对象信息 -->
+    <select id="getMedicineProduccategoryById" resultMap="MedicineProduccategoryMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select <include refid="medicineProduccategoryColumns"/> from t_medicine_product_category
+            where id = #{_parameter} and yn = 1
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，不带翻页 -->
+    <select id="queryMedicineProduccategoryList" resultMap="MedicineProduccategoryMap"
+            parameterType="com.letv.tbtSps.domain.query.MedicineProduccategoryQuery">
+        select <include refid="medicineProduccategoryColumns"/> from t_medicine_product_category where <include refid="queryMedicineProduccategoryListWhere"/>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，翻页 -->
+    <select id="queryMedicineProduccategoryListWithPage" resultMap="MedicineProduccategoryMap"
+            parameterType="com.letv.tbtSps.domain.query.MedicineProduccategoryQuery">
+        select <include refid="medicineProduccategoryColumns"/> from t_medicine_product_category where <include refid="queryMedicineProduccategoryListWhere"/>
+        order by create_time desc 
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询Bean查询-判断是否存在 -->
+    <select id="exist" resultType="java.lang.Integer" parameterType="MedicineProduccategory">
+        select count(1) from t_medicine_product_category where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据查询Bean获取集合总数 -->
+    <select id="queryMedicineProduccategoryCount" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.MedicineProduccategoryQuery">
+        select count(1) from t_medicine_product_category where <include refid="queryMedicineProduccategoryListWhere"/>
+    </select>
+
+    <!-- 删除信息-逻辑删除 -->
+    <update id="delete" parameterType="MedicineProduccategory">
+		update t_medicine_product_category 
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where id = #{id}
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryMedicineProduccategoryListWhere">
+    	yn = 1
+        <if test="id != null and id != ''">
+        	and id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="caName != null and caName != ''">
+        	and ca_name = #{caName,jdbcType=VARCHAR}
+        </if>
+        <if test="caCode != null and caCode != ''">
+        	and ca_code = #{caCode,jdbcType=VARCHAR}
+        </if>
+        <if test="pCode != null and pCode != ''">
+        	and p_code = #{pCode,jdbcType=VARCHAR}
+        </if>
+        <if test="caOrder != null and caOrder != ''">
+        	and ca_order = #{caOrder,jdbcType=DECIMAL}
+        </if>
+        <if test="caCodeNum != null and caCodeNum != ''">
+        	and ca_code_num = #{caCodeNum,jdbcType=DECIMAL}
+        </if>
+        <if test="createTime != null and createTime != ''">
+        	and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+        	and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createUser != null and createUser != ''">
+        	and create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+        	and update_user = #{updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="yn != null and yn != ''">
+        	and yn = #{yn,jdbcType=DECIMAL}
+        </if>
+    </sql>
+</mapper>

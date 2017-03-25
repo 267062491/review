@@ -1,0 +1,131 @@
+<!-- Modal -->
+<div class="modal fade" id="myTbinfoModal" tabindex="-1" role="dialog" aria-labelledby="myTbinfoModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myTbinfoModalLabel">#springMessage('tbtSps.tbinfo')#springMessage('view.lable.detail')</h4>
+			</div>
+			<div class="modal-body"> 
+				<table class="table table-striped table-bordered table-condensed table-hover">
+					<tbody>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.id')</th><td id="r_id" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.tbtCode')</th><td id="r_tbtCode" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.publishDate')</th><td id="r_publishDate" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.tbtCountryCode')</th><td id="r_tbtCountryCode" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.tbtOrg')</th><td id="r_tbtOrg" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.coverProduct')</th><td id="r_coverProduct" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.fileTitle')</th><td id="r_fileTitle" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.contentDes')</th><td id="r_contentDes" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.targetReason')</th><td id="r_targetReason" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.oraLink')</th><td id="r_oraLink" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.fileCode')</th><td id="r_fileCode" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.notificationBasis')</th><td id="r_notificationBasis" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.expectApprovalDate')</th><td id="r_expectApprovalDate" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.expectEffectiveDate')</th><td id="r_expectEffectiveDate" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.feedbackEndDate')</th><td id="r_feedbackEndDate" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.fileGetOrg')</th><td id="r_fileGetOrg" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.parSpsCode')</th><td id="r_parSpsCode" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.state')</th><td id="r_state" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.back1')</th><td id="r_back1" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.back2')</th><td id="r_back2" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.back3')</th><td id="r_back3" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.back4')</th><td id="r_back4" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.back5')</th><td id="r_back5" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.createUser')</th><td id="r_createUser" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.yn')</th><td id="r_yn" style='width:25%;'></td>
+						</tr>
+						<tr>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">         	
+    function toDetail(parameterId){
+		$("#tab_online_tbody").html("");
+		$("#tab_config_tbody").html("");
+		$("#tab_log_tbody").html("");
+    	jQuery.ajax({
+    		type: "GET",
+    		url: basePath + "/tbinfo/detail",
+    		dataType : 'json',
+    		data: "id=" + parameterId,
+    		
+    		success: function(data){
+    			if(data!=null && data.code==200 && data.result!=null){
+    				var r = data.result;
+    				$("#r_id").text(r.id==null?"":r.id);
+    				$("#r_tbtCode").text(r.tbtCode==null?"":r.tbtCode);
+    				$("#r_publishDate").text(r.publishDate==null?"":r.publishDate);
+    				$("#r_tbtCountryCode").text(r.tbtCountryCode==null?"":r.tbtCountryCode);
+    				$("#r_tbtOrg").text(r.tbtOrg==null?"":r.tbtOrg);
+    				$("#r_coverProduct").text(r.coverProduct==null?"":r.coverProduct);
+    				$("#r_fileTitle").text(r.fileTitle==null?"":r.fileTitle);
+    				$("#r_contentDes").text(r.contentDes==null?"":r.contentDes);
+    				$("#r_targetReason").text(r.targetReason==null?"":r.targetReason);
+    				$("#r_oraLink").text(r.oraLink==null?"":r.oraLink);
+    				$("#r_fileCode").text(r.fileCode==null?"":r.fileCode);
+    				$("#r_notificationBasis").text(r.notificationBasis==null?"":r.notificationBasis);
+    				$("#r_expectApprovalDate").text(r.expectApprovalDate==null?"":r.expectApprovalDate);
+    				$("#r_expectEffectiveDate").text(r.expectEffectiveDate==null?"":r.expectEffectiveDate);
+    				$("#r_feedbackEndDate").text(r.feedbackEndDate==null?"":r.feedbackEndDate);
+    				$("#r_fileGetOrg").text(r.fileGetOrg==null?"":r.fileGetOrg);
+    				$("#r_parSpsCode").text(r.parSpsCode==null?"":r.parSpsCode);
+    				$("#r_state").text(r.state==null?"":r.state);
+    				$("#r_back1").text(r.back1==null?"":r.back1);
+    				$("#r_back2").text(r.back2==null?"":r.back2);
+    				$("#r_back3").text(r.back3==null?"":r.back3);
+    				$("#r_back4").text(r.back4==null?"":r.back4);
+    				$("#r_back5").text(r.back5==null?"":r.back5);
+    				$("#r_createTime").text(r.createTime==null?"":r.createTime);
+    				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
+    				$("#r_createUser").text(r.createUser==null?"":r.createUser);
+    				$("#r_updateUser").text(r.updateUser==null?"":r.updateUser);
+    				$("#r_yn").text(r.yn==null?"":r.yn);
+    			} else {
+    				alert("#springMessage('view.lable.detail.fail')");
+    			}
+    		},
+    		
+    		error : function(data) {
+    			alert("#springMessage('view.lable.detail.error')");
+    		}
+    	});
+		
+    	$('#myTbinfoModal').modal('show');
+    }
+</script>

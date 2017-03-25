@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.letv.tbtSps.dao.impl.TbresidualInfoDaoImpl">
+    <resultMap id="TbresidualInfoMap" type="TbresidualInfo">
+		<result column="id" property="id" jdbcType="DECIMAL" />
+		<result column="tbt_code" property="tbtCode" jdbcType="VARCHAR" />
+		<result column="medicine_code" property="medicineCode" jdbcType="VARCHAR" />
+		<result column="medicine_product_code" property="medicineProductCode" jdbcType="VARCHAR" />
+		<result column="update_type" property="updateType" jdbcType="VARCHAR" />
+		<result column="residua_amount" property="residuaAmount" jdbcType="VARCHAR" />
+		<result column="unit" property="unit" jdbcType="VARCHAR" />
+		<result column="safe_day" property="safeDay" jdbcType="VARCHAR" />
+		<result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+		<result column="back_1" property="back1" jdbcType="VARCHAR" />
+		<result column="back_2" property="back2" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="yn" property="yn" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <sql id="tbresidualInfoColumns">
+    	id,tbt_code,medicine_code,medicine_product_code,update_type,residua_amount,unit,safe_day,end_date,back_1,back_2,create_time,update_time,create_user,update_user,yn
+    </sql>
+    
+     <sql id="tbresidualInfoUsedColumns">
+    	tbt_code,medicine_code,medicine_product_code,update_type,residua_amount,unit,safe_day,end_date,back_1,back_2,create_time,update_time,create_user,update_user,yn
+    </sql>
+
+    <!-- 创建信息 -->
+    <insert id="insert" parameterType="TbresidualInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_tbt_residual_info(<include refid="tbresidualInfoUsedColumns"/>) 
+        VALUES (#{tbtCode},#{medicineCode},#{medicineProductCode},#{updateType},#{residuaAmount},#{unit},#{safeDay},#{endDate},#{back1},#{back2},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+	</insert>
+	
+    <!-- 修改信息 -->
+    <update id="update" parameterType="TbresidualInfo">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update t_tbt_residual_info set
+		        <if test="tbtCode != null and tbtCode != ''">
+                	tbt_code = #{tbtCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="medicineCode != null and medicineCode != ''">
+                	medicine_code = #{medicineCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="medicineProductCode != null and medicineProductCode != ''">
+                	medicine_product_code = #{medicineProductCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="updateType != null and updateType != ''">
+                	update_type = #{updateType,jdbcType=VARCHAR},
+		        </if>
+		        <if test="residuaAmount != null and residuaAmount != ''">
+                	residua_amount = #{residuaAmount,jdbcType=VARCHAR},
+		        </if>
+		        <if test="unit != null and unit != ''">
+                	unit = #{unit,jdbcType=VARCHAR},
+		        </if>
+		        <if test="safeDay != null and safeDay != ''">
+                	safe_day = #{safeDay,jdbcType=VARCHAR},
+		        </if>
+		        <if test="endDate != null and endDate != ''">
+                	end_date = #{endDate,jdbcType=TIMESTAMP},
+		        </if>
+		        <if test="back1 != null and back1 != ''">
+                	back_1 = #{back1,jdbcType=VARCHAR},
+		        </if>
+		        <if test="back2 != null and back2 != ''">
+                	back_2 = #{back2,jdbcType=VARCHAR},
+		        </if>
+		        <if test="updateUser != null and updateUser != ''">
+                	update_user = #{updateUser,jdbcType=VARCHAR},
+		        </if>
+                	update_time = now()
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取对象信息 -->
+    <select id="getTbresidualInfoById" resultMap="TbresidualInfoMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select <include refid="tbresidualInfoColumns"/> from t_tbt_residual_info
+            where id = #{_parameter} and yn = 1
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，不带翻页 -->
+    <select id="queryTbresidualInfoList" resultMap="TbresidualInfoMap"
+            parameterType="com.letv.tbtSps.domain.query.TbresidualInfoQuery">
+        select <include refid="tbresidualInfoColumns"/> from t_tbt_residual_info where <include refid="queryTbresidualInfoListWhere"/>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，翻页 -->
+    <select id="queryTbresidualInfoListWithPage" resultMap="TbresidualInfoMap"
+            parameterType="com.letv.tbtSps.domain.query.TbresidualInfoQuery">
+        select <include refid="tbresidualInfoColumns"/> from t_tbt_residual_info where <include refid="queryTbresidualInfoListWhere"/>
+        order by create_time desc 
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询Bean查询-判断是否存在 -->
+    <select id="exist" resultType="java.lang.Integer" parameterType="TbresidualInfo">
+        select count(1) from t_tbt_residual_info where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据查询Bean获取集合总数 -->
+    <select id="queryTbresidualInfoCount" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.TbresidualInfoQuery">
+        select count(1) from t_tbt_residual_info where <include refid="queryTbresidualInfoListWhere"/>
+    </select>
+
+    <!-- 删除信息-逻辑删除 -->
+    <update id="delete" parameterType="TbresidualInfo">
+		update t_tbt_residual_info 
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where id = #{id}
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryTbresidualInfoListWhere">
+    	yn = 1
+        <if test="id != null and id != ''">
+        	and id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="tbtCode != null and tbtCode != ''">
+        	and tbt_code = #{tbtCode,jdbcType=VARCHAR}
+        </if>
+        <if test="medicineCode != null and medicineCode != ''">
+        	and medicine_code = #{medicineCode,jdbcType=VARCHAR}
+        </if>
+        <if test="medicineProductCode != null and medicineProductCode != ''">
+        	and medicine_product_code = #{medicineProductCode,jdbcType=VARCHAR}
+        </if>
+        <if test="updateType != null and updateType != ''">
+        	and update_type = #{updateType,jdbcType=VARCHAR}
+        </if>
+        <if test="residuaAmount != null and residuaAmount != ''">
+        	and residua_amount = #{residuaAmount,jdbcType=VARCHAR}
+        </if>
+        <if test="unit != null and unit != ''">
+        	and unit = #{unit,jdbcType=VARCHAR}
+        </if>
+        <if test="safeDay != null and safeDay != ''">
+        	and safe_day = #{safeDay,jdbcType=VARCHAR}
+        </if>
+        <if test="endDate != null and endDate != ''">
+        	and end_date = #{endDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="back1 != null and back1 != ''">
+        	and back_1 = #{back1,jdbcType=VARCHAR}
+        </if>
+        <if test="back2 != null and back2 != ''">
+        	and back_2 = #{back2,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+        	and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+        	and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createUser != null and createUser != ''">
+        	and create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+        	and update_user = #{updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="yn != null and yn != ''">
+        	and yn = #{yn,jdbcType=DECIMAL}
+        </if>
+    </sql>
+</mapper>

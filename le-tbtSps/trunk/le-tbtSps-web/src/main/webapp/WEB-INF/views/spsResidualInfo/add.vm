@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#addForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												spsCode: {required: true},
+						medicineCode: {required: true},
+						medicineProductCode: {required: true},
+						updateType: {required: true},
+						residuaAmount: {required: true},
+						unit: {required: true},
+						safeDay: {required: true},
+						endDate: {required: true},
+						back1: {required: true},
+						back2: {required: true},
+					},
+			
+					messages: {
+						spsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.spsCode')"},
+						medicineCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.medicineCode')"},
+						medicineProductCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.medicineProductCode')"},
+						updateType: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.updateType')"},
+						residuaAmount: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.residuaAmount')"},
+						unit: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.unit')"},
+						safeDay: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.safeDay')"},
+						endDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.endDate')"},
+						back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.back1')"},
+						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsResidualInfo.back2')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/spsResidualInfo");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#addForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/spsResidualInfo/add',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/spsResidualInfo"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.spsResidualInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.add')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="addForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsResidualInfo.spsCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="spsCode" id="spsCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="medicineCode">#springMessage('tbtSps.spsResidualInfo.medicineCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="medicineCode" id="medicineCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="medicineProductCode">#springMessage('tbtSps.spsResidualInfo.medicineProductCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="medicineProductCode" id="medicineProductCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="updateType">#springMessage('tbtSps.spsResidualInfo.updateType')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="updateType" id="updateType" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="residuaAmount">#springMessage('tbtSps.spsResidualInfo.residuaAmount')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="residuaAmount" id="residuaAmount" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="unit">#springMessage('tbtSps.spsResidualInfo.unit')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="unit" id="unit" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="safeDay">#springMessage('tbtSps.spsResidualInfo.safeDay')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="safeDay" id="safeDay" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="endDate">#springMessage('tbtSps.spsResidualInfo.endDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="endDate" id="endDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.spsResidualInfo.back1')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back1" id="back1" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.spsResidualInfo.back2')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back2" id="back2" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+                                </div>
+								<div class="form-group">
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

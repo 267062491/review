@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#updateForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												spsCode: {required: true},
+						state: {required: true},
+						oraState: {required: true},
+						content: {required: true},
+						logAttrRelation: {required: true},
+						opertOrder: {required: true},
+						back1: {required: true},
+						back2: {required: true},
+						back3: {required: true},
+						back4: {required: true},
+					},
+			
+					messages: {
+						spsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.spsCode')"},
+						state: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.state')"},
+						oraState: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.oraState')"},
+						content: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.content')"},
+						logAttrRelation: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.logAttrRelation')"},
+						opertOrder: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.opertOrder')"},
+						back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.back1')"},
+						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.back2')"},
+						back3: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.back3')"},
+						back4: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfoLog.back4')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/spsInfoLog");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#updateForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/spsInfoLog/update',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/spsInfoLog"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfoLog')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="updateForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfoLog.spsCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="spsCode" id="spsCode" class="col-xs-12 col-sm-12" value="$!spsInfoLog.spsCode" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="state">#springMessage('tbtSps.spsInfoLog.state')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="state" id="state" class="col-xs-12 col-sm-12" value="$!spsInfoLog.state" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="oraState">#springMessage('tbtSps.spsInfoLog.oraState')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="oraState" id="oraState" class="col-xs-12 col-sm-12" value="$!spsInfoLog.oraState" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfoLog.content')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="content" id="content" class="col-xs-12 col-sm-12" value="$!spsInfoLog.content" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="logAttrRelation">#springMessage('tbtSps.spsInfoLog.logAttrRelation')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="logAttrRelation" id="logAttrRelation" class="col-xs-12 col-sm-12" value="$!spsInfoLog.logAttrRelation" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="opertOrder">#springMessage('tbtSps.spsInfoLog.opertOrder')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="opertOrder" id="opertOrder" class="col-xs-12 col-sm-12" value="$!spsInfoLog.opertOrder" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.spsInfoLog.back1')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back1" id="back1" class="col-xs-12 col-sm-12" value="$!spsInfoLog.back1" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.spsInfoLog.back2')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back2" id="back2" class="col-xs-12 col-sm-12" value="$!spsInfoLog.back2" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back3">#springMessage('tbtSps.spsInfoLog.back3')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back3" id="back3" class="col-xs-12 col-sm-12" value="$!spsInfoLog.back3" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back4">#springMessage('tbtSps.spsInfoLog.back4')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back4" id="back4" class="col-xs-12 col-sm-12" value="$!spsInfoLog.back4" />
+                                    </div>
+								</div>
+								<div class="form-group">
+                                </div>
+								<div class="form-group">
+									<input type="hidden" name="id" id="id" value="$!spsInfoLog.id" />
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

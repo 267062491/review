@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        #parse("/layout/head.vm")
+		<script language="javascript"> 
+			$(function() {
+				$("#btn-query").click(function() {
+        			pageSubmit(1);
+   				});
+				$("#btn-add").click(function() {
+        			window.location.href=("$basePath/spsResidualInfo/addForward");
+   				});
+			});
+        	// Submit Search Form
+        	function pageSubmit(pageNoParam) {
+                $("#curPage").val(pageNoParam);
+            	$("#queryForm").attr("action", "$basePath/spsResidualInfo/queryByPage");
+                $("#queryForm").attr("method", "POST");
+                $("#queryForm").submit();
+        	}
+        	
+        	function toUpdate(parameterId){
+        		window.location.href=("$basePath/spsResidualInfo/updateForward?id="+parameterId);
+        	}
+        	
+        	function toDelete(parameterId){
+        		MyPopWindow.ExecuteDelete("$basePath/spsResidualInfo/delete",{ id : parameterId });
+        	}
+        	
+        </script>
+	</head>
+    <body>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-search green"></i>#springMessage('tbtSps.spsResidualInfo')#springMessage('view.lable.search')
+                        </h5>
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="1 icon-chevron-up bigger-100"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
+                            <form class="form-horizontal" role="form" id="queryForm">
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsResidualInfo.spsCode')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="spsCode" id="spsCode" class="col-xs-10 col-sm-8" value="$!query.spsCode"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="medicineCode">#springMessage('tbtSps.spsResidualInfo.medicineCode')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="medicineCode" id="medicineCode" class="col-xs-10 col-sm-8" value="$!query.medicineCode"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="medicineProductCode">#springMessage('tbtSps.spsResidualInfo.medicineProductCode')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="medicineProductCode" id="medicineProductCode" class="col-xs-10 col-sm-8" value="$!query.medicineProductCode"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="updateType">#springMessage('tbtSps.spsResidualInfo.updateType')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="updateType" id="updateType" class="col-xs-10 col-sm-8" value="$!query.updateType"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="residuaAmount">#springMessage('tbtSps.spsResidualInfo.residuaAmount')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="residuaAmount" id="residuaAmount" class="col-xs-10 col-sm-8" value="$!query.residuaAmount"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="unit">#springMessage('tbtSps.spsResidualInfo.unit')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="unit" id="unit" class="col-xs-10 col-sm-8" value="$!query.unit"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="safeDay">#springMessage('tbtSps.spsResidualInfo.safeDay')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="safeDay" id="safeDay" class="col-xs-10 col-sm-8" value="$!query.safeDay"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="endDate">#springMessage('tbtSps.spsResidualInfo.endDate')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="endDate" id="endDate" class="col-xs-10 col-sm-8" value="$!query.endDate"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.spsResidualInfo.back1')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="back1" id="back1" class="col-xs-10 col-sm-8" value="$!query.back1"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.spsResidualInfo.back2')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="back2" id="back2" class="col-xs-10 col-sm-8" value="$!query.back2"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<div class="col-sm-4 col-sm-offset-8">
+    									#parse("/layout/page.vm")
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-add"><i class="icon-plus"></i>#springMessage('view.lable.add')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-xs-12 col-sm-12 table-responsive">
+                <table class="table table-striped table-bordered table-condensed table-hover">
+                    <thead>
+                        <tr>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.id')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.spsCode')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.medicineCode')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.medicineProductCode')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.updateType')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.residuaAmount')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.unit')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.safeDay')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.endDate')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.back1')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.back2')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.createTime')</th>
+							<th class="center">#springMessage('tbtSps.spsResidualInfo.createUser')</th>
+    						<th class="center">#springMessage('view.lable.operate')</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #foreach( $item in $dataList)
+                            <tr>
+                                <td>$!item.id</td>
+                                <td>$!item.spsCode</td>
+                                <td>$!item.medicineCode</td>
+                                <td>$!item.medicineProductCode</td>
+                                <td>$!item.updateType</td>
+                                <td>$!item.residuaAmount</td>
+                                <td>$!item.unit</td>
+                                <td>$!item.safeDay</td>
+                                <td>$!item.endDate</td>
+                                <td>$!item.back1</td>
+                                <td>$!item.back2</td>
+                                <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>
+                                <td>$!item.createUser</td>
+                                <td>
+									<a href="javascript:void(0)" onclick="toDetail($!item.id);" data-toggle="modal"><i class="icon-list">#springMessage('view.lable.detail')</i></a>
+									<a href="javascript:void(0)" onclick="toUpdate($!item.id)"><i class="icon-pencil pink">#springMessage('view.lable.update')</i></a>
+									<a href="javascript:void(0)" onclick="toDelete($!item.id)"><i class="icon-remove red">#springMessage('view.lable.delete')</i></a>
+								</td>
+                            </tr>
+                        #end
+                    </tbody>
+                </table>
+				#if($!page)
+					#pageBarPost($page.totalRow $page.curPage $page.totalPage)
+				#end
+			</div>
+        </div>
+		#parse("/spsResidualInfo/detailModal.vm")
+    </body>
+</html>

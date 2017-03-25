@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.letv.tbtSps.dao.impl.ResourceDaoImpl">
+    <resultMap id="ResourceMap" type="Resource">
+		<result column="id" property="id" jdbcType="DECIMAL" />
+		<result column="resource_name" property="resourceName" jdbcType="VARCHAR" />
+		<result column="resource_code" property="resourceCode" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="parent_code" property="parentCode" jdbcType="VARCHAR" />
+		<result column="level" property="level" jdbcType="DECIMAL" />
+		<result column="orders" property="orders" jdbcType="DECIMAL" />
+		<result column="icon" property="icon" jdbcType="VARCHAR" />
+		<result column="platfrom" property="platfrom" jdbcType="VARCHAR" />
+		<result column="buttonFlag" property="buttonflag" jdbcType="DECIMAL" />
+		<result column="opens" property="opens" jdbcType="DECIMAL" />
+		<result column="parentFlag" property="parentflag" jdbcType="DECIMAL" />
+		<result column="note" property="note" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="yn" property="yn" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <sql id="resourceColumns">
+    	id,resource_name,resource_code,url,parent_code,level,orders,icon,platfrom,buttonFlag,opens,parentFlag,note,create_time,update_time,create_user,update_user,yn
+    </sql>
+    
+     <sql id="resourceUsedColumns">
+    	resource_name,resource_code,url,parent_code,level,orders,icon,platfrom,buttonFlag,opens,parentFlag,note,create_time,update_time,create_user,update_user,yn
+    </sql>
+
+    <!-- 创建信息 -->
+    <insert id="insert" parameterType="Resource" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_resource(<include refid="resourceUsedColumns"/>) 
+        VALUES (#{resourceName},#{resourceCode},#{url},#{parentCode},#{level},#{orders},#{icon},#{platfrom},#{buttonflag},#{opens},#{parentflag},#{note},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+	</insert>
+	
+    <!-- 修改信息 -->
+    <update id="update" parameterType="Resource">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update t_resource set
+		        <if test="resourceName != null and resourceName != ''">
+                	resource_name = #{resourceName,jdbcType=VARCHAR},
+		        </if>
+		        <if test="resourceCode != null and resourceCode != ''">
+                	resource_code = #{resourceCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="url != null and url != ''">
+                	url = #{url,jdbcType=VARCHAR},
+		        </if>
+		        <if test="parentCode != null and parentCode != ''">
+                	parent_code = #{parentCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="level != null and level != ''">
+                	level = #{level,jdbcType=DECIMAL},
+		        </if>
+		        <if test="orders != null and orders != ''">
+                	orders = #{orders,jdbcType=DECIMAL},
+		        </if>
+		        <if test="icon != null and icon != ''">
+                	icon = #{icon,jdbcType=VARCHAR},
+		        </if>
+		        <if test="platfrom != null and platfrom != ''">
+                	platfrom = #{platfrom,jdbcType=VARCHAR},
+		        </if>
+		        <if test="buttonflag != null and buttonflag != ''">
+                	buttonFlag = #{buttonflag,jdbcType=DECIMAL},
+		        </if>
+		        <if test="opens != null and opens != ''">
+                	opens = #{opens,jdbcType=DECIMAL},
+		        </if>
+		        <if test="parentflag != null and parentflag != ''">
+                	parentFlag = #{parentflag,jdbcType=DECIMAL},
+		        </if>
+		        <if test="note != null and note != ''">
+                	note = #{note,jdbcType=VARCHAR},
+		        </if>
+		        <if test="updateUser != null and updateUser != ''">
+                	update_user = #{updateUser,jdbcType=VARCHAR},
+		        </if>
+                	update_time = now()
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取对象信息 -->
+    <select id="getResourceById" resultMap="ResourceMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select <include refid="resourceColumns"/> from t_resource
+            where id = #{_parameter} and yn = 1
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，不带翻页 -->
+    <select id="queryResourceList" resultMap="ResourceMap"
+            parameterType="com.letv.tbtSps.domain.query.ResourceQuery">
+        select <include refid="resourceColumns"/> from t_resource where <include refid="queryResourceListWhere"/>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，翻页 -->
+    <select id="queryResourceListWithPage" resultMap="ResourceMap"
+            parameterType="com.letv.tbtSps.domain.query.ResourceQuery">
+        select <include refid="resourceColumns"/> from t_resource where <include refid="queryResourceListWhere"/>
+        order by create_time desc 
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询Bean查询-判断是否存在 -->
+    <select id="exist" resultType="java.lang.Integer" parameterType="Resource">
+        select count(1) from t_resource where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据查询Bean获取集合总数 -->
+    <select id="queryResourceCount" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.ResourceQuery">
+        select count(1) from t_resource where <include refid="queryResourceListWhere"/>
+    </select>
+
+    <!-- 删除信息-逻辑删除 -->
+    <update id="delete" parameterType="Resource">
+		update t_resource 
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where id = #{id}
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryResourceListWhere">
+    	yn = 1
+        <if test="id != null and id != ''">
+        	and id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="resourceName != null and resourceName != ''">
+        	and resource_name = #{resourceName,jdbcType=VARCHAR}
+        </if>
+        <if test="resourceCode != null and resourceCode != ''">
+        	and resource_code = #{resourceCode,jdbcType=VARCHAR}
+        </if>
+        <if test="url != null and url != ''">
+        	and url = #{url,jdbcType=VARCHAR}
+        </if>
+        <if test="parentCode != null and parentCode != ''">
+        	and parent_code = #{parentCode,jdbcType=VARCHAR}
+        </if>
+        <if test="level != null and level != ''">
+        	and level = #{level,jdbcType=DECIMAL}
+        </if>
+        <if test="orders != null and orders != ''">
+        	and orders = #{orders,jdbcType=DECIMAL}
+        </if>
+        <if test="icon != null and icon != ''">
+        	and icon = #{icon,jdbcType=VARCHAR}
+        </if>
+        <if test="platfrom != null and platfrom != ''">
+        	and platfrom = #{platfrom,jdbcType=VARCHAR}
+        </if>
+        <if test="buttonflag != null and buttonflag != ''">
+        	and buttonFlag = #{buttonflag,jdbcType=DECIMAL}
+        </if>
+        <if test="opens != null and opens != ''">
+        	and opens = #{opens,jdbcType=DECIMAL}
+        </if>
+        <if test="parentflag != null and parentflag != ''">
+        	and parentFlag = #{parentflag,jdbcType=DECIMAL}
+        </if>
+        <if test="note != null and note != ''">
+        	and note = #{note,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+        	and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+        	and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createUser != null and createUser != ''">
+        	and create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+        	and update_user = #{updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="yn != null and yn != ''">
+        	and yn = #{yn,jdbcType=DECIMAL}
+        </if>
+    </sql>
+</mapper>

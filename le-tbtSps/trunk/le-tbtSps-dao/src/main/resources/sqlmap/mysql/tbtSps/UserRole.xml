@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.letv.tbtSps.dao.impl.UserRoleDaoImpl">
+    <resultMap id="UserRoleMap" type="UserRole">
+		<result column="id" property="id" jdbcType="DECIMAL" />
+		<result column="t_u_id" property="tUId" jdbcType="DECIMAL" />
+		<result column="user_code" property="userCode" jdbcType="VARCHAR" />
+		<result column="role_code" property="roleCode" jdbcType="VARCHAR" />
+		<result column="note" property="note" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="yn" property="yn" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <sql id="userRoleColumns">
+    	id,t_u_id,user_code,role_code,note,create_time,update_time,create_user,update_user,yn
+    </sql>
+    
+     <sql id="userRoleUsedColumns">
+    	t_u_id,user_code,role_code,note,create_time,update_time,create_user,update_user,yn
+    </sql>
+
+    <!-- 创建信息 -->
+    <insert id="insert" parameterType="UserRole" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_user_role(<include refid="userRoleUsedColumns"/>) 
+        VALUES (#{tUId},#{userCode},#{roleCode},#{note},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+	</insert>
+	
+    <!-- 修改信息 -->
+    <update id="update" parameterType="UserRole">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update t_user_role set
+		        <if test="tUId != null and tUId != ''">
+                	t_u_id = #{tUId,jdbcType=DECIMAL},
+		        </if>
+		        <if test="userCode != null and userCode != ''">
+                	user_code = #{userCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="roleCode != null and roleCode != ''">
+                	role_code = #{roleCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="note != null and note != ''">
+                	note = #{note,jdbcType=VARCHAR},
+		        </if>
+		        <if test="updateUser != null and updateUser != ''">
+                	update_user = #{updateUser,jdbcType=VARCHAR},
+		        </if>
+                	update_time = now()
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取对象信息 -->
+    <select id="getUserRoleById" resultMap="UserRoleMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select <include refid="userRoleColumns"/> from t_user_role
+            where id = #{_parameter} and yn = 1
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，不带翻页 -->
+    <select id="queryUserRoleList" resultMap="UserRoleMap"
+            parameterType="com.letv.tbtSps.domain.query.UserRoleQuery">
+        select <include refid="userRoleColumns"/> from t_user_role where <include refid="queryUserRoleListWhere"/>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，翻页 -->
+    <select id="queryUserRoleListWithPage" resultMap="UserRoleMap"
+            parameterType="com.letv.tbtSps.domain.query.UserRoleQuery">
+        select <include refid="userRoleColumns"/> from t_user_role where <include refid="queryUserRoleListWhere"/>
+        order by create_time desc 
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询Bean查询-判断是否存在 -->
+    <select id="exist" resultType="java.lang.Integer" parameterType="UserRole">
+        select count(1) from t_user_role where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据查询Bean获取集合总数 -->
+    <select id="queryUserRoleCount" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.UserRoleQuery">
+        select count(1) from t_user_role where <include refid="queryUserRoleListWhere"/>
+    </select>
+
+    <!-- 删除信息-逻辑删除 -->
+    <update id="delete" parameterType="UserRole">
+		update t_user_role 
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where id = #{id}
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryUserRoleListWhere">
+    	yn = 1
+        <if test="id != null and id != ''">
+        	and id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="tUId != null and tUId != ''">
+        	and t_u_id = #{tUId,jdbcType=DECIMAL}
+        </if>
+        <if test="userCode != null and userCode != ''">
+        	and user_code = #{userCode,jdbcType=VARCHAR}
+        </if>
+        <if test="roleCode != null and roleCode != ''">
+        	and role_code = #{roleCode,jdbcType=VARCHAR}
+        </if>
+        <if test="note != null and note != ''">
+        	and note = #{note,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+        	and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+        	and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createUser != null and createUser != ''">
+        	and create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+        	and update_user = #{updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="yn != null and yn != ''">
+        	and yn = #{yn,jdbcType=DECIMAL}
+        </if>
+    </sql>
+</mapper>

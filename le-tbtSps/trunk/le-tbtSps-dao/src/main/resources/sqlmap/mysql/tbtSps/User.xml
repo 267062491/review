@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.letv.tbtSps.dao.impl.UserDaoImpl">
+    <resultMap id="UserMap" type="User">
+		<result column="id" property="id" jdbcType="DECIMAL" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="show_name" property="showName" jdbcType="VARCHAR" />
+		<result column="user_code" property="userCode" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="phoneNo" property="phoneno" jdbcType="VARCHAR" />
+		<result column="duty" property="duty" jdbcType="VARCHAR" />
+		<result column="user_otherName" property="userOthername" jdbcType="VARCHAR" />
+		<result column="user_type" property="userType" jdbcType="DECIMAL" />
+		<result column="user_state" property="userState" jdbcType="DECIMAL" />
+		<result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+		<result column="note" property="note" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="yn" property="yn" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <sql id="userColumns">
+    	id,user_name,show_name,user_code,password,email,phoneNo,duty,user_otherName,user_type,user_state,user_address,note,create_time,update_time,create_user,update_user,yn
+    </sql>
+    
+     <sql id="userUsedColumns">
+    	user_name,show_name,user_code,password,email,phoneNo,duty,user_otherName,user_type,user_state,user_address,note,create_time,update_time,create_user,update_user,yn
+    </sql>
+
+    <!-- 创建信息 -->
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_user(<include refid="userUsedColumns"/>) 
+        VALUES (#{userName},#{showName},#{userCode},#{password},#{email},#{phoneno},#{duty},#{userOthername},#{userType},#{userState},#{userAddress},#{note},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+	</insert>
+	
+    <!-- 修改信息 -->
+    <update id="update" parameterType="User">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update t_user set
+		        <if test="userName != null and userName != ''">
+                	user_name = #{userName,jdbcType=VARCHAR},
+		        </if>
+		        <if test="showName != null and showName != ''">
+                	show_name = #{showName,jdbcType=VARCHAR},
+		        </if>
+		        <if test="userCode != null and userCode != ''">
+                	user_code = #{userCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="password != null and password != ''">
+                	password = #{password,jdbcType=VARCHAR},
+		        </if>
+		        <if test="email != null and email != ''">
+                	email = #{email,jdbcType=VARCHAR},
+		        </if>
+		        <if test="phoneno != null and phoneno != ''">
+                	phoneNo = #{phoneno,jdbcType=VARCHAR},
+		        </if>
+		        <if test="duty != null and duty != ''">
+                	duty = #{duty,jdbcType=VARCHAR},
+		        </if>
+		        <if test="userOthername != null and userOthername != ''">
+                	user_otherName = #{userOthername,jdbcType=VARCHAR},
+		        </if>
+		        <if test="userType != null and userType != ''">
+                	user_type = #{userType,jdbcType=DECIMAL},
+		        </if>
+		        <if test="userState != null and userState != ''">
+                	user_state = #{userState,jdbcType=DECIMAL},
+		        </if>
+		        <if test="userAddress != null and userAddress != ''">
+                	user_address = #{userAddress,jdbcType=VARCHAR},
+		        </if>
+		        <if test="note != null and note != ''">
+                	note = #{note,jdbcType=VARCHAR},
+		        </if>
+		        <if test="updateUser != null and updateUser != ''">
+                	update_user = #{updateUser,jdbcType=VARCHAR},
+		        </if>
+                	update_time = now()
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取对象信息 -->
+    <select id="getUserById" resultMap="UserMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select <include refid="userColumns"/> from t_user
+            where id = #{_parameter} and yn = 1
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，不带翻页 -->
+    <select id="queryUserList" resultMap="UserMap"
+            parameterType="com.letv.tbtSps.domain.query.UserQuery">
+        select <include refid="userColumns"/> from t_user where <include refid="queryUserListWhere"/>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，翻页 -->
+    <select id="queryUserListWithPage" resultMap="UserMap"
+            parameterType="com.letv.tbtSps.domain.query.UserQuery">
+        select <include refid="userColumns"/> from t_user where <include refid="queryUserListWhere"/>
+        order by create_time desc 
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询Bean查询-判断是否存在 -->
+    <select id="exist" resultType="java.lang.Integer" parameterType="User">
+        select count(1) from t_user where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据查询Bean获取集合总数 -->
+    <select id="queryUserCount" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.UserQuery">
+        select count(1) from t_user where <include refid="queryUserListWhere"/>
+    </select>
+
+    <!-- 删除信息-逻辑删除 -->
+    <update id="delete" parameterType="User">
+		update t_user 
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where id = #{id}
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryUserListWhere">
+    	yn = 1
+        <if test="id != null and id != ''">
+        	and id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="userName != null and userName != ''">
+        	and user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="showName != null and showName != ''">
+        	and show_name = #{showName,jdbcType=VARCHAR}
+        </if>
+        <if test="userCode != null and userCode != ''">
+        	and user_code = #{userCode,jdbcType=VARCHAR}
+        </if>
+        <if test="password != null and password != ''">
+        	and password = #{password,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null and email != ''">
+        	and email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="phoneno != null and phoneno != ''">
+        	and phoneNo = #{phoneno,jdbcType=VARCHAR}
+        </if>
+        <if test="duty != null and duty != ''">
+        	and duty = #{duty,jdbcType=VARCHAR}
+        </if>
+        <if test="userOthername != null and userOthername != ''">
+        	and user_otherName = #{userOthername,jdbcType=VARCHAR}
+        </if>
+        <if test="userType != null and userType != ''">
+        	and user_type = #{userType,jdbcType=DECIMAL}
+        </if>
+        <if test="userState != null and userState != ''">
+        	and user_state = #{userState,jdbcType=DECIMAL}
+        </if>
+        <if test="userAddress != null and userAddress != ''">
+        	and user_address = #{userAddress,jdbcType=VARCHAR}
+        </if>
+        <if test="note != null and note != ''">
+        	and note = #{note,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+        	and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+        	and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createUser != null and createUser != ''">
+        	and create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+        	and update_user = #{updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="yn != null and yn != ''">
+        	and yn = #{yn,jdbcType=DECIMAL}
+        </if>
+    </sql>
+</mapper>

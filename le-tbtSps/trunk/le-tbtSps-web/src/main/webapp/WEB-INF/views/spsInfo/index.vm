@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        #parse("/layout/head.vm")
+		<script language="javascript"> 
+			$(function() {
+				$("#btn-query").click(function() {
+        			pageSubmit(1);
+   				});
+				$("#btn-add").click(function() {
+        			window.location.href=("$basePath/spsInfo/addForward");
+   				});
+			});
+        	// Submit Search Form
+        	function pageSubmit(pageNoParam) {
+                $("#curPage").val(pageNoParam);
+            	$("#queryForm").attr("action", "$basePath/spsInfo/queryByPage");
+                $("#queryForm").attr("method", "POST");
+                $("#queryForm").submit();
+        	}
+        	
+        	function toUpdate(parameterId){
+        		window.location.href=("$basePath/spsInfo/updateForward?id="+parameterId);
+        	}
+        	
+        	function toDelete(parameterId){
+        		MyPopWindow.ExecuteDelete("$basePath/spsInfo/delete",{ id : parameterId });
+        	}
+        	
+        </script>
+	</head>
+    <body>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-search green"></i>#springMessage('tbtSps.spsInfo')#springMessage('view.lable.search')
+                        </h5>
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="1 icon-chevron-up bigger-100"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
+                            <form class="form-horizontal" role="form" id="queryForm">
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfo.spsCode')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="spsCode" id="spsCode" class="col-xs-10 col-sm-8" value="$!query.spsCode"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.countryCode')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="countryCode" id="countryCode" class="col-xs-10 col-sm-8" value="$!query.countryCode"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="publishDate">#springMessage('tbtSps.spsInfo.publishDate')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="publishDate" id="publishDate" class="col-xs-10 col-sm-8" value="$!query.publishDate"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="spsOrg">#springMessage('tbtSps.spsInfo.spsOrg')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="spsOrg" id="spsOrg" class="col-xs-10 col-sm-8" value="$!query.spsOrg"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="coverProduct" id="coverProduct" class="col-xs-10 col-sm-8" value="$!query.coverProduct"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="fileTitle" id="fileTitle" class="col-xs-10 col-sm-8" value="$!query.fileTitle"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="contentDes" id="contentDes" class="col-xs-10 col-sm-8" value="$!query.contentDes"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.spsInfo.standardYn')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="standardYn" id="standardYn" class="col-xs-10 col-sm-8" value="$!query.standardYn"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="oraLink" id="oraLink" class="col-xs-10 col-sm-8" value="$!query.oraLink"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="fileCode">#springMessage('tbtSps.spsInfo.fileCode')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="fileCode" id="fileCode" class="col-xs-10 col-sm-8" value="$!query.fileCode"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="affectCountry">#springMessage('tbtSps.spsInfo.affectCountry')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="affectCountry" id="affectCountry" class="col-xs-10 col-sm-8" value="$!query.affectCountry"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="expectApprovalDate">#springMessage('tbtSps.spsInfo.expectApprovalDate')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="expectApprovalDate" id="expectApprovalDate" class="col-xs-10 col-sm-8" value="$!query.expectApprovalDate"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="expectEffectiveDate">#springMessage('tbtSps.spsInfo.expectEffectiveDate')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="expectEffectiveDate" id="expectEffectiveDate" class="col-xs-10 col-sm-8" value="$!query.expectEffectiveDate"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="expectPublishDate">#springMessage('tbtSps.spsInfo.expectPublishDate')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="expectPublishDate" id="expectPublishDate" class="col-xs-10 col-sm-8" value="$!query.expectPublishDate"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="feedbackEndDate">#springMessage('tbtSps.spsInfo.feedbackEndDate')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="feedbackEndDate" id="feedbackEndDate" class="col-xs-10 col-sm-8" value="$!query.feedbackEndDate"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="fileGetOrg">#springMessage('tbtSps.spsInfo.fileGetOrg')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="fileGetOrg" id="fileGetOrg" class="col-xs-10 col-sm-8" value="$!query.fileGetOrg"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="parSpsCode">#springMessage('tbtSps.spsInfo.parSpsCode')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="parSpsCode" id="parSpsCode" class="col-xs-10 col-sm-8" value="$!query.parSpsCode"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="errorReason">#springMessage('tbtSps.spsInfo.errorReason')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="errorReason" id="errorReason" class="col-xs-10 col-sm-8" value="$!query.errorReason"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="state">#springMessage('tbtSps.spsInfo.state')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="state" id="state" class="col-xs-10 col-sm-8" value="$!query.state"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.spsInfo.back1')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="back1" id="back1" class="col-xs-10 col-sm-8" value="$!query.back1"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.spsInfo.back2')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="back2" id="back2" class="col-xs-10 col-sm-8" value="$!query.back2"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-1 control-label no-padding-right" for="back3">#springMessage('tbtSps.spsInfo.back3')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="back3" id="back3" class="col-xs-10 col-sm-8" value="$!query.back3"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="back4">#springMessage('tbtSps.spsInfo.back4')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="back4" id="back4" class="col-xs-10 col-sm-8" value="$!query.back4"/>
+                                    </div>
+									<label class="col-sm-1 control-label no-padding-right" for="back5">#springMessage('tbtSps.spsInfo.back5')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="back5" id="back5" class="col-xs-10 col-sm-8" value="$!query.back5"/>
+                                    </div>
+								</div>
+								<div class="form-group">
+								</div>
+								<div class="form-group">
+									<div class="col-sm-4 col-sm-offset-8">
+    									#parse("/layout/page.vm")
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-add"><i class="icon-plus"></i>#springMessage('view.lable.add')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-xs-12 col-sm-12 table-responsive">
+                <table class="table table-striped table-bordered table-condensed table-hover">
+                    <thead>
+                        <tr>
+							<th class="center">#springMessage('tbtSps.spsInfo.id')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.spsCode')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.countryCode')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.publishDate')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.spsOrg')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.coverProduct')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.fileTitle')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.contentDes')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.standardYn')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.oraLink')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.fileCode')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.affectCountry')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.expectApprovalDate')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.expectEffectiveDate')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.expectPublishDate')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.feedbackEndDate')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.fileGetOrg')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.parSpsCode')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.errorReason')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.state')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.back1')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.back2')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.back3')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.back4')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.back5')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.createTime')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.createUser')</th>
+    						<th class="center">#springMessage('view.lable.operate')</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #foreach( $item in $dataList)
+                            <tr>
+                                <td>$!item.id</td>
+                                <td>$!item.spsCode</td>
+                                <td>$!item.countryCode</td>
+                                <td>$!item.publishDate</td>
+                                <td>$!item.spsOrg</td>
+                                <td>$!item.coverProduct</td>
+                                <td>$!item.fileTitle</td>
+                                <td>$!item.contentDes</td>
+                                <td>$!item.standardYn</td>
+                                <td>$!item.oraLink</td>
+                                <td>$!item.fileCode</td>
+                                <td>$!item.affectCountry</td>
+                                <td>$!item.expectApprovalDate</td>
+                                <td>$!item.expectEffectiveDate</td>
+                                <td>$!item.expectPublishDate</td>
+                                <td>$!item.feedbackEndDate</td>
+                                <td>$!item.fileGetOrg</td>
+                                <td>$!item.parSpsCode</td>
+                                <td>$!item.errorReason</td>
+                                <td>$!item.state</td>
+                                <td>$!item.back1</td>
+                                <td>$!item.back2</td>
+                                <td>$!item.back3</td>
+                                <td>$!item.back4</td>
+                                <td>$!item.back5</td>
+                                <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>
+                                <td>$!item.createUser</td>
+                                <td>
+									<a href="javascript:void(0)" onclick="toDetail($!item.id);" data-toggle="modal"><i class="icon-list">#springMessage('view.lable.detail')</i></a>
+									<a href="javascript:void(0)" onclick="toUpdate($!item.id)"><i class="icon-pencil pink">#springMessage('view.lable.update')</i></a>
+									<a href="javascript:void(0)" onclick="toDelete($!item.id)"><i class="icon-remove red">#springMessage('view.lable.delete')</i></a>
+								</td>
+                            </tr>
+                        #end
+                    </tbody>
+                </table>
+				#if($!page)
+					#pageBarPost($page.totalRow $page.curPage $page.totalPage)
+				#end
+			</div>
+        </div>
+		#parse("/spsInfo/detailModal.vm")
+    </body>
+</html>

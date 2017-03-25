@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.letv.tbtSps.dao.impl.RelationSpsNotificationTypeDaoImpl">
+    <resultMap id="RelationSpsNotificationTypeMap" type="RelationSpsNotificationType">
+		<result column="id" property="id" jdbcType="DECIMAL" />
+		<result column="notification_type_code" property="notificationTypeCode" jdbcType="VARCHAR" />
+		<result column="sps_code" property="spsCode" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="yn" property="yn" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <sql id="relationSpsNotificationTypeColumns">
+    	id,notification_type_code,sps_code,create_time,update_time,create_user,update_user,yn
+    </sql>
+    
+     <sql id="relationSpsNotificationTypeUsedColumns">
+    	notification_type_code,sps_code,create_time,update_time,create_user,update_user,yn
+    </sql>
+
+    <!-- 创建信息 -->
+    <insert id="insert" parameterType="RelationSpsNotificationType" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_relation_sps_notification_type(<include refid="relationSpsNotificationTypeUsedColumns"/>) 
+        VALUES (#{notificationTypeCode},#{spsCode},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+	</insert>
+	
+    <!-- 修改信息 -->
+    <update id="update" parameterType="RelationSpsNotificationType">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update t_relation_sps_notification_type set
+		        <if test="notificationTypeCode != null and notificationTypeCode != ''">
+                	notification_type_code = #{notificationTypeCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="spsCode != null and spsCode != ''">
+                	sps_code = #{spsCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="updateUser != null and updateUser != ''">
+                	update_user = #{updateUser,jdbcType=VARCHAR},
+		        </if>
+                	update_time = now()
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取对象信息 -->
+    <select id="getRelationSpsNotificationTypeById" resultMap="RelationSpsNotificationTypeMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select <include refid="relationSpsNotificationTypeColumns"/> from t_relation_sps_notification_type
+            where id = #{_parameter} and yn = 1
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，不带翻页 -->
+    <select id="queryRelationSpsNotificationTypeList" resultMap="RelationSpsNotificationTypeMap"
+            parameterType="com.letv.tbtSps.domain.query.RelationSpsNotificationTypeQuery">
+        select <include refid="relationSpsNotificationTypeColumns"/> from t_relation_sps_notification_type where <include refid="queryRelationSpsNotificationTypeListWhere"/>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，翻页 -->
+    <select id="queryRelationSpsNotificationTypeListWithPage" resultMap="RelationSpsNotificationTypeMap"
+            parameterType="com.letv.tbtSps.domain.query.RelationSpsNotificationTypeQuery">
+        select <include refid="relationSpsNotificationTypeColumns"/> from t_relation_sps_notification_type where <include refid="queryRelationSpsNotificationTypeListWhere"/>
+        order by create_time desc 
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询Bean查询-判断是否存在 -->
+    <select id="exist" resultType="java.lang.Integer" parameterType="RelationSpsNotificationType">
+        select count(1) from t_relation_sps_notification_type where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据查询Bean获取集合总数 -->
+    <select id="queryRelationSpsNotificationTypeCount" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.RelationSpsNotificationTypeQuery">
+        select count(1) from t_relation_sps_notification_type where <include refid="queryRelationSpsNotificationTypeListWhere"/>
+    </select>
+
+    <!-- 删除信息-逻辑删除 -->
+    <update id="delete" parameterType="RelationSpsNotificationType">
+		update t_relation_sps_notification_type 
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where id = #{id}
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryRelationSpsNotificationTypeListWhere">
+    	yn = 1
+        <if test="id != null and id != ''">
+        	and id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="notificationTypeCode != null and notificationTypeCode != ''">
+        	and notification_type_code = #{notificationTypeCode,jdbcType=VARCHAR}
+        </if>
+        <if test="spsCode != null and spsCode != ''">
+        	and sps_code = #{spsCode,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+        	and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+        	and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createUser != null and createUser != ''">
+        	and create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+        	and update_user = #{updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="yn != null and yn != ''">
+        	and yn = #{yn,jdbcType=DECIMAL}
+        </if>
+    </sql>
+</mapper>

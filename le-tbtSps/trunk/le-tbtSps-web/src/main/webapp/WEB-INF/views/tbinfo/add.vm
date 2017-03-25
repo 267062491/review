@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#addForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												tbtCode: {required: true},
+						publishDate: {required: true},
+						tbtCountryCode: {required: true},
+						tbtOrg: {required: true},
+						coverProduct: {required: true},
+						fileTitle: {required: true},
+						contentDes: {required: true},
+						targetReason: {required: true},
+						oraLink: {required: true},
+						fileCode: {required: true},
+						notificationBasis: {required: true},
+						expectApprovalDate: {required: true},
+						expectEffectiveDate: {required: true},
+						feedbackEndDate: {required: true},
+						fileGetOrg: {required: true},
+						parSpsCode: {required: true},
+						state: {required: true},
+						back1: {required: true},
+						back2: {required: true},
+						back3: {required: true},
+						back4: {required: true},
+						back5: {required: true},
+					},
+			
+					messages: {
+						tbtCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.tbtCode')"},
+						publishDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.publishDate')"},
+						tbtCountryCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.tbtCountryCode')"},
+						tbtOrg: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.tbtOrg')"},
+						coverProduct: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.coverProduct')"},
+						fileTitle: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.fileTitle')"},
+						contentDes: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.contentDes')"},
+						targetReason: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.targetReason')"},
+						oraLink: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.oraLink')"},
+						fileCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.fileCode')"},
+						notificationBasis: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.notificationBasis')"},
+						expectApprovalDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.expectApprovalDate')"},
+						expectEffectiveDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.expectEffectiveDate')"},
+						feedbackEndDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.feedbackEndDate')"},
+						fileGetOrg: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.fileGetOrg')"},
+						parSpsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.parSpsCode')"},
+						state: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.state')"},
+						back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.back1')"},
+						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.back2')"},
+						back3: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.back3')"},
+						back4: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.back4')"},
+						back5: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.tbinfo.back5')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/tbinfo");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#addForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/tbinfo/add',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/tbinfo"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.tbinfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.add')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="addForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="tbtCode">#springMessage('tbtSps.tbinfo.tbtCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="tbtCode" id="tbtCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="publishDate">#springMessage('tbtSps.tbinfo.publishDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="publishDate" id="publishDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="tbtCountryCode">#springMessage('tbtSps.tbinfo.tbtCountryCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="tbtCountryCode" id="tbtCountryCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="tbtOrg">#springMessage('tbtSps.tbinfo.tbtOrg')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="tbtOrg" id="tbtOrg" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.tbinfo.coverProduct')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="coverProduct" id="coverProduct" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.tbinfo.fileTitle')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="fileTitle" id="fileTitle" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.tbinfo.contentDes')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="contentDes" id="contentDes" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="targetReason">#springMessage('tbtSps.tbinfo.targetReason')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="targetReason" id="targetReason" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.tbinfo.oraLink')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="oraLink" id="oraLink" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileCode">#springMessage('tbtSps.tbinfo.fileCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="fileCode" id="fileCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="notificationBasis">#springMessage('tbtSps.tbinfo.notificationBasis')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="notificationBasis" id="notificationBasis" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="expectApprovalDate">#springMessage('tbtSps.tbinfo.expectApprovalDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="expectApprovalDate" id="expectApprovalDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="expectEffectiveDate">#springMessage('tbtSps.tbinfo.expectEffectiveDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="expectEffectiveDate" id="expectEffectiveDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="feedbackEndDate">#springMessage('tbtSps.tbinfo.feedbackEndDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="feedbackEndDate" id="feedbackEndDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileGetOrg">#springMessage('tbtSps.tbinfo.fileGetOrg')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="fileGetOrg" id="fileGetOrg" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="parSpsCode">#springMessage('tbtSps.tbinfo.parSpsCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="parSpsCode" id="parSpsCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="state">#springMessage('tbtSps.tbinfo.state')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="state" id="state" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.tbinfo.back1')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back1" id="back1" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.tbinfo.back2')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back2" id="back2" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back3">#springMessage('tbtSps.tbinfo.back3')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back3" id="back3" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back4">#springMessage('tbtSps.tbinfo.back4')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back4" id="back4" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back5">#springMessage('tbtSps.tbinfo.back5')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back5" id="back5" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+                                </div>
+								<div class="form-group">
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

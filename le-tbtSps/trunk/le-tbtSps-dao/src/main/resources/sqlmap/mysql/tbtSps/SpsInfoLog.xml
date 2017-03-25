@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.letv.tbtSps.dao.impl.SpsInfoLogDaoImpl">
+    <resultMap id="SpsInfoLogMap" type="SpsInfoLog">
+		<result column="id" property="id" jdbcType="DECIMAL" />
+		<result column="sps_code" property="spsCode" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="VARCHAR" />
+		<result column="ora_state" property="oraState" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="log_attr_relation" property="logAttrRelation" jdbcType="VARCHAR" />
+		<result column="opert_order" property="opertOrder" jdbcType="DECIMAL" />
+		<result column="back_1" property="back1" jdbcType="VARCHAR" />
+		<result column="back_2" property="back2" jdbcType="VARCHAR" />
+		<result column="back_3" property="back3" jdbcType="VARCHAR" />
+		<result column="back_4" property="back4" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="yn" property="yn" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <sql id="spsInfoLogColumns">
+    	id,sps_code,state,ora_state,content,log_attr_relation,opert_order,back_1,back_2,back_3,back_4,create_time,update_time,create_user,update_user,yn
+    </sql>
+    
+     <sql id="spsInfoLogUsedColumns">
+    	sps_code,state,ora_state,content,log_attr_relation,opert_order,back_1,back_2,back_3,back_4,create_time,update_time,create_user,update_user,yn
+    </sql>
+
+    <!-- 创建信息 -->
+    <insert id="insert" parameterType="SpsInfoLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_sps_info_log(<include refid="spsInfoLogUsedColumns"/>) 
+        VALUES (#{spsCode},#{state},#{oraState},#{content},#{logAttrRelation},#{opertOrder},#{back1},#{back2},#{back3},#{back4},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+	</insert>
+	
+    <!-- 修改信息 -->
+    <update id="update" parameterType="SpsInfoLog">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update t_sps_info_log set
+		        <if test="spsCode != null and spsCode != ''">
+                	sps_code = #{spsCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="state != null and state != ''">
+                	state = #{state,jdbcType=VARCHAR},
+		        </if>
+		        <if test="oraState != null and oraState != ''">
+                	ora_state = #{oraState,jdbcType=VARCHAR},
+		        </if>
+		        <if test="content != null and content != ''">
+                	content = #{content,jdbcType=VARCHAR},
+		        </if>
+		        <if test="logAttrRelation != null and logAttrRelation != ''">
+                	log_attr_relation = #{logAttrRelation,jdbcType=VARCHAR},
+		        </if>
+		        <if test="opertOrder != null and opertOrder != ''">
+                	opert_order = #{opertOrder,jdbcType=DECIMAL},
+		        </if>
+		        <if test="back1 != null and back1 != ''">
+                	back_1 = #{back1,jdbcType=VARCHAR},
+		        </if>
+		        <if test="back2 != null and back2 != ''">
+                	back_2 = #{back2,jdbcType=VARCHAR},
+		        </if>
+		        <if test="back3 != null and back3 != ''">
+                	back_3 = #{back3,jdbcType=VARCHAR},
+		        </if>
+		        <if test="back4 != null and back4 != ''">
+                	back_4 = #{back4,jdbcType=VARCHAR},
+		        </if>
+		        <if test="updateUser != null and updateUser != ''">
+                	update_user = #{updateUser,jdbcType=VARCHAR},
+		        </if>
+                	update_time = now()
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取对象信息 -->
+    <select id="getSpsInfoLogById" resultMap="SpsInfoLogMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select <include refid="spsInfoLogColumns"/> from t_sps_info_log
+            where id = #{_parameter} and yn = 1
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，不带翻页 -->
+    <select id="querySpsInfoLogList" resultMap="SpsInfoLogMap"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoLogQuery">
+        select <include refid="spsInfoLogColumns"/> from t_sps_info_log where <include refid="querySpsInfoLogListWhere"/>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，翻页 -->
+    <select id="querySpsInfoLogListWithPage" resultMap="SpsInfoLogMap"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoLogQuery">
+        select <include refid="spsInfoLogColumns"/> from t_sps_info_log where <include refid="querySpsInfoLogListWhere"/>
+        order by create_time desc 
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询Bean查询-判断是否存在 -->
+    <select id="exist" resultType="java.lang.Integer" parameterType="SpsInfoLog">
+        select count(1) from t_sps_info_log where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据查询Bean获取集合总数 -->
+    <select id="querySpsInfoLogCount" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoLogQuery">
+        select count(1) from t_sps_info_log where <include refid="querySpsInfoLogListWhere"/>
+    </select>
+
+    <!-- 删除信息-逻辑删除 -->
+    <update id="delete" parameterType="SpsInfoLog">
+		update t_sps_info_log 
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where id = #{id}
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="querySpsInfoLogListWhere">
+    	yn = 1
+        <if test="id != null and id != ''">
+        	and id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="spsCode != null and spsCode != ''">
+        	and sps_code = #{spsCode,jdbcType=VARCHAR}
+        </if>
+        <if test="state != null and state != ''">
+        	and state = #{state,jdbcType=VARCHAR}
+        </if>
+        <if test="oraState != null and oraState != ''">
+        	and ora_state = #{oraState,jdbcType=VARCHAR}
+        </if>
+        <if test="content != null and content != ''">
+        	and content = #{content,jdbcType=VARCHAR}
+        </if>
+        <if test="logAttrRelation != null and logAttrRelation != ''">
+        	and log_attr_relation = #{logAttrRelation,jdbcType=VARCHAR}
+        </if>
+        <if test="opertOrder != null and opertOrder != ''">
+        	and opert_order = #{opertOrder,jdbcType=DECIMAL}
+        </if>
+        <if test="back1 != null and back1 != ''">
+        	and back_1 = #{back1,jdbcType=VARCHAR}
+        </if>
+        <if test="back2 != null and back2 != ''">
+        	and back_2 = #{back2,jdbcType=VARCHAR}
+        </if>
+        <if test="back3 != null and back3 != ''">
+        	and back_3 = #{back3,jdbcType=VARCHAR}
+        </if>
+        <if test="back4 != null and back4 != ''">
+        	and back_4 = #{back4,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+        	and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+        	and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createUser != null and createUser != ''">
+        	and create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+        	and update_user = #{updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="yn != null and yn != ''">
+        	and yn = #{yn,jdbcType=DECIMAL}
+        </if>
+    </sql>
+</mapper>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#updateForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												notificationCategoryCode: {required: true},
+						notificationCategoryContent: {required: true},
+						notificationPCode: {required: true},
+						notificationCaOrder: {required: true},
+						notificationCaCodeNum: {required: true},
+					},
+			
+					messages: {
+						notificationCategoryCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.notificationCategory.notificationCategoryCode')"},
+						notificationCategoryContent: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.notificationCategory.notificationCategoryContent')"},
+						notificationPCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.notificationCategory.notificationPCode')"},
+						notificationCaOrder: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.notificationCategory.notificationCaOrder')"},
+						notificationCaCodeNum: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.notificationCategory.notificationCaCodeNum')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/notificationCategory");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#updateForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/notificationCategory/update',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/notificationCategory"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.notificationCategory')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="updateForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="notificationCategoryCode">#springMessage('tbtSps.notificationCategory.notificationCategoryCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="notificationCategoryCode" id="notificationCategoryCode" class="col-xs-12 col-sm-12" value="$!notificationCategory.notificationCategoryCode" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="notificationCategoryContent">#springMessage('tbtSps.notificationCategory.notificationCategoryContent')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="notificationCategoryContent" id="notificationCategoryContent" class="col-xs-12 col-sm-12" value="$!notificationCategory.notificationCategoryContent" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="notificationPCode">#springMessage('tbtSps.notificationCategory.notificationPCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="notificationPCode" id="notificationPCode" class="col-xs-12 col-sm-12" value="$!notificationCategory.notificationPCode" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="notificationCaOrder">#springMessage('tbtSps.notificationCategory.notificationCaOrder')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="notificationCaOrder" id="notificationCaOrder" class="col-xs-12 col-sm-12" value="$!notificationCategory.notificationCaOrder" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="notificationCaCodeNum">#springMessage('tbtSps.notificationCategory.notificationCaCodeNum')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="notificationCaCodeNum" id="notificationCaCodeNum" class="col-xs-12 col-sm-12" value="$!notificationCategory.notificationCaCodeNum" />
+                                    </div>
+                                </div>
+								<div class="form-group">
+									<input type="hidden" name="id" id="id" value="$!notificationCategory.id" />
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

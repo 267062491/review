@@ -1,0 +1,79 @@
+<!-- Modal -->
+<div class="modal fade" id="myTblogAttrModal" tabindex="-1" role="dialog" aria-labelledby="myTblogAttrModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myTblogAttrModalLabel">#springMessage('tbtSps.tblogAttr')#springMessage('view.lable.detail')</h4>
+			</div>
+			<div class="modal-body"> 
+				<table class="table table-striped table-bordered table-condensed table-hover">
+					<tbody>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.id')</th><td id="r_id" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.tbtCode')</th><td id="r_tbtCode" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.fileName')</th><td id="r_fileName" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.filePath')</th><td id="r_filePath" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.fileAliasName')</th><td id="r_fileAliasName" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.logAttrRelation')</th><td id="r_logAttrRelation" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.createUser')</th><td id="r_createUser" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tblogAttr.yn')</th><td id="r_yn" style='width:25%;'></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">         	
+    function toDetail(parameterId){
+		$("#tab_online_tbody").html("");
+		$("#tab_config_tbody").html("");
+		$("#tab_log_tbody").html("");
+    	jQuery.ajax({
+    		type: "GET",
+    		url: basePath + "/tblogAttr/detail",
+    		dataType : 'json',
+    		data: "id=" + parameterId,
+    		
+    		success: function(data){
+    			if(data!=null && data.code==200 && data.result!=null){
+    				var r = data.result;
+    				$("#r_id").text(r.id==null?"":r.id);
+    				$("#r_tbtCode").text(r.tbtCode==null?"":r.tbtCode);
+    				$("#r_fileName").text(r.fileName==null?"":r.fileName);
+    				$("#r_filePath").text(r.filePath==null?"":r.filePath);
+    				$("#r_fileAliasName").text(r.fileAliasName==null?"":r.fileAliasName);
+    				$("#r_logAttrRelation").text(r.logAttrRelation==null?"":r.logAttrRelation);
+    				$("#r_createTime").text(r.createTime==null?"":r.createTime);
+    				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
+    				$("#r_createUser").text(r.createUser==null?"":r.createUser);
+    				$("#r_updateUser").text(r.updateUser==null?"":r.updateUser);
+    				$("#r_yn").text(r.yn==null?"":r.yn);
+    			} else {
+    				alert("#springMessage('view.lable.detail.fail')");
+    			}
+    		},
+    		
+    		error : function(data) {
+    			alert("#springMessage('view.lable.detail.error')");
+    		}
+    	});
+		
+    	$('#myTblogAttrModal').modal('show');
+    }
+</script>

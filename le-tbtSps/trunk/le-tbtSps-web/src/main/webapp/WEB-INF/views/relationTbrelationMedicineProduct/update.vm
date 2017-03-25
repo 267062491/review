@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#updateForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												relationMedicineProductCode: {required: true},
+						spsCode: {required: true},
+					},
+			
+					messages: {
+						relationMedicineProductCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationTbrelationMedicineProduct.relationMedicineProductCode')"},
+						spsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationTbrelationMedicineProduct.spsCode')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/relationTbrelationMedicineProduct");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#updateForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/relationTbrelationMedicineProduct/update',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/relationTbrelationMedicineProduct"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.relationTbrelationMedicineProduct')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="updateForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="relationMedicineProductCode">#springMessage('tbtSps.relationTbrelationMedicineProduct.relationMedicineProductCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="relationMedicineProductCode" id="relationMedicineProductCode" class="col-xs-12 col-sm-12" value="$!relationTbrelationMedicineProduct.relationMedicineProductCode" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.relationTbrelationMedicineProduct.spsCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="spsCode" id="spsCode" class="col-xs-12 col-sm-12" value="$!relationTbrelationMedicineProduct.spsCode" />
+                                    </div>
+								</div>
+								<div class="form-group">
+                                </div>
+								<div class="form-group">
+									<input type="hidden" name="id" id="id" value="$!relationTbrelationMedicineProduct.id" />
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

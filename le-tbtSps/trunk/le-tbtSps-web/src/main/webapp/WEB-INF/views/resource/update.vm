@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#updateForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												resourceName: {required: true},
+						resourceCode: {required: true},
+						url: {required: true},
+						parentCode: {required: true},
+						level: {required: true},
+						orders: {required: true},
+						icon: {required: true},
+						platfrom: {required: true},
+						buttonflag: {required: true},
+						opens: {required: true},
+						parentflag: {required: true},
+						note: {required: true},
+					},
+			
+					messages: {
+						resourceName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.resourceName')"},
+						resourceCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.resourceCode')"},
+						url: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.url')"},
+						parentCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.parentCode')"},
+						level: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.level')"},
+						orders: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.orders')"},
+						icon: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.icon')"},
+						platfrom: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.platfrom')"},
+						buttonflag: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.buttonflag')"},
+						opens: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.opens')"},
+						parentflag: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.parentflag')"},
+						note: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.note')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/resource");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#updateForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/resource/update',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/resource"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.resource')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="updateForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="resourceName">#springMessage('tbtSps.resource.resourceName')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="resourceName" id="resourceName" class="col-xs-12 col-sm-12" value="$!resource.resourceName" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="resourceCode">#springMessage('tbtSps.resource.resourceCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="resourceCode" id="resourceCode" class="col-xs-12 col-sm-12" value="$!resource.resourceCode" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="url">#springMessage('tbtSps.resource.url')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="url" id="url" class="col-xs-12 col-sm-12" value="$!resource.url" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="parentCode">#springMessage('tbtSps.resource.parentCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="parentCode" id="parentCode" class="col-xs-12 col-sm-12" value="$!resource.parentCode" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="level">#springMessage('tbtSps.resource.level')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="level" id="level" class="col-xs-12 col-sm-12" value="$!resource.level" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="orders">#springMessage('tbtSps.resource.orders')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="orders" id="orders" class="col-xs-12 col-sm-12" value="$!resource.orders" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="icon">#springMessage('tbtSps.resource.icon')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="icon" id="icon" class="col-xs-12 col-sm-12" value="$!resource.icon" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="platfrom">#springMessage('tbtSps.resource.platfrom')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="platfrom" id="platfrom" class="col-xs-12 col-sm-12" value="$!resource.platfrom" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="buttonflag">#springMessage('tbtSps.resource.buttonflag')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="buttonflag" id="buttonflag" class="col-xs-12 col-sm-12" value="$!resource.buttonflag" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="opens">#springMessage('tbtSps.resource.opens')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="opens" id="opens" class="col-xs-12 col-sm-12" value="$!resource.opens" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="parentflag">#springMessage('tbtSps.resource.parentflag')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="parentflag" id="parentflag" class="col-xs-12 col-sm-12" value="$!resource.parentflag" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="note">#springMessage('tbtSps.resource.note')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="note" id="note" class="col-xs-12 col-sm-12" value="$!resource.note" />
+                                    </div>
+								</div>
+								<div class="form-group">
+                                </div>
+								<div class="form-group">
+									<input type="hidden" name="id" id="id" value="$!resource.id" />
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

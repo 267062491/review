@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.letv.tbtSps.dao.impl.RelationMedicineProductDaoImpl">
+    <resultMap id="RelationMedicineProductMap" type="RelationMedicineProduct">
+		<result column="id" property="id" jdbcType="DECIMAL" />
+		<result column="relation_medicine_product_code" property="relationMedicineProductCode" jdbcType="VARCHAR" />
+		<result column="relation_medicine_product_en" property="relationMedicineProductEn" jdbcType="VARCHAR" />
+		<result column="relation_medicine_product_zh_alias" property="relationMedicineProductZhAlias" jdbcType="VARCHAR" />
+		<result column="back_1" property="back1" jdbcType="VARCHAR" />
+		<result column="back_2" property="back2" jdbcType="VARCHAR" />
+		<result column="relation_medicine_product_zh" property="relationMedicineProductZh" jdbcType="VARCHAR" />
+		<result column="ca_code" property="caCode" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
+		<result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+		<result column="yn" property="yn" jdbcType="DECIMAL" />
+    </resultMap>
+    
+    <sql id="relationMedicineProductColumns">
+    	id,relation_medicine_product_code,relation_medicine_product_en,relation_medicine_product_zh_alias,back_1,back_2,relation_medicine_product_zh,ca_code,create_time,update_time,create_user,update_user,yn
+    </sql>
+    
+     <sql id="relationMedicineProductUsedColumns">
+    	relation_medicine_product_code,relation_medicine_product_en,relation_medicine_product_zh_alias,back_1,back_2,relation_medicine_product_zh,ca_code,create_time,update_time,create_user,update_user,yn
+    </sql>
+
+    <!-- 创建信息 -->
+    <insert id="insert" parameterType="RelationMedicineProduct" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_relation_medicine_product(<include refid="relationMedicineProductUsedColumns"/>) 
+        VALUES (#{relationMedicineProductCode},#{relationMedicineProductEn},#{relationMedicineProductZhAlias},#{back1},#{back2},#{relationMedicineProductZh},#{caCode},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+	</insert>
+	
+    <!-- 修改信息 -->
+    <update id="update" parameterType="RelationMedicineProduct">
+        <if test="_parameter != null">
+            <if test="id != null and id > 0">
+                update t_relation_medicine_product set
+		        <if test="relationMedicineProductCode != null and relationMedicineProductCode != ''">
+                	relation_medicine_product_code = #{relationMedicineProductCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="relationMedicineProductEn != null and relationMedicineProductEn != ''">
+                	relation_medicine_product_en = #{relationMedicineProductEn,jdbcType=VARCHAR},
+		        </if>
+		        <if test="relationMedicineProductZhAlias != null and relationMedicineProductZhAlias != ''">
+                	relation_medicine_product_zh_alias = #{relationMedicineProductZhAlias,jdbcType=VARCHAR},
+		        </if>
+		        <if test="back1 != null and back1 != ''">
+                	back_1 = #{back1,jdbcType=VARCHAR},
+		        </if>
+		        <if test="back2 != null and back2 != ''">
+                	back_2 = #{back2,jdbcType=VARCHAR},
+		        </if>
+		        <if test="relationMedicineProductZh != null and relationMedicineProductZh != ''">
+                	relation_medicine_product_zh = #{relationMedicineProductZh,jdbcType=VARCHAR},
+		        </if>
+		        <if test="caCode != null and caCode != ''">
+                	ca_code = #{caCode,jdbcType=VARCHAR},
+		        </if>
+		        <if test="updateUser != null and updateUser != ''">
+                	update_user = #{updateUser,jdbcType=VARCHAR},
+		        </if>
+                	update_time = now()
+                where id = #{id}
+            </if>
+        </if>
+    </update>
+
+    <!-- 根据主键获取对象信息 -->
+    <select id="getRelationMedicineProductById" resultMap="RelationMedicineProductMap" parameterType="java.lang.Long">
+        <if test="_parameter != null">
+            select <include refid="relationMedicineProductColumns"/> from t_relation_medicine_product
+            where id = #{_parameter} and yn = 1
+        </if>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，不带翻页 -->
+    <select id="queryRelationMedicineProductList" resultMap="RelationMedicineProductMap"
+            parameterType="com.letv.tbtSps.domain.query.RelationMedicineProductQuery">
+        select <include refid="relationMedicineProductColumns"/> from t_relation_medicine_product where <include refid="queryRelationMedicineProductListWhere"/>
+    </select>
+
+    <!-- 根据查询Bean获取数据集合，翻页 -->
+    <select id="queryRelationMedicineProductListWithPage" resultMap="RelationMedicineProductMap"
+            parameterType="com.letv.tbtSps.domain.query.RelationMedicineProductQuery">
+        select <include refid="relationMedicineProductColumns"/> from t_relation_medicine_product where <include refid="queryRelationMedicineProductListWhere"/>
+        order by create_time desc 
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据查询Bean查询-判断是否存在 -->
+    <select id="exist" resultType="java.lang.Integer" parameterType="RelationMedicineProduct">
+        select count(1) from t_relation_medicine_product where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据查询Bean获取集合总数 -->
+    <select id="queryRelationMedicineProductCount" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.RelationMedicineProductQuery">
+        select count(1) from t_relation_medicine_product where <include refid="queryRelationMedicineProductListWhere"/>
+    </select>
+
+    <!-- 删除信息-逻辑删除 -->
+    <update id="delete" parameterType="RelationMedicineProduct">
+		update t_relation_medicine_product 
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where id = #{id}
+    </update>
+
+    <!-- 常用的查询Where条件 -->
+    <sql id="queryRelationMedicineProductListWhere">
+    	yn = 1
+        <if test="id != null and id != ''">
+        	and id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="relationMedicineProductCode != null and relationMedicineProductCode != ''">
+        	and relation_medicine_product_code = #{relationMedicineProductCode,jdbcType=VARCHAR}
+        </if>
+        <if test="relationMedicineProductEn != null and relationMedicineProductEn != ''">
+        	and relation_medicine_product_en = #{relationMedicineProductEn,jdbcType=VARCHAR}
+        </if>
+        <if test="relationMedicineProductZhAlias != null and relationMedicineProductZhAlias != ''">
+        	and relation_medicine_product_zh_alias = #{relationMedicineProductZhAlias,jdbcType=VARCHAR}
+        </if>
+        <if test="back1 != null and back1 != ''">
+        	and back_1 = #{back1,jdbcType=VARCHAR}
+        </if>
+        <if test="back2 != null and back2 != ''">
+        	and back_2 = #{back2,jdbcType=VARCHAR}
+        </if>
+        <if test="relationMedicineProductZh != null and relationMedicineProductZh != ''">
+        	and relation_medicine_product_zh = #{relationMedicineProductZh,jdbcType=VARCHAR}
+        </if>
+        <if test="caCode != null and caCode != ''">
+        	and ca_code = #{caCode,jdbcType=VARCHAR}
+        </if>
+        <if test="createTime != null and createTime != ''">
+        	and create_time = #{createTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+        	and update_time = #{updateTime,jdbcType=TIMESTAMP}
+        </if>
+        <if test="createUser != null and createUser != ''">
+        	and create_user = #{createUser,jdbcType=VARCHAR}
+        </if>
+        <if test="updateUser != null and updateUser != ''">
+        	and update_user = #{updateUser,jdbcType=VARCHAR}
+        </if>
+        <if test="yn != null and yn != ''">
+        	and yn = #{yn,jdbcType=DECIMAL}
+        </if>
+    </sql>
+</mapper>

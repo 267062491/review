@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#updateForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												userName: {required: true},
+						showName: {required: true},
+						userCode: {required: true},
+						password: {required: true},
+						email: {required: true},
+						phoneno: {required: true},
+						duty: {required: true},
+						userOthername: {required: true},
+						userType: {required: true},
+						userState: {required: true},
+						userAddress: {required: true},
+						note: {required: true},
+					},
+			
+					messages: {
+						userName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.userName')"},
+						showName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.showName')"},
+						userCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.userCode')"},
+						password: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.password')"},
+						email: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.email')"},
+						phoneno: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.phoneno')"},
+						duty: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.duty')"},
+						userOthername: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.userOthername')"},
+						userType: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.userType')"},
+						userState: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.userState')"},
+						userAddress: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.userAddress')"},
+						note: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.user.note')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/user");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#updateForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/user/update',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/user"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.user')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="updateForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="userName">#springMessage('tbtSps.user.userName')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="userName" id="userName" class="col-xs-12 col-sm-12" value="$!user.userName" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="showName">#springMessage('tbtSps.user.showName')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="showName" id="showName" class="col-xs-12 col-sm-12" value="$!user.showName" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="userCode">#springMessage('tbtSps.user.userCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="userCode" id="userCode" class="col-xs-12 col-sm-12" value="$!user.userCode" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="password">#springMessage('tbtSps.user.password')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="password" id="password" class="col-xs-12 col-sm-12" value="$!user.password" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="email">#springMessage('tbtSps.user.email')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="email" id="email" class="col-xs-12 col-sm-12" value="$!user.email" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="phoneno">#springMessage('tbtSps.user.phoneno')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="phoneno" id="phoneno" class="col-xs-12 col-sm-12" value="$!user.phoneno" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="duty">#springMessage('tbtSps.user.duty')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="duty" id="duty" class="col-xs-12 col-sm-12" value="$!user.duty" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="userOthername">#springMessage('tbtSps.user.userOthername')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="userOthername" id="userOthername" class="col-xs-12 col-sm-12" value="$!user.userOthername" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="userType">#springMessage('tbtSps.user.userType')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="userType" id="userType" class="col-xs-12 col-sm-12" value="$!user.userType" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="userState">#springMessage('tbtSps.user.userState')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="userState" id="userState" class="col-xs-12 col-sm-12" value="$!user.userState" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="userAddress">#springMessage('tbtSps.user.userAddress')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="userAddress" id="userAddress" class="col-xs-12 col-sm-12" value="$!user.userAddress" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="note">#springMessage('tbtSps.user.note')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="note" id="note" class="col-xs-12 col-sm-12" value="$!user.note" />
+                                    </div>
+								</div>
+								<div class="form-group">
+                                </div>
+								<div class="form-group">
+									<input type="hidden" name="id" id="id" value="$!user.id" />
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

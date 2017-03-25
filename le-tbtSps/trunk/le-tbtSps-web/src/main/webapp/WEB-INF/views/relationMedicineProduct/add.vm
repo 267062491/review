@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#addForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												relationMedicineProductCode: {required: true},
+						relationMedicineProductEn: {required: true},
+						relationMedicineProductZhAlias: {required: true},
+						back1: {required: true},
+						back2: {required: true},
+						relationMedicineProductZh: {required: true},
+						caCode: {required: true},
+					},
+			
+					messages: {
+						relationMedicineProductCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductCode')"},
+						relationMedicineProductEn: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductEn')"},
+						relationMedicineProductZhAlias: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZhAlias')"},
+						back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.back1')"},
+						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.back2')"},
+						relationMedicineProductZh: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZh')"},
+						caCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.caCode')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/relationMedicineProduct");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#addForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/relationMedicineProduct/add',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/relationMedicineProduct"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.relationMedicineProduct')&nbsp;&gt;&nbsp;#springMessage('view.lable.add')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="addForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="relationMedicineProductCode">#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="relationMedicineProductCode" id="relationMedicineProductCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="relationMedicineProductEn">#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductEn')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="relationMedicineProductEn" id="relationMedicineProductEn" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="relationMedicineProductZhAlias">#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZhAlias')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="relationMedicineProductZhAlias" id="relationMedicineProductZhAlias" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.relationMedicineProduct.back1')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back1" id="back1" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.relationMedicineProduct.back2')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back2" id="back2" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="relationMedicineProductZh">#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZh')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="relationMedicineProductZh" id="relationMedicineProductZh" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="caCode">#springMessage('tbtSps.relationMedicineProduct.caCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="caCode" id="caCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+                                </div>
+								<div class="form-group">
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

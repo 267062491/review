@@ -1,0 +1,71 @@
+<!-- Modal -->
+<div class="modal fade" id="myRelationSpsInternationalStandardModal" tabindex="-1" role="dialog" aria-labelledby="myRelationSpsInternationalStandardModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myRelationSpsInternationalStandardModalLabel">#springMessage('tbtSps.relationSpsInternationalStandard')#springMessage('view.lable.detail')</h4>
+			</div>
+			<div class="modal-body"> 
+				<table class="table table-striped table-bordered table-condensed table-hover">
+					<tbody>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationSpsInternationalStandard.id')</th><td id="r_id" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationSpsInternationalStandard.internationalStandardCode')</th><td id="r_internationalStandardCode" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationSpsInternationalStandard.spsCode')</th><td id="r_spsCode" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationSpsInternationalStandard.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationSpsInternationalStandard.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationSpsInternationalStandard.createUser')</th><td id="r_createUser" style='width:25%;'></td>
+						</tr>
+						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationSpsInternationalStandard.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationSpsInternationalStandard.yn')</th><td id="r_yn" style='width:25%;'></td>
+						</tr>
+						<tr>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">         	
+    function toDetail(parameterId){
+		$("#tab_online_tbody").html("");
+		$("#tab_config_tbody").html("");
+		$("#tab_log_tbody").html("");
+    	jQuery.ajax({
+    		type: "GET",
+    		url: basePath + "/relationSpsInternationalStandard/detail",
+    		dataType : 'json',
+    		data: "id=" + parameterId,
+    		
+    		success: function(data){
+    			if(data!=null && data.code==200 && data.result!=null){
+    				var r = data.result;
+    				$("#r_id").text(r.id==null?"":r.id);
+    				$("#r_internationalStandardCode").text(r.internationalStandardCode==null?"":r.internationalStandardCode);
+    				$("#r_spsCode").text(r.spsCode==null?"":r.spsCode);
+    				$("#r_createTime").text(r.createTime==null?"":r.createTime);
+    				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
+    				$("#r_createUser").text(r.createUser==null?"":r.createUser);
+    				$("#r_updateUser").text(r.updateUser==null?"":r.updateUser);
+    				$("#r_yn").text(r.yn==null?"":r.yn);
+    			} else {
+    				alert("#springMessage('view.lable.detail.fail')");
+    			}
+    		},
+    		
+    		error : function(data) {
+    			alert("#springMessage('view.lable.detail.error')");
+    		}
+    	});
+		
+    	$('#myRelationSpsInternationalStandardModal').modal('show');
+    }
+</script>
