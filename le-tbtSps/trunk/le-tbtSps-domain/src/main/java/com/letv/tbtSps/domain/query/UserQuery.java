@@ -1,14 +1,15 @@
 package com.letv.tbtSps.domain.query;
 
-import java.util.Date;
-
 import com.letv.common.utils.page.Query;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * UserQuery：用户表查询类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-26 9:37:54
  * 
  */
 public class UserQuery extends Query implements java.io.Serializable  {
@@ -55,12 +56,32 @@ public class UserQuery extends Query implements java.io.Serializable  {
     /** 开始时间 */
     private Date startTime; 
     /** 结束时间 */
-    private Date endTime; 
-	
+    private Date endTime;
+
+
+    /**
+     * 原始密码
+     */
+    private String oraPassword ;
+    /**
+     * 确认密码
+     */
+    private String confimPassword ;
+
+    /**
+     * 用户编码集合
+     */
+    private List<String> userCodes ;
+
     public Long getId(){
 		return id;
 	}
-	    
+
+    /**
+     * 角色编码
+     */
+    private String roleCode ;
+
     public void setId(Long id) {
 		this.id = id;
 	}
@@ -215,5 +236,37 @@ public class UserQuery extends Query implements java.io.Serializable  {
     
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
+    public String getOraPassword() {
+        return oraPassword;
+    }
+
+    public void setOraPassword(String oraPassword) {
+        this.oraPassword = oraPassword;
+    }
+
+    public String getConfimPassword() {
+        return confimPassword;
+    }
+
+    public void setConfimPassword(String confimPassword) {
+        this.confimPassword = confimPassword;
+    }
+
+    public List<String> getUserCodes() {
+        return userCodes;
+    }
+
+    public void setUserCodes(List<String> userCodes) {
+        this.userCodes = userCodes;
     }
 }

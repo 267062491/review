@@ -2,177 +2,201 @@
 <html lang="zh-cn">
     <head>
         #parse("/layout/head.vm")
-		<script language="javascript"> 
-			$(function() {
-				$("#btn-query").click(function() {
-        			pageSubmit(1);
-   				});
-				$("#btn-add").click(function() {
-        			window.location.href=("$basePath/resource/addForward");
-   				});
-			});
-        	// Submit Search Form
-        	function pageSubmit(pageNoParam) {
-                $("#curPage").val(pageNoParam);
-            	$("#queryForm").attr("action", "$basePath/resource/queryByPage");
-                $("#queryForm").attr("method", "POST");
-                $("#queryForm").submit();
-        	}
-        	
-        	function toUpdate(parameterId){
-        		window.location.href=("$basePath/resource/updateForward?id="+parameterId);
-        	}
-        	
-        	function toDelete(parameterId){
-        		MyPopWindow.ExecuteDelete("$basePath/resource/delete",{ id : parameterId });
-        	}
-        	
+        <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/ztree/demo.css"/>
+        <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/ztree/metroStyle.css"/>
+        <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/ztree/TreeGrid.css"/>
+        <script type="text/javascript" src="#springUrl('')/static/js/ztree/jquery.ztree.core-3.5new.js"></script>
+        <script type="text/javascript" src="#springUrl('')/static/js/ztree/jquery.ztree.excheck-3.5.min.js"></script>
+        <script type="text/javascript" src="#springUrl('')/static/js/ztree/jquery.ztree.exedit-3.5.min.js"></script>
+        <script type="text/javascript" src="#springUrl('')/static/js/ztree/TreeGrid.js"></script>
+        <script type="text/javascript">
+            var setting = {
+                view: {
+                    addHoverDom: addHoverDom,
+                    removeHoverDom: removeHoverDom
+                },
+                data: {
+                    simpleData: {
+                        enable: true
+                    }
+                },
+                edit: {
+                    enable: true,
+                    showRenameBtn: true,
+                    showRemoveBtn: true
+                },
+                callback:{
+                    onClick: zTreeOnClick,
+                    beforeRemove: zTreeBeforeRemove,
+                    beforeEditName: zTreeBeforeEditName
+                }  ,
+                async: {
+                    enable: true,
+                    url:basePath + "/resource/initTree",
+                    autoParam:["id", "name=n", "level=lv"],
+                    otherParam:{"otherParam":"zTreeAsyncTest"},
+                    dataFilter: filter
+                }
+
+            };
+
+            function filter(treeId, parentNode, childNodes) {
+                if (!childNodes) return null;
+                for (var i=0, l=childNodes.result.length; i<l; i++) {
+                    childNodes.result[i].name = childNodes.result[i].name.replace(/\.n/g, '.');
+                }
+                return childNodes.result;
+            }
+
+
+            var newtreeNode; //新生产节点
+            var zTree;
+            $(document).ready(function(){
+
+                $.fn.zTree.init($("#treeDemo"), setting);
+            });
+
+            //当鼠标移动到节点上时，显示用户自定义控件
+            function addHoverDom(treeId, treeNode) {
+                zTree = $.fn.zTree.getZTreeObj("treeDemo")
+                newtreeNode=treeNode;
+                var sObj = $("#" + treeNode.tId + "_span");
+                if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+                var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+                        + "' title='add node' onfocus='this.blur();'></span>";
+                sObj.after(addStr);
+                var btn = $("#addBtn_"+treeNode.tId);
+                if (btn) btn.bind("click", function(){
+                    $("#parentCode").val(treeNode.id);
+                    $("#level").val(treeNode.level);
+                    dialog.openUrlContent({
+                        id : "addChildren",
+                        title:"添加新节点",
+                        url:basePath + "/resource/addForward"
+                    });
+                    return false;
+                });
+            };
+
+            //当鼠标移出节点时，移除用户自定义控件
+            function removeHoverDom(treeId, treeNode) {
+                $("#addBtn_"+treeNode.tId).unbind().remove();
+            };
+
+            //节点被点击的事件回调函数
+            function zTreeOnClick(event, treeId, treeNode) {
+                //alert(treeNode.tId + ", " + treeNode.name);
+                //打开treeGrid
+                jQuery.post(basePath + "/resource/queryResourceListByLikeCode",
+                        {resourceCode:treeNode.id},
+                        function(data) {
+                            var alertMsg = data.message;
+                            if(jQuery.trim(alertMsg).length > 0 ){
+                                if(data.code == "200"){
+                                    config.data=data.result;
+                                    //创建一个组件对象
+                                    $("#tg1").remove();
+                                    treeGrid = new TreeGrid(config);
+                                    treeGrid.show();
+                                }else{
+                                    dialog.alert(alertMsg);
+                                }
+                            }
+                        }
+                );
+            }
+
+            //点击删除操作
+            function zTreeBeforeRemove(treeId, treeNode) {
+                jQuery.post(basePath + "/resource/deleteTreeNode",
+                        {resourceCode:treeNode.id},
+                        function(data) {
+                            var alertMsg = data.message;
+                            if(data.code == "200"){    //回台返回成功
+                                return true;    //实现删除
+                            }else{
+                                dialog.alert(alertMsg);      //提示删除失败原因
+                                return false;    //不删除
+                            }
+                        }
+                );
+            }
+
+            function zTreeBeforeEditName(treeId, treeNode) {
+                var btn = "#"+treeNode.tId+"_edit";
+                    $("#parentCode").val(treeNode.id);
+                    $("#level").val(treeNode.level);
+                    dialog.openUrlContent({
+                        id : "addChildren",
+                        title:"修改节点",
+                        data:{resourceCode:treeNode.id},
+                        url:basePath + "/resource/getResourceByCode"
+                    });
+                return false ;
+            }
         </script>
-	</head>
+    </head>
     <body>
-        <div class="row">
-            <div class="col-xs-12 col-sm-12">
-                <div class="widget-box">
-                    <div class="widget-header">
-                        <h5 class="lighter">
-                            <i class="icon-search green"></i>#springMessage('tbtSps.resource')#springMessage('view.lable.search')
-                        </h5>
-                        <div class="widget-toolbar">
-                            <a href="#" data-action="collapse">
-                                <i class="1 icon-chevron-up bigger-100"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="widget-body">
-                        <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
-                            <form class="form-horizontal" role="form" id="queryForm">
-								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="resourceName">#springMessage('tbtSps.resource.resourceName')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="resourceName" id="resourceName" class="col-xs-10 col-sm-8" value="$!query.resourceName"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="resourceCode">#springMessage('tbtSps.resource.resourceCode')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="resourceCode" id="resourceCode" class="col-xs-10 col-sm-8" value="$!query.resourceCode"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="url">#springMessage('tbtSps.resource.url')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="url" id="url" class="col-xs-10 col-sm-8" value="$!query.url"/>
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="parentCode">#springMessage('tbtSps.resource.parentCode')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="parentCode" id="parentCode" class="col-xs-10 col-sm-8" value="$!query.parentCode"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="level">#springMessage('tbtSps.resource.level')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="level" id="level" class="col-xs-10 col-sm-8" value="$!query.level"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="orders">#springMessage('tbtSps.resource.orders')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="orders" id="orders" class="col-xs-10 col-sm-8" value="$!query.orders"/>
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="icon">#springMessage('tbtSps.resource.icon')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="icon" id="icon" class="col-xs-10 col-sm-8" value="$!query.icon"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="platfrom">#springMessage('tbtSps.resource.platfrom')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="platfrom" id="platfrom" class="col-xs-10 col-sm-8" value="$!query.platfrom"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="buttonflag">#springMessage('tbtSps.resource.buttonflag')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="buttonflag" id="buttonflag" class="col-xs-10 col-sm-8" value="$!query.buttonflag"/>
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="opens">#springMessage('tbtSps.resource.opens')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="opens" id="opens" class="col-xs-10 col-sm-8" value="$!query.opens"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="parentflag">#springMessage('tbtSps.resource.parentflag')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="parentflag" id="parentflag" class="col-xs-10 col-sm-8" value="$!query.parentflag"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="note">#springMessage('tbtSps.resource.note')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="note" id="note" class="col-xs-10 col-sm-8" value="$!query.note"/>
-                                    </div>
-								</div>
-								<div class="form-group">
-								</div>
-								<div class="form-group">
-									<div class="col-sm-4 col-sm-offset-8">
-    									#parse("/layout/page.vm")
-                                        <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
-                                        &nbsp; &nbsp; &nbsp;
-                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-										 &nbsp; &nbsp; &nbsp;
-              							<button class="btn btn-success btn-sm" type="button" id="btn-add"><i class="icon-plus"></i>#springMessage('view.lable.add')</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-			<div class="col-xs-12 col-sm-12 table-responsive">
-                <table class="table table-striped table-bordered table-condensed table-hover">
-                    <thead>
-                        <tr>
-							<th class="center">#springMessage('tbtSps.resource.id')</th>
-							<th class="center">#springMessage('tbtSps.resource.resourceName')</th>
-							<th class="center">#springMessage('tbtSps.resource.resourceCode')</th>
-							<th class="center">#springMessage('tbtSps.resource.url')</th>
-							<th class="center">#springMessage('tbtSps.resource.parentCode')</th>
-							<th class="center">#springMessage('tbtSps.resource.level')</th>
-							<th class="center">#springMessage('tbtSps.resource.orders')</th>
-							<th class="center">#springMessage('tbtSps.resource.icon')</th>
-							<th class="center">#springMessage('tbtSps.resource.platfrom')</th>
-							<th class="center">#springMessage('tbtSps.resource.buttonflag')</th>
-							<th class="center">#springMessage('tbtSps.resource.opens')</th>
-							<th class="center">#springMessage('tbtSps.resource.parentflag')</th>
-							<th class="center">#springMessage('tbtSps.resource.note')</th>
-							<th class="center">#springMessage('tbtSps.resource.createTime')</th>
-							<th class="center">#springMessage('tbtSps.resource.createUser')</th>
-    						<th class="center">#springMessage('view.lable.operate')</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        #foreach( $item in $dataList)
-                            <tr>
-                                <td>$!item.id</td>
-                                <td>$!item.resourceName</td>
-                                <td>$!item.resourceCode</td>
-                                <td>$!item.url</td>
-                                <td>$!item.parentCode</td>
-                                <td>$!item.level</td>
-                                <td>$!item.orders</td>
-                                <td>$!item.icon</td>
-                                <td>$!item.platfrom</td>
-                                <td>$!item.buttonflag</td>
-                                <td>$!item.opens</td>
-                                <td>$!item.parentflag</td>
-                                <td>$!item.note</td>
-                                <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>
-                                <td>$!item.createUser</td>
-                                <td>
-									<a href="javascript:void(0)" onclick="toDetail($!item.id);" data-toggle="modal"><i class="icon-list">#springMessage('view.lable.detail')</i></a>
-									<a href="javascript:void(0)" onclick="toUpdate($!item.id)"><i class="icon-pencil pink">#springMessage('view.lable.update')</i></a>
-									<a href="javascript:void(0)" onclick="toDelete($!item.id)"><i class="icon-remove red">#springMessage('view.lable.delete')</i></a>
-								</td>
-                            </tr>
-                        #end
-                    </tbody>
-                </table>
-				#if($!page)
-					#pageBarPost($page.totalRow $page.curPage $page.totalPage)
-				#end
-			</div>
+    <input id="parentCode" type="text" value="" style="display: none;"/>
+    <input id="level" type="text" value="" style="display: none;"/>
+    <h1></h1>
+    <h6></h6>
+    <div class="content_wrap">
+        <div class="zTreeDemoBackground left">
+            <ul id="treeDemo" class="ztree"></ul>
         </div>
-		#parse("/resource/detailModal.vm")
+        <div id="div1" class="right">
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var config = {
+            id: "tg1",
+            width: "800",
+            renderTo: "div1",
+            headerAlign: "left",
+            headerHeight: "30",
+            dataAlign: "left",
+            indentation: "20",
+            folderOpenIcon: "#springUrl('')/static/images/folderOpen.gif",
+            folderCloseIcon: "#springUrl('')/static/images/folderClose.gif",
+            defaultLeafIcon: "#springUrl('')/static/images/defaultLeaf.gif",
+            hoverRowBackground: "false",
+            folderColumnIndex: "0",
+//            itemClick: "itemClickEvent",
+            columns: [
+                //{ headerText: "", headerAlign: "center", dataAlign: "center", width: "20", handler: "customCheckBox" },
+                {headerText: "", headerAlign: "center", dataAlign: "center", width: "20" },
+                { headerText: "平台", dataField: "platfrom", headerAlign: "center", handler: "customOrgName" },
+                { headerText: "资源名称", dataField: "name", headerAlign: "center", dataAlign: "center", width: "100" },
+                { headerText: "资源URL", dataField: "url", headerAlign: "center", dataAlign: "center", width: "100" },
+                { headerText: "优先级", dataField: "orders", headerAlign: "center" },
+                { headerText: "图标", dataField: "iconSkin", headerAlign: "center", dataAlign: "center", width: "100" },
+                { headerText: "备注", dataField: "note", headerAlign: "center", dataAlign: "center", width: "100" },
+                { headerText: "是否菜单", dataField: "buttonFlag", headerAlign: "center"}
+            ],
+            data: []
+        };
+
+        /*
+        单击数据行后触发该事件
+        id：行的id
+        index：行的索引。
+        data：json格式的行数据对象。
+        */
+//        function itemClickEvent(id, index, data) {
+//            jQuery("#currentRow").val(id + ", " + index + ", " + TreeGrid.json2str(data));
+//        }
+
+        function customOrgName(row, col) {
+            var name = row[col.dataField] || "";
+            return name;
+        }
+
+        //创建一个组件对象
+        var treeGrid = new TreeGrid(config);
+        treeGrid.show();
+
+    </script>
     </body>
 </html>

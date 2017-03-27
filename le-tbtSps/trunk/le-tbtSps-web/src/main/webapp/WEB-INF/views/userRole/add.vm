@@ -8,14 +8,12 @@
 					errorElement:"em",
 					errorClass:"red",
 					rules: {
-												tUId: {required: true},
-						userCode: {required: true},
+												userCode: {required: true},
 						roleCode: {required: true},
 						note: {required: true},
 					},
 			
 					messages: {
-						tUId: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.userRole.tUId')"},
 						userCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.userRole.userCode')"},
 						roleCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.userRole.roleCode')"},
 						note: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.userRole.note')"},
@@ -52,26 +50,20 @@
                         <div class="widget-main" style="background-color: #fff;padding:5px;">
                             <form class="form-horizontal" role="form" id="addForm">
                                 <div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="tUId">#springMessage('tbtSps.userRole.tUId')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="tUId" id="tUId" class="col-xs-12 col-sm-12" />
-                                    </div>
 									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="userCode">#springMessage('tbtSps.userRole.userCode')</label>
                                     <div class="col-sm-4">
                                         <input type="text" name="userCode" id="userCode" class="col-xs-12 col-sm-12" />
                                     </div>
-								</div>
-								<div class="form-group">
 									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="roleCode">#springMessage('tbtSps.userRole.roleCode')</label>
                                     <div class="col-sm-4">
                                         <input type="text" name="roleCode" id="roleCode" class="col-xs-12 col-sm-12" />
                                     </div>
+								</div>
+								<div class="form-group">
 									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="note">#springMessage('tbtSps.userRole.note')</label>
                                     <div class="col-sm-4">
                                         <input type="text" name="note" id="note" class="col-xs-12 col-sm-12" />
                                     </div>
-								</div>
-								<div class="form-group">
                                 </div>
 								<div class="form-group">
 									<div class="col-sm-8 col-sm-offset-4">

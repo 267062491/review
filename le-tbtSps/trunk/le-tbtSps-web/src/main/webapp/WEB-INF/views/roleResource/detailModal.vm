@@ -11,25 +11,22 @@
 					<tbody>
 						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.id')</th><td id="r_id" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.tRId')</th><td id="r_tRId" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.roleCode')</th><td id="r_roleCode" style='width:25%;'></td>
+						</tr>
+						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.resourceCode')</th><td id="r_resourceCode" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.note')</th><td id="r_note" style='width:25%;'></td>
+						</tr>
+						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.createTime')</th><td id="r_createTime" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+						</tr>
+						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.createUser')</th><td id="r_createUser" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.yn')</th><td id="r_yn" style='width:25%;'></td>
 						</tr>
 						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.roleResource.yn')</th><td id="r_yn" style='width:25%;'></td>
 						</tr>
 					</tbody>
 				</table>
@@ -53,7 +50,6 @@
     			if(data!=null && data.code==200 && data.result!=null){
     				var r = data.result;
     				$("#r_id").text(r.id==null?"":r.id);
-    				$("#r_tRId").text(r.tRId==null?"":r.tRId);
     				$("#r_roleCode").text(r.roleCode==null?"":r.roleCode);
     				$("#r_resourceCode").text(r.resourceCode==null?"":r.resourceCode);
     				$("#r_note").text(r.note==null?"":r.note);

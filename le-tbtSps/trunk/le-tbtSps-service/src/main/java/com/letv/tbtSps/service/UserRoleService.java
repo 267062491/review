@@ -1,16 +1,17 @@
 package com.letv.tbtSps.service;
 
-import java.util.List;
-
+import com.letv.common.sdk.api.response.LetvResponse;
 import com.letv.tbtSps.domain.UserRole;
 import com.letv.tbtSps.domain.query.UserRoleQuery;
-import com.letv.common.utils.page.PageUtil;
+import com.letv.wmscommon.dto.PagedQueryDto;
+import com.letv.wmscommon.dto.PagedResultDto;
+import java.util.List;
 
 /**
  * UserRoleService接口
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public interface UserRoleService {
@@ -21,7 +22,7 @@ public interface UserRoleService {
      * @param userRoleList
      * @return
      */
-    public boolean insert(List<UserRole> userRoleList);
+    public boolean batchInsert(List<UserRole> userRoleList);
 
     /**
      * 单个增加对象信息
@@ -50,13 +51,10 @@ public interface UserRoleService {
 
     /**
      * 根据查询Bean获取对象集合，带翻页
-     * 
-     * @param queryBean
-     * @param pageUtil
+     *
      * @return
      */
-    public List<UserRole> queryUserRoleListWithPage(UserRoleQuery queryBean,
-            PageUtil pageUtil);
+    public PagedResultDto<UserRole> queryUserRoleListWithPage(PagedQueryDto<UserRoleQuery> pagedQuery);
 
     /**
      * 根据主键删除对象信息，该处做的是逻辑删除
@@ -74,7 +72,7 @@ public interface UserRoleService {
      *            主键字段
      * @return 对象信息
      */
-    public UserRole getUserRoleById(Long id);
+    public UserRole getUserRoleById( Long id);
 
     /**
      * 根据主键集合批量删除对象信息，该处做的是逻辑删除
@@ -83,5 +81,8 @@ public interface UserRoleService {
      *            UserRole集合
      * @return
      */
-    public boolean delete(UserRole[] userRoles);
+    public boolean batchDelete(UserRole[] userRoles);
+
+
+    public LetvResponse<Boolean> batchSave(UserRole userRole);
 }

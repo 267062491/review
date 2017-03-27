@@ -1,0 +1,243 @@
+<!-- Modal -->
+<div class="modal fade" id="myUserDistributionWarehouse" tabindex="-1" role="dialog" aria-labelledby="myUserModalLabelWarehouse" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myUserModalLabel">分配仓库</h4>
+			</div>
+			<div class="modal-body">
+                <div class="modal-content">
+                    <div class="modal-header">
+##                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="blue bigger">分配仓库给用户 <span id="role_user_infoWarehouse" class="green"></span></h4>
+                    </div>
+
+                    <div class="modal-body overflow-visible">
+
+                        <input type="hidden" id="role_user_idWarehouse"/>
+                        <input type="hidden" id="userIdsWarehouse"/>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <h5>可用仓库：</h5>
+                                <input type="text" id="selectAutoWarehouse" name="selectAutoWarehouse" placeholder="" class="col-xs-10 col-sm-9"/>
+                                <i id="icon-search-autoWarehouse" class="icon-search btn btn-xs btn-primary"
+                                   style="margin-left:8px;padding:5px;width:28px;height:28px;"></i>
+                                <select multiple="multiple" id="select1Warehouse" style="width:210px;height:200px;margin-top:3px;"
+                                        class="select1" multiple>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>&nbsp; &nbsp;</p>
+                                <p>&nbsp; &nbsp;</p>
+                                <p>&nbsp; &nbsp;</p>
+                                <p>
+                                    <button id="addWarehouse" class="btn btn-info btn-xs">添加选中&nbsp;&gt;&gt;</button>
+                                </p>
+                                <p>
+                                    <button id="removeWarehouse" class="btn btn-info btn-xs">&lt;&lt;&nbsp;删除选中</button>
+                                </p>
+                                <p>&nbsp; &nbsp;</p>
+                                <p>
+                                    <button id="add_allWarehouse" class="btn btn-success btn-xs">全部添加&nbsp;&gt;&gt;</button>
+                                </p>
+                                <p>
+                                    <button id="remove_allWarehouse" class="btn btn-success btn-xs">&lt;&lt;&nbsp;全部删除</button>
+                                </p>
+                            </div>
+                            <div class="col-sm-5">
+                                <h5>已选仓库：</h5>
+                                <select multiple="multiple" id="select2Warehouse" style="width: 210px;height:220px;margin-top:5px;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-sm btn-primary" id="user-role-submit-btnWarehouse">
+                            <i class="icon-ok"></i>提交
+                        </button>
+                        <button class="btn btn-sm" data-dismiss="modal">
+                            <i class="icon-remove"></i>取消
+                        </button>
+                    </div>
+                </div>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">
+    var roleListTotal;
+    function toDistributionWarehouse(userCode , userName , showName){
+        $("#role_user_idWarehouse").val(userCode);
+        $("#userIdsWarehouse").attr("value",'');
+        $("#selectAutoWarehouse").val("");
+        $("#role_user_infoWarehouse").html("  "+showName+" ("+userName+")");
+
+        jQuery.ajax({
+            type: "POST",
+            url: basePath + "/warehouse/queryChooseWarehouseListByUserCode",
+            dataType : 'json',
+            data: "userCode=" + userCode,
+            async:false,
+
+            success: function(data){
+                $("#select1Warehouse").empty();
+                if(data!=null && data.code==200){
+                    var warehouseList=data.result;
+                    if(warehouseList==null || warehouseList.length==0){
+                        return;
+                    } else {
+                        for(var i=0;i<warehouseList.length;i++){          debugger;
+                            $("#select1Warehouse").append($("<option/>").text(warehouseList[i].warehouseName).attr("value",warehouseList[i].warehouseNo));
+                        }
+                        roleListTotal = $('#select1Warehouse option')
+                    }
+                }
+            },
+
+            error : function(data) {
+                dialog.dialog.confirm("获取可用角色异常");
+            }
+        });
+
+        jQuery.ajax({
+            type: "POST",
+            url: basePath + "/warehouse/queryWarehouseListByUserName",
+            dataType : 'json',
+            data: "userName=" + userName,
+            success: function(data){
+                $("#select2Warehouse").empty();
+                if(data!=null && data.code==200){
+                    var warehouseList=data.result;
+                    if(warehouseList==null || warehouseList.length==0){
+                        return;
+                    } else {
+                        for(var i=0;i<warehouseList.length;i++){
+                            $("#select2Warehouse").append($("<option/>").text(warehouseList[i].warehouseName).attr("value",warehouseList[i].warehouseNo));
+                        }
+                    }
+                }
+            }
+        });
+
+        $('#myUserDistributionWarehouse').modal('show');
+    }
+
+    //移到右边
+    $('#addWarehouse').click(function () {
+        var temp = $('#select1Warehouse option:selected');    debugger ;
+        for (var i = 0; i < temp.length; i++) {
+            var index = jQuery.inArray(temp[i], roleListTotal);
+            roleListTotal.splice(index,1);
+        }
+        //获取选中的选项，删除并追加给对方
+        $('#select1Warehouse option:selected').appendTo('#select2Warehouse');
+    });
+    //移到左边
+    $('#removeWarehouse').click(function () {
+        var temp = $('#select2Warehouse option:selected');
+        for (var i = 0; i < temp.length; i++) {
+            roleListTotal.push(temp[i]);
+        }
+        $('#select2Warehouse option:selected').appendTo('#select1Warehouse');  debugger ;
+    });
+    //全部移到右边
+    $('#add_allWarehouse').click(function () {
+        var temp = $('#select1Warehouse option');    debugger ;
+        for (var i = 0; i < temp.length; i++) {
+            var index = jQuery.inArray(temp[i], roleListTotal);
+            roleListTotal.splice(index,1);
+        }
+        //获取全部的选项,删除并追加给对方
+        $('#select1Warehouse option').appendTo('#select2Warehouse');
+    });
+    //全部移到左边
+    $('#remove_allWarehouse').click(function () {
+        var temp = $('#select2Warehouse option');
+        for (var i = 0; i < temp.length; i++) {
+            roleListTotal.push(temp[i]);
+        }
+        $('#select2Warehouse option').appendTo('#select1Warehouse');
+    });
+    //双击选项
+    $('#select1Warehouse').dblclick(function () { //绑定双击事件
+        var temp = $('#select1Warehouse option:selected');    debugger ;
+        var index = jQuery.inArray(temp[0], roleListTotal);
+        roleListTotal.splice(index,1);
+        //获取全部的选项,删除并追加给对方
+        $("option:selected", this).appendTo('#select2Warehouse'); //追加给对方
+    });
+    //双击选项
+    $('#select2Warehouse').dblclick(function () {
+        var temp = $('#select2Warehouse option:selected');
+        roleListTotal.push(temp[0]);
+        $("option:selected", this).appendTo('#select1Warehouse');
+    });
+
+    $('#icon-search-autoWarehouse').click(function () {
+        $("#selectAutoWarehouse").change();
+    });
+
+    $("#selectAutoWarehouse").change(function () {
+        $("#select1Warehouse").empty();              debugger ;
+        if (this.value != null && this.value != "") {
+            var tempVal = this.value;
+            for (var i = 0; i < roleListTotal.length; i++) {
+                if (roleListTotal[i].innerHTML.indexOf(tempVal) >= 0) {
+//                    $("#select1Warehouse").append($("<option/>").text(roleListTotal[i].innerHTML).attr("value", roleListTotal[i].innerHTML));
+                    $('#select1Warehouse').append(roleListTotal[i]);
+                }
+            }
+        } else {
+            for (var i = 0; i < roleListTotal.length; i++) {
+//                $("#select1Warehouse").append($("<option/>").text(roleListTotal[i].innerHTML).attr("value", roleListTotal[i].innerHTML));
+                $('#select1Warehouse').append(roleListTotal[i]);
+            }
+        }
+    });
+
+    //提交
+    $('#user-role-submit-btnWarehouse').click(function () {
+        var uId = $("#role_user_idWarehouse").val();
+        var userIds = $("#userIdsWarehouse").val();
+        var items = $("#select2Warehouse option");
+        var info = "";
+        if (items.length == 0) {
+            dialog.alert("请选择一个仓库");
+            return;
+        }
+
+        for (var i = 0; i < items.length; i++) {
+            // 如果i+1等于选项长度则取值后添加空字符串，否则为逗号
+            info = (info + items[i].value) + (((i + 1) == items.length) ? '' : ',');
+        }
+        if (uId != null && uId != '') {
+            jQuery.ajax({
+                type: "POST",
+                url: basePath + "/userWarehouse/save",
+                dataType: 'json',
+                data: "userCode=" + uId + "&warehouseNos=" + info,
+                success: function (data) {
+                    if (data == null) {
+                        dialog.alert("操作失败");
+                    } else if (data.code == 200) {
+                        dialog.alert("操作成功");
+                        $('#myUserDistributionWarehouse').modal('hide');
+                    } else {
+                        dialog.alert(data.message);
+                    }
+                },
+                error: function (data) {
+                    if (data == null) {
+                        dialog.alert("操作失败");
+                    } else {
+                        dialog.alert(data.message);
+                    }
+                }
+            });
+        }
+
+    });
+</script>

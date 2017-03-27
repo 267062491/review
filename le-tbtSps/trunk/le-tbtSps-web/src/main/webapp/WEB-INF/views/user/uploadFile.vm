@@ -1,0 +1,50 @@
+<script src="#springUrl('')/static/js/jquery.form.js"></script>
+<script language="javascript">
+    $(function() {
+        $('#uploadForm').validate({
+            errorElement:"em",
+            errorClass:"red",
+            rules: {
+                file:{required:true}
+            },
+            messages: {
+                file:{required:"tbtSps.view.alert.selectExport"}
+            }
+        });
+        $("#uploadForm").ajaxForm({
+            url:"$basePath/user/upload",
+            type:"post",
+            dataType:'json',
+            beforeSubmit:function(){
+                $('#loading')[0].style.display="block";
+            },
+            success: function(data) {
+                $('#loading')[0].style.display="none";
+                if(data.code == 200){
+                    dialog.alert(data.message);
+                ##                            window.location.href=("$basePath/cell");
+                }else{
+                    dialog.alert(data.message);
+                }
+            },
+            error:function (data) {
+                $('#loading')[0].style.display="none";
+                dialog.alert("上传失败");
+            }
+        });
+    });
+    function fileUpload() {
+        $("#uploadForm").submit();
+    }
+</script>
+<style>
+    #uploadForm #file {
+        float: right;
+    }
+    #uploadForm #btn-upload {
+        float: right;
+    }
+    .clearfix {
+        clear: both;
+    }
+</style>

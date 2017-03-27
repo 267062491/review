@@ -27,7 +27,7 @@
                         <li><a href="#"><i class="icon-user"></i>个人资料</a></li>
                         <li><a href="javascript:void(0)" onclick="link('110','修改密码','/user/modifyPassword','10','系统管理');"><i class="icon-cog"></i>修改密码</a></li>
                         <li class="divider"></li>
-                        <li><a href="#springUrl('')/quit"><i class="icon-off"></i>退出</a></li>
+                        <li><a href="#springUrl('')/login"><i class="icon-off"></i>登录</a></li>
                     </ul>
                 </li>
             </ul><!-- /.ace-nav -->
@@ -37,7 +37,7 @@
 
 <script>
     <!--处理点击tab的请求-->
-    function link(c,n,u,pc,pn){
+    function link(c,n,u,pc,pn){      debugger ;
         document.getElementById("frame-content").src=u;
     }
     <!--这张点击tab的样式-->
@@ -56,7 +56,7 @@
             <li>完美</li>
             <li>功劳</li>
             <li>产品</li>
-            <li>技术</li>
+            <li><a href="javascript:void(0)" onclick="link('200','参数','user','20','参数')">用户</a></li>
             <li><a href="javascript:void(0)" onclick="link('200','参数','systemPar','20','参数')">参数</a></li>
         </ul>
     </div>

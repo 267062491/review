@@ -10,40 +10,30 @@
 				<table class="table table-striped table-bordered table-condensed table-hover">
 					<tbody>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.id')</th><td id="r_id" style='width:25%;'></td>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.userName')</th><td id="r_userName" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.user.showName')</th><td id="r_showName" style='width:25%;'></td>
 						</tr>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.showName')</th><td id="r_showName" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.userCode')</th><td id="r_userCode" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.role.roleName')</th><td id="r_roleName" style='width:75%;' colspan="3"></td>
 						</tr>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.password')</th><td id="r_password" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.email')</th><td id="r_email" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>tbtSps.warehouse.warehouseName</th><td id="r_warehouseName" style='width:75%;' colspan="3"></td>
 						</tr>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.phoneno')</th><td id="r_phoneno" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.duty')</th><td id="r_duty" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.user.duty')</th><td id="r_duty" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.user.userAddress')</th><td id="r_userAddress" style='width:25%;'></td>
 						</tr>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.userOthername')</th><td id="r_userOthername" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.userType')</th><td id="r_userType" style='width:25%;'></td>
-						</tr>
-						<tr>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.user.email')</th><td id="r_email" style='width:25%;'></td>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.userState')</th><td id="r_userState" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.userAddress')</th><td id="r_userAddress" style='width:25%;'></td>
 						</tr>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.note')</th><td id="r_note" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.user.phoneno')</th><td id="r_phoneno" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.user.createUser')</th><td id="r_createUser" style='width:25%;'></td>
 						</tr>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.createUser')</th><td id="r_createUser" style='width:25%;'></td>
-						</tr>
-						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.user.yn')</th><td id="r_yn" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.user.createTime')</th><td id="r_createTime" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.user.note')</th><td id="r_note" style='width:25%;'></td>
 						</tr>
 						<tr>
 						</tr>
@@ -68,24 +58,18 @@
     		success: function(data){
     			if(data!=null && data.code==200 && data.result!=null){
     				var r = data.result;
-    				$("#r_id").text(r.id==null?"":r.id);
     				$("#r_userName").text(r.userName==null?"":r.userName);
     				$("#r_showName").text(r.showName==null?"":r.showName);
-    				$("#r_userCode").text(r.userCode==null?"":r.userCode);
-    				$("#r_password").text(r.password==null?"":r.password);
     				$("#r_email").text(r.email==null?"":r.email);
     				$("#r_phoneno").text(r.phoneno==null?"":r.phoneno);
     				$("#r_duty").text(r.duty==null?"":r.duty);
-    				$("#r_userOthername").text(r.userOthername==null?"":r.userOthername);
-    				$("#r_userType").text(r.userType==null?"":r.userType);
     				$("#r_userState").text(r.userState==null?"":r.userState);
     				$("#r_userAddress").text(r.userAddress==null?"":r.userAddress);
     				$("#r_note").text(r.note==null?"":r.note);
     				$("#r_createTime").text(r.createTime==null?"":r.createTime);
-    				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
     				$("#r_createUser").text(r.createUser==null?"":r.createUser);
-    				$("#r_updateUser").text(r.updateUser==null?"":r.updateUser);
-    				$("#r_yn").text(r.yn==null?"":r.yn);
+    				$("#r_roleName").text(r.roleName==null?"":r.roleName);
+    				$("#r_warehouseName").text(r.warehouseName==null?"":r.warehouseName);
     			} else {
     				alert("#springMessage('view.lable.detail.fail')");
     			}

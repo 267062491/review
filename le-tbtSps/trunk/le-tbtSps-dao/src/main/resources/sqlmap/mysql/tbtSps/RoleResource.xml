@@ -4,7 +4,6 @@
 <mapper namespace="com.letv.tbtSps.dao.impl.RoleResourceDaoImpl">
     <resultMap id="RoleResourceMap" type="RoleResource">
 		<result column="id" property="id" jdbcType="DECIMAL" />
-		<result column="t_r_id" property="tRId" jdbcType="DECIMAL" />
 		<result column="role_code" property="roleCode" jdbcType="VARCHAR" />
 		<result column="resource_code" property="resourceCode" jdbcType="VARCHAR" />
 		<result column="note" property="note" jdbcType="VARCHAR" />
@@ -16,17 +15,20 @@
     </resultMap>
     
     <sql id="roleResourceColumns">
-    	id,t_r_id,role_code,resource_code,note,create_time,update_time,create_user,update_user,yn
+    	id,role_code,resource_code,note,create_time,update_time,create_user,update_user,yn
     </sql>
-    
+    <sql id="rr_roleResourceColumns">
+    	rr.id,rr.role_code,rr.resource_code,rr.note,rr.create_time,rr.update_time,rr.create_user,rr.update_user,rr.yn
+    </sql>
+
      <sql id="roleResourceUsedColumns">
-    	t_r_id,role_code,resource_code,note,create_time,update_time,create_user,update_user,yn
+    	role_code,resource_code,note,create_time,update_time,create_user,update_user,yn
     </sql>
 
     <!-- 创建信息 -->
     <insert id="insert" parameterType="RoleResource" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_role_resource(<include refid="roleResourceUsedColumns"/>) 
-        VALUES (#{tRId},#{roleCode},#{resourceCode},#{note},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        INSERT INTO t_role_resource(<include refid="roleResourceUsedColumns"/>)
+        VALUES (#{roleCode},#{resourceCode},#{note},now(),now(),#{createUser},#{updateUser},1)
 	</insert>
 	
     <!-- 修改信息 -->
@@ -34,9 +36,6 @@
         <if test="_parameter != null">
             <if test="id != null and id > 0">
                 update t_role_resource set
-		        <if test="tRId != null and tRId != ''">
-                	t_r_id = #{tRId,jdbcType=DECIMAL},
-		        </if>
 		        <if test="roleCode != null and roleCode != ''">
                 	role_code = #{roleCode,jdbcType=VARCHAR},
 		        </if>
@@ -90,7 +89,7 @@
 
     <!-- 删除信息-逻辑删除 -->
     <update id="delete" parameterType="RoleResource">
-		update t_role_resource 
+		update t_role_resource
 		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id}
     </update>
@@ -100,9 +99,6 @@
     	yn = 1
         <if test="id != null and id != ''">
         	and id = #{id,jdbcType=DECIMAL}
-        </if>
-        <if test="tRId != null and tRId != ''">
-        	and t_r_id = #{tRId,jdbcType=DECIMAL}
         </if>
         <if test="roleCode != null and roleCode != ''">
         	and role_code = #{roleCode,jdbcType=VARCHAR}
@@ -129,4 +125,43 @@
         	and yn = #{yn,jdbcType=DECIMAL}
         </if>
     </sql>
+
+
+    <!-- 根据用编码查询用户拥有的资源 -->
+    <select id="queryRoleResourceListByUserCode" resultMap="RoleResourceMap"
+            parameterType="com.letv.tbtSps.domain.query.RoleResourceQuery">
+        select <include refid="rr_roleResourceColumns"/>
+        FROM t_user_role ur LEFT JOIN t_role_resource rr ON ur.role_code = rr.role_code
+        WHERE ur.yn = 1 AND rr. yn =1 AND ur.user_code = #{userCode,jdbcType=VARCHAR}
+        <if test="resourceCode != null and resourceCode != ''">
+            and resource_code REGEXP '^${resourceCode}_'
+            AND resource_code !=  #{resourceCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 根据角色编码删除信息-逻辑删除 -->
+    <update id="deleteByRoleCode" parameterType="RoleResource">
+		update t_role_resource
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where role_code = #{roleCode,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 根据资源编码和角色批量查询角色资源 -->
+    <select id="queryRoleResourceByRoleAndResourceCode" resultMap="RoleResourceMap"
+            parameterType="com.letv.tbtSps.domain.query.RoleResourceQuery">
+        select <include refid="roleResourceColumns"/> from t_role_resource where
+        role_code = #{roleCode,jdbcType=VARCHAR} and yn = 1
+        and
+        <foreach collection="codes" item="item" open="(" separator="or" close=")">
+            resource_code = #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+     <!-- 批量插入-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO t_role_resource(<include refid="roleResourceUsedColumns"/>)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleCode},#{item.resourceCode},#{item.note},now(),now(),#{item.createUser},#{item.updateUser},1)
+        </foreach>
+    </insert>
 </mapper>

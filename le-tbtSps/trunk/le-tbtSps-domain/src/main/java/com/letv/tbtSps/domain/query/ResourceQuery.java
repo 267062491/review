@@ -1,14 +1,15 @@
 package com.letv.tbtSps.domain.query;
 
-import java.util.Date;
-
 import com.letv.common.utils.page.Query;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * ResourceQuery：资源表查询类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-25 15:20:03
  * 
  */
 public class ResourceQuery extends Query implements java.io.Serializable  {
@@ -37,9 +38,7 @@ public class ResourceQuery extends Query implements java.io.Serializable  {
     /** 按钮区分 */
 	private Integer buttonflag; 
     /** 默认是否展开 */
-	private Integer opens; 
-    /** 是否有子菜单 */
-	private Integer parentflag; 
+	private Boolean open;
     /** 备注 */
 	private String note; 
     /** 创建时间 */
@@ -55,7 +54,26 @@ public class ResourceQuery extends Query implements java.io.Serializable  {
     /** 开始时间 */
     private Date startTime; 
     /** 结束时间 */
-    private Date endTime; 
+    private Date endTime;
+
+    private Integer openFlag ;
+
+    private String userCode ;
+
+    /**
+     * 是否有子菜单
+     */
+    private Integer parentFlag ;
+
+    /**
+     * 资源编码集合
+     */
+    private List<String> list_resourceCode ;
+
+    /**
+     * 资源类型，和用户类型一致
+     */
+    private Integer resourceType ;
 	
     public Long getId(){
 		return id;
@@ -136,23 +154,15 @@ public class ResourceQuery extends Query implements java.io.Serializable  {
     public void setButtonflag(Integer buttonflag) {
 		this.buttonflag = buttonflag;
 	}
-	
-    public Integer getOpens(){
-		return opens;
-	}
-	    
-    public void setOpens(Integer opens) {
-		this.opens = opens;
-	}
-	
-    public Integer getParentflag(){
-		return parentflag;
-	}
-	    
-    public void setParentflag(Integer parentflag) {
-		this.parentflag = parentflag;
-	}
-	
+
+    public Boolean getOpen() {
+        return open;
+    }
+
+    public void setOpen(Boolean open) {
+        this.open = open;
+    }
+
     public String getNote(){
 		return note;
 	}
@@ -215,5 +225,45 @@ public class ResourceQuery extends Query implements java.io.Serializable  {
     
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public List<String> getList_resourceCode() {
+        return list_resourceCode;
+    }
+
+    public void setList_resourceCode(List<String> list_resourceCode) {
+        this.list_resourceCode = list_resourceCode;
+    }
+
+    public Integer getOpenFlag() {
+        return openFlag;
+    }
+
+    public void setOpenFlag(Integer openFlag) {
+        this.openFlag = openFlag;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public Integer getParentFlag() {
+        return parentFlag;
+    }
+
+    public void setParentFlag(Integer parentFlag) {
+        this.parentFlag = parentFlag;
+    }
+
+    public Integer getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(Integer resourceType) {
+        this.resourceType = resourceType;
     }
 }

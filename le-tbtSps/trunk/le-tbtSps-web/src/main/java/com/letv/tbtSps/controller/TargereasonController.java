@@ -1,8 +1,14 @@
 package com.letv.tbtSps.controller;
-   
 
-import java.util.List;
 
+import com.letv.common.utils.exception.ExistedException;
+import com.letv.common.utils.page.PageUtil;
+import com.letv.common.utils.wrap.WrapMapper;
+import com.letv.common.utils.wrap.Wrapper;
+import com.letv.tbtSps.common.controller.ReviewBaseController;
+import com.letv.tbtSps.domain.Targereason;
+import com.letv.tbtSps.domain.query.TargereasonQuery;
+import com.letv.tbtSps.service.TargereasonService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.tbtSps.domain.Targereason;
-import com.letv.tbtSps.domain.query.TargereasonQuery;
-import com.letv.tbtSps.service.TargereasonService;
-import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.controller.base.BaseController;
-import com.letv.common.utils.page.PageUtil;
-import com.letv.common.utils.wrap.WrapMapper;
-import com.letv.common.utils.wrap.Wrapper;
+import java.util.List;
 
 /**
  * TargereasonController ：目标理由控制器
@@ -30,7 +29,7 @@ import com.letv.common.utils.wrap.Wrapper;
 */
 @Controller
 @RequestMapping("targereason")
-public class TargereasonController extends BaseController {
+public class TargereasonController extends ReviewBaseController {
 
     @Autowired
     private TargereasonService targereasonService;
@@ -44,8 +43,6 @@ public class TargereasonController extends BaseController {
      * 首页
      * 
      * @param model
-     * @param page
-     * @param query
      * @return
      */
     @RequestMapping(value = "")
@@ -77,7 +74,6 @@ public class TargereasonController extends BaseController {
     /**
      * 目标理由----添加跳转
      * 
-     * @param model
      * @return
      */
     @RequestMapping(value = "addForward")

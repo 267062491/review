@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <script language="javascript">
+        $(function() {
+            <!-- 验证只能是英文或者数字-->
+            $.validator.addMethod(
+                    "enAndNumberRule", //验证方法名称
+                    function(value, element, param) {//验证规则
+
+                        if(value ==""){
+                           return true ;
+                        }
+                        var rule =new RegExp("^[a-zA-Z 0-9]+$");
+                        if(param){
+                            var ret = rule.test(value);
+                            return ret;
+                        }
+                    },
+                    "#springMessage('tbtSps.user.userName.rule')"
+            );
+        });
+    </script>
+</head>
+</html>
+

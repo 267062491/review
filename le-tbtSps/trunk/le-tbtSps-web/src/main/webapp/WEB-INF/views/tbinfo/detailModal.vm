@@ -54,7 +54,7 @@
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.back4')</th><td id="r_back4" style='width:25%;'></td>
 						</tr>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.back5')</th><td id="r_back5" style='width:25%;'></td>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.versions')</th><td id="r_versions" style='width:25%;'></td>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.tbinfo.createTime')</th><td id="r_createTime" style='width:25%;'></td>
 						</tr>
 						<tr>
@@ -110,7 +110,7 @@
     				$("#r_back2").text(r.back2==null?"":r.back2);
     				$("#r_back3").text(r.back3==null?"":r.back3);
     				$("#r_back4").text(r.back4==null?"":r.back4);
-    				$("#r_back5").text(r.back5==null?"":r.back5);
+    				$("#r_versions").text(r.versions==null?"":r.versions);
     				$("#r_createTime").text(r.createTime==null?"":r.createTime);
     				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);
     				$("#r_createUser").text(r.createUser==null?"":r.createUser);

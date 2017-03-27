@@ -1,15 +1,16 @@
 package com.letv.tbtSps.manager;
 
-import java.util.List;
-
 import com.letv.tbtSps.domain.RoleResource;
 import com.letv.tbtSps.domain.query.RoleResourceQuery;
-import com.letv.common.utils.page.PageUtil;
+import com.letv.wmscommon.dto.PageUtil;
+
+import java.util.List;
+
 /**
  * RoleResourceManager接口
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public interface RoleResourceManager {
@@ -55,7 +56,7 @@ public interface RoleResourceManager {
      * @return
      */
     public List<RoleResource> queryRoleResourceListWithPage(RoleResourceQuery queryBean,
-            PageUtil pageUtil);
+                                                            PageUtil pageUtil);
 
     /**
      * 根据查询Bean获取对象信息总数
@@ -100,4 +101,18 @@ public interface RoleResourceManager {
      * @return
      */
     public boolean exist(RoleResource roleResource);
+
+    /**
+     * 根据用编码获取用户拥有的资源
+     * @param queryBean
+     * @return
+     */
+    public List<RoleResource> queryRoleResourceListByUserCode(RoleResourceQuery queryBean) ;
+
+    /**
+     * 修改角色拥有的资源
+     * @param roleResource
+     * @return
+     */
+    public boolean updateRoleResource(RoleResource roleResource);
 }

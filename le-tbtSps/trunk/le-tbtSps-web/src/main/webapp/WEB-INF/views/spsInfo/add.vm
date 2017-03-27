@@ -31,7 +31,7 @@
 						back2: {required: true},
 						back3: {required: true},
 						back4: {required: true},
-						back5: {required: true},
+						versions: {required: true},
 					},
 			
 					messages: {
@@ -58,7 +58,7 @@
 						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back2')"},
 						back3: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back3')"},
 						back4: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back4')"},
-						back5: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back5')"},
+						versions: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.versions')"},
 					}
 				});
 				
@@ -206,9 +206,9 @@
                                     <div class="col-sm-4">
                                         <input type="text" name="back4" id="back4" class="col-xs-12 col-sm-12" />
                                     </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back5">#springMessage('tbtSps.spsInfo.back5')</label>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="versions">#springMessage('tbtSps.spsInfo.versions')</label>
                                     <div class="col-sm-4">
-                                        <input type="text" name="back5" id="back5" class="col-xs-12 col-sm-12" />
+                                        <input type="text" name="versions" id="versions" class="col-xs-12 col-sm-12" />
                                     </div>
 								</div>
 								<div class="form-group">

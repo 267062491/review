@@ -1,8 +1,14 @@
 package com.letv.tbtSps.controller;
-   
 
-import java.util.List;
 
+import com.letv.common.utils.exception.ExistedException;
+import com.letv.common.utils.page.PageUtil;
+import com.letv.common.utils.wrap.WrapMapper;
+import com.letv.common.utils.wrap.Wrapper;
+import com.letv.tbtSps.common.controller.ReviewBaseController;
+import com.letv.tbtSps.domain.SpsInfoLog;
+import com.letv.tbtSps.domain.query.SpsInfoLogQuery;
+import com.letv.tbtSps.service.SpsInfoLogService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.tbtSps.domain.SpsInfoLog;
-import com.letv.tbtSps.domain.query.SpsInfoLogQuery;
-import com.letv.tbtSps.service.SpsInfoLogService;
-import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.controller.base.BaseController;
-import com.letv.common.utils.page.PageUtil;
-import com.letv.common.utils.wrap.WrapMapper;
-import com.letv.common.utils.wrap.Wrapper;
+import java.util.List;
 
 /**
  * SpsInfoLogController ：sps信息操作日志表控制器
@@ -30,7 +29,7 @@ import com.letv.common.utils.wrap.Wrapper;
 */
 @Controller
 @RequestMapping("spsInfoLog")
-public class SpsInfoLogController extends BaseController {
+public class SpsInfoLogController extends ReviewBaseController {
 
     @Autowired
     private SpsInfoLogService spsInfoLogService;
@@ -44,8 +43,6 @@ public class SpsInfoLogController extends BaseController {
      * 首页
      * 
      * @param model
-     * @param page
-     * @param query
      * @return
      */
     @RequestMapping(value = "")
@@ -77,7 +74,6 @@ public class SpsInfoLogController extends BaseController {
     /**
      * sps信息操作日志表----添加跳转
      * 
-     * @param model
      * @return
      */
     @RequestMapping(value = "addForward")

@@ -47,10 +47,6 @@
                         <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
                             <form class="form-horizontal" role="form" id="queryForm">
 								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="tRId">#springMessage('tbtSps.roleResource.tRId')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="tRId" id="tRId" class="col-xs-10 col-sm-8" value="$!query.tRId"/>
-                                    </div>
 									<label class="col-sm-1 control-label no-padding-right" for="roleCode">#springMessage('tbtSps.roleResource.roleCode')</label>
                                     <div class="col-sm-3">
                                         <input type="text" name="roleCode" id="roleCode" class="col-xs-10 col-sm-8" value="$!query.roleCode"/>
@@ -59,12 +55,12 @@
                                     <div class="col-sm-3">
                                         <input type="text" name="resourceCode" id="resourceCode" class="col-xs-10 col-sm-8" value="$!query.resourceCode"/>
                                     </div>
-								</div>
-								<div class="form-group">
 									<label class="col-sm-1 control-label no-padding-right" for="note">#springMessage('tbtSps.roleResource.note')</label>
                                     <div class="col-sm-3">
                                         <input type="text" name="note" id="note" class="col-xs-10 col-sm-8" value="$!query.note"/>
                                     </div>
+								</div>
+								<div class="form-group">
 								</div>
 								<div class="form-group">
 									<div class="col-sm-4 col-sm-offset-8">
@@ -86,7 +82,6 @@
                     <thead>
                         <tr>
 							<th class="center">#springMessage('tbtSps.roleResource.id')</th>
-							<th class="center">#springMessage('tbtSps.roleResource.tRId')</th>
 							<th class="center">#springMessage('tbtSps.roleResource.roleCode')</th>
 							<th class="center">#springMessage('tbtSps.roleResource.resourceCode')</th>
 							<th class="center">#springMessage('tbtSps.roleResource.note')</th>
@@ -99,7 +94,6 @@
                         #foreach( $item in $dataList)
                             <tr>
                                 <td>$!item.id</td>
-                                <td>$!item.tRId</td>
                                 <td>$!item.roleCode</td>
                                 <td>$!item.resourceCode</td>
                                 <td>$!item.note</td>

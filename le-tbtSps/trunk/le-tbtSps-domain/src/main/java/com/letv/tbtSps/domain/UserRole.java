@@ -6,7 +6,7 @@ import java.util.Date;
  * UserRole：用户-角色实体类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public class UserRole implements java.io.Serializable  {
@@ -16,8 +16,6 @@ public class UserRole implements java.io.Serializable  {
 	
     /** id */
     private Long id; 
-    /** 用户表_id */
-    private Long tUId; 
     /** 用户编码 */
     private String userCode; 
     /** 角色编码 */
@@ -33,7 +31,9 @@ public class UserRole implements java.io.Serializable  {
     /** 修改人 */
     private String updateUser; 
     /** 是否删除（0：删除；1：不删除） */
-    private Integer yn; 
+    private Integer yn;
+
+    private String[] roleCodes ;
     
     public Long getId(){
         return id;
@@ -41,14 +41,6 @@ public class UserRole implements java.io.Serializable  {
         
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    public Long getTUId(){
-        return tUId;
-    }
-        
-    public void setTUId(Long tUId) {
-        this.tUId = tUId;
     }
     
     public String getUserCode(){
@@ -113,5 +105,13 @@ public class UserRole implements java.io.Serializable  {
         
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public String[] getRoleCodes() {
+        return roleCodes;
+    }
+
+    public void setRoleCodes(String[] roleCodes) {
+        this.roleCodes = roleCodes;
     }
 }

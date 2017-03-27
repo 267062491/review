@@ -1,0 +1,35 @@
+<html lang="zh-cn">
+	<head>
+		#parse("/layout/head.vm")
+        <link rel="stylesheet" href="#springUrl('')/static/css/login.css" />
+		<script src="#springUrl('')/static/js/inner/login.js?v=20151212"></script>
+        <script language="javascript" type="text/javascript">
+            if(top.location!=self.location)top.location=self.location;
+        </script>
+	</head>
+	<body class="loginBg">
+		<div class="login-main">
+            <h1 class="login-title"></h1>
+            <ul class="userInput">
+                #if($!{errorMessage})
+                    <h5 class="red clearfix">
+                        $!{errorMessage}
+                    </h5>
+                    <div class="space-10"></div>
+                #end
+                <form action="#springUrl('')/loginSys" method="post">
+                    <input type="hidden" name="forwardUrl" id="forwardUrl" value="$!forwardUrl"/>
+                    <li class="mb10">
+                        <label class="white">用户名：<input type="text" id="name" name="userName" class="wid301" value="$!{name}" required oninvalid="setCustomValidity('#springMessage('system.login.label.username.tip')');" oninput="setCustomValidity('');" /> </label>
+                    </li>
+                    <li class="mb10">
+                        <label  class="white"><span class="emr">密</span>码：<input type="password" id="password" name="password" class="wid301" required oninvalid="setCustomValidity('#springMessage('system.login.label.password.tip')');" oninput="setCustomValidity('');" /> </label>
+                    </li>
+                    <li class="text-align-center" style="width: 340px;">
+                        <button type="submit" class="login-button"></button>
+                    </li>
+                </form>
+            </ul>
+		</div>
+	</body>
+</html>

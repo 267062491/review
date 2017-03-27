@@ -1,148 +1,179 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-    <head>
-		#parse("/layout/head.vm")
-        <script language="javascript">
-            $(function() {
-				$('#addForm').validate({
-					errorElement:"em",
-					errorClass:"red",
-					rules: {
-												resourceName: {required: true},
-						resourceCode: {required: true},
-						url: {required: true},
-						parentCode: {required: true},
-						level: {required: true},
-						orders: {required: true},
-						icon: {required: true},
-						platfrom: {required: true},
-						buttonflag: {required: true},
-						opens: {required: true},
-						parentflag: {required: true},
-						note: {required: true},
-					},
-			
-					messages: {
-						resourceName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.resourceName')"},
-						resourceCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.resourceCode')"},
-						url: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.url')"},
-						parentCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.parentCode')"},
-						level: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.level')"},
-						orders: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.orders')"},
-						icon: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.icon')"},
-						platfrom: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.platfrom')"},
-						buttonflag: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.buttonflag')"},
-						opens: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.opens')"},
-						parentflag: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.parentflag')"},
-						note: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.resource.note')"},
-					}
-				});
-				
-				$("#btn-back").click(function(){
-					window.location.href=("$basePath/resource");
-				});
-				$("#btn-submit").click(function(){
-            		var form = $("#addForm");
-					if(form.valid()==false){
-						return;
-					}
-					jQuery.post('$basePath/resource/add',
-            			form.serialize(),
-            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/resource"); }
-            		);
-            	});
+<head>
+    #parse("/layout/head.vm")
+    <script src="#springUrl('')/static/js/fuelux/fuelux.spinner.min.js"></script>
+
+    <script language="javascript">
+        var formValidate ={
+            errorElement:"em",
+            errorClass:"red",
+            rules: {
+                resourceName: {required: true, maxlength:100}
+            },
+            messages: {
+                resourceName: { required: "#springMessage('portal.resource.name.tip')", maxlength:jQuery.format("#springMessage('portal.resource.name.char')")}
+            }
+//            rules: {
+//                resourceName: {required: true, maxlength:20},
+//                url: {required: false, url:false}
+//            },
+
+##            messages: {
+##                resourceName: { required: "#springMessage('portal.resource.name.tip')", maxlength:jQuery.format("#springMessage('portal.resource.name.char')")},
+##                url: { required: "#springMessage('portal.resource.name.tip')", url:jQuery.format("#springMessage('portal.resource.url.tip')")}
+##            }
+        };
+        $(function() {
+            $('#addForm').validate(formValidate);
+
+            $("#icon").change(function(){
+                var icon= $("#icon").val();
+                $("#icon-show").attr("class",icon);
             });
-        </script>
-    </head>
-	<body>
-		<div class="row">
-            <div class="col-xs-12 col-sm-12">
-                <div class="widget-box">
-                    <div class="widget-header">
-                        <h5 class="lighter">
-                            <i class="icon-plus green"></i>#springMessage('tbtSps.resource')&nbsp;&gt;&nbsp;#springMessage('view.lable.add')
-                        </h5>
-                        <div class="widget-toolbar"></div>
-                    </div>
-                    <div class="widget-body">
-                        <div class="widget-main" style="background-color: #fff;padding:5px;">
-                            <form class="form-horizontal" role="form" id="addForm">
-                                <div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="resourceName">#springMessage('tbtSps.resource.resourceName')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="resourceName" id="resourceName" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="resourceCode">#springMessage('tbtSps.resource.resourceCode')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="resourceCode" id="resourceCode" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="url">#springMessage('tbtSps.resource.url')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="url" id="url" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="parentCode">#springMessage('tbtSps.resource.parentCode')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="parentCode" id="parentCode" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="level">#springMessage('tbtSps.resource.level')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="level" id="level" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="orders">#springMessage('tbtSps.resource.orders')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="orders" id="orders" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="icon">#springMessage('tbtSps.resource.icon')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="icon" id="icon" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="platfrom">#springMessage('tbtSps.resource.platfrom')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="platfrom" id="platfrom" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="buttonflag">#springMessage('tbtSps.resource.buttonflag')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="buttonflag" id="buttonflag" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="opens">#springMessage('tbtSps.resource.opens')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="opens" id="opens" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="parentflag">#springMessage('tbtSps.resource.parentflag')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="parentflag" id="parentflag" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="note">#springMessage('tbtSps.resource.note')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="note" id="note" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-                                </div>
-								<div class="form-group">
-									<div class="col-sm-8 col-sm-offset-4">
-                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
-                                        &nbsp; &nbsp; &nbsp;
-                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-										 &nbsp; &nbsp; &nbsp;
-              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+
+            $('#orders').ace_spinner(
+                    {value:10,min:1,max:100,step:1, on_sides: true, icon_up:'icon-plus smaller-75', icon_down:'icon-minus smaller-75', btn_up_class:'btn-success' , btn_down_class:'btn-danger'}
+            ).on( "blur", function( ) {
+              if($.trim($(this).val()).length==0){
+                  $(this).val("10")
+              }
+            });
+
+            $("#btn-submit").click(submitAddResource);
+
+            //有无子菜单选项的切换
+            $("input[name=parentFlag]").change(function(){
+                $("#resourceUrl").toggle();
+                if($(this).val()=="0"){    //无子节点的情况
+                    formValidate.rules.url.required=true;
+                    formValidate.rules.url.url=true;
+                    formValidate.messages.url.required="#springMessage('portal.resource.name.tip')";
+                    formValidate.messages.url.url=jQuery.format("#springMessage('portal.resource.url.tip')");
+                }
+            })
+        });
+
+        function submitAddResource(){
+            var form = $("#addForm");
+            if(form.valid()==false){
+                return;
+            }
+            var dataObj=form.serialize()+"&parentCode="+$("#parentCode").val()+"&level="+$("#level").val();
+            jQuery.post(basePath + "/resource/add",
+                    dataObj,
+                    function(data) {
+                        //MyPopWindow.SubmitCompletedCallback2(data, basePath + "/resource");
+                        var alertMsg = data.message;
+                        if(data.code == "200"){
+                            var resourceName = $("#resourceName").val();
+                            dialog.close("dialogaddChildren");
+                            dialog.alert("添加成功！");
+                            //生产新节点
+
+                            zTree.addNodes(newtreeNode, {id:data.result, pId:newtreeNode.id, name:resourceName});
+                        }else{
+                            $("#errorMsg").text(alertMsg).show();
+                        }
+                    }
+            );
+        }
+
+    </script>
+</head>
+<body>
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="widget-main">
+            <form class="form-horizontal" role="form" id="addForm">
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right" ><span class="red mr5">*</span>#springMessage('portal.platform')</label>
+                    <div class="col-sm-6">
+                        <select name="platfrom" id="plant" class="col-xs-12 col-sm-12">
+                            #foreach( $pl in $plant)
+                                <option value="$!pl">$!pl</option>
+                            #end
+                        </select>
+
                     </div>
                 </div>
-            </div> 
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right" ><span class="red mr5">*</span>资源类型</label>
+                    <div class="col-sm-6">
+                        <select name="resourceType" id="resourceType" class="col-xs-12 col-sm-12">
+                            <option value="1">普通资源</option>
+                            <option value="3">超级资源</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right" for="resourceName"><span class="red mr5">*</span>#springMessage('portal.resource.name')</label>
+                    <div class="col-sm-6">
+                        <input type="text" name="resourceName" id="resourceName" class="col-xs-12 col-sm-12" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right"><span class="red mr5">*</span>是否有子菜单</label>
+                    <div class="col-sm-6">
+                        <label class="width-40"> <input checked="true" type="radio" name="parentFlag" value="1" /> 是</label>
+                        <label class="width-40"> <input  type="radio" name="parentFlag" value="0" /> 否</label>
+                    </div>
+                </div>
+                <div id="resourceUrl" class="form-group" style="display: none;">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right" for="url"><span class="red mr5">*</span>#springMessage('portal.resource.url')</label>
+                    <div class="col-sm-6">
+                        <input type="text" name="url" id="url" class="col-xs-12 col-sm-12" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right" for="orders"><span class="red mr5">*</span>#springMessage('portal.system.priority')</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="orders" id="orders" class="col-xs-12 col-sm-12 input-mini" value="10"/>
+                    </div>
+                    <div class="col-sm-5 ml15 mt5"><span class='grey'>#springMessage('view.lable.resource.Prompt')</span></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right" for="icon"><span class="red mr5">*</span>#springMessage('portal.resource.icon')</label>
+                    <div class="col-sm-4">
+                        <select name="icon" id="icon" class="col-xs-12 col-sm-12">
+                            #foreach( $icon in $icons)
+                                <option value="$!icon">$!icon</option>
+                            #end
+                        </select>
+                    </div>
+                    <span id="icon-show" class="${icons.get(0)} mt10"></span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right" for="remark">#springMessage('portal.dep.remark')</label>
+                    <div class="col-sm-6">
+                        <input type="text" name="note" id="remark" class="col-xs-12 col-sm-12" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right"><span class="red mr5">*</span>#springMessage('portal.resource.isMenu')</label>
+                    <div class="col-sm-6">
+                        <label class="width-40"> <input checked="true" type="radio" name="buttonflag" value="1" /> 是</label>
+                        <label class="width-40"> <input type="radio" name="buttonflag" value="0" /> 否</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-offset-1 col-sm-2 control-label no-padding-right"><span class="red mr5">*</span>是否展开</label>
+                    <div class="col-sm-6">
+                        <label class="width-40"> <input type="radio" name="openFlag" value="1" /> 是</label>
+                        <label class="width-40"> <input checked="true" type="radio" name="openFlag" value="0" /> 否</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-8 col-sm-offset-4">
+                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+                        &nbsp; &nbsp; &nbsp;
+                        <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                    </div>
+                </div>
+            </form>
+            <div id="errorMsg" class="form-group col-sm-offset-2 red bolder" style="display: none;"></div>
         </div>
-	</body>
+    </div>
+</div>
+</body>
 </html>

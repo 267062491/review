@@ -61,7 +61,7 @@ public class TbinfoQuery extends Query implements java.io.Serializable  {
     /** 备用字段4 */
 	private String back4; 
     /** 备用字段5 */
-	private String back5; 
+	private String versions;
     /** 创建时间 */
 	private Date createTime; 
     /** 修改时间 */
@@ -252,15 +252,15 @@ public class TbinfoQuery extends Query implements java.io.Serializable  {
     public void setBack4(String back4) {
 		this.back4 = back4;
 	}
-	
-    public String getBack5(){
-		return back5;
-	}
-	    
-    public void setBack5(String back5) {
-		this.back5 = back5;
-	}
-	
+
+    public String getVersions() {
+        return versions;
+    }
+
+    public void setVersions(String versions) {
+        this.versions = versions;
+    }
+
     public Date getCreateTime(){
 		return createTime;
 	}

@@ -6,7 +6,7 @@ import java.util.Date;
  * Resource：资源表实体类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-25 15:20:03
  * 
  */
 public class Resource implements java.io.Serializable  {
@@ -32,12 +32,10 @@ public class Resource implements java.io.Serializable  {
     private String icon; 
     /** 平台区分 */
     private String platfrom; 
-    /** 按钮区分 */
+    /** 按钮区分(0:按钮，1：菜单) */
     private Integer buttonflag; 
     /** 默认是否展开 */
-    private Integer opens; 
-    /** 是否有子菜单 */
-    private Integer parentflag; 
+    private Boolean open;
     /** 备注 */
     private String note; 
     /** 创建时间 */
@@ -49,8 +47,21 @@ public class Resource implements java.io.Serializable  {
     /** 修改人 */
     private String updateUser; 
     /** 是否删除（0：删除；1：不删除） */
-    private Integer yn; 
-    
+    private Integer yn;
+
+    private Integer openFlag ;
+    /**
+     * 是否有子菜单（为菜单导航是否点击使用）  1有子菜单  0 没有子菜单
+     */
+    private Integer parentFlag ;
+
+    private String roleCode;
+
+    /**
+     * 资源类型，和用户类型一致
+     */
+    private Integer resourceType ;
+
     public Long getId(){
         return id;
     }
@@ -86,7 +97,15 @@ public class Resource implements java.io.Serializable  {
     public String getParentCode(){
         return parentCode;
     }
-        
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
     }
@@ -130,23 +149,15 @@ public class Resource implements java.io.Serializable  {
     public void setButtonflag(Integer buttonflag) {
         this.buttonflag = buttonflag;
     }
-    
-    public Integer getOpens(){
-        return opens;
+
+    public Boolean getOpen() {
+        return open;
     }
-        
-    public void setOpens(Integer opens) {
-        this.opens = opens;
+
+    public void setOpen(Boolean open) {
+        this.open = open;
     }
-    
-    public Integer getParentflag(){
-        return parentflag;
-    }
-        
-    public void setParentflag(Integer parentflag) {
-        this.parentflag = parentflag;
-    }
-    
+
     public String getNote(){
         return note;
     }
@@ -193,5 +204,29 @@ public class Resource implements java.io.Serializable  {
         
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public Integer getOpenFlag() {
+        return openFlag;
+    }
+
+    public void setOpenFlag(Integer openFlag) {
+        this.openFlag = openFlag;
+    }
+
+    public Integer getParentFlag() {
+        return parentFlag;
+    }
+
+    public void setParentFlag(Integer parentFlag) {
+        this.parentFlag = parentFlag;
+    }
+
+    public Integer getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(Integer resourceType) {
+        this.resourceType = resourceType;
     }
 }

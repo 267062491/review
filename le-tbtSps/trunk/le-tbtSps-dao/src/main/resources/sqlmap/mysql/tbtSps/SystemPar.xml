@@ -26,7 +26,7 @@
 
     <!-- 创建信息 -->
     <insert id="insert" parameterType="SystemPar" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO bs_system_par(<include refid="systemParUsedColumns"/>) 
+        INSERT INTO t_system_par(<include refid="systemParUsedColumns"/>)
         VALUES (#{warehouseNo},#{parCode},#{partModule},#{parValue},#{note},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
 	</insert>
 	
@@ -34,7 +34,7 @@
     <update id="update" parameterType="SystemPar">
         <if test="_parameter != null">
             <if test="id != null and id > 0">
-                update bs_system_par set
+                update t_system_par set
 		        <if test="warehouseNo != null and warehouseNo != ''">
                 	warehouse_no = #{warehouseNo,jdbcType=VARCHAR},
 		        </if>
@@ -62,7 +62,7 @@
     <!-- 根据主键获取对象信息 -->
     <select id="getSystemParById" resultMap="SystemParMap" parameterType="java.lang.Long">
         <if test="_parameter != null">
-            select <include refid="systemParColumns"/> from bs_system_par
+            select <include refid="systemParColumns"/> from t_system_par
             where id = #{_parameter} and yn = 1
         </if>
     </select>
@@ -70,31 +70,31 @@
     <!-- 根据查询Bean获取数据集合，不带翻页 -->
     <select id="querySystemParList" resultMap="SystemParMap"
             parameterType="com.letv.tbtSps.domain.query.SystemParQuery">
-        select <include refid="systemParColumns"/> from bs_system_par where <include refid="querySystemParListWhere"/>
+        select <include refid="systemParColumns"/> from t_system_par where <include refid="querySystemParListWhere"/>
     </select>
 
     <!-- 根据查询Bean获取数据集合，翻页 -->
     <select id="querySystemParListWithPage" resultMap="SystemParMap"
             parameterType="com.letv.tbtSps.domain.query.SystemParQuery">
-        select <include refid="systemParColumns"/> from bs_system_par where <include refid="querySystemParListWhere"/>
+        select <include refid="systemParColumns"/> from t_system_par where <include refid="querySystemParListWhere"/>
         order by create_time desc 
         limit #{startIndex},#{pageSize}
     </select>
 
     <!-- 根据查询Bean查询-判断是否存在 -->
     <select id="exist" resultType="java.lang.Integer" parameterType="SystemPar">
-        select count(1) from bs_system_par where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+        select count(1) from t_system_par where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
     </select>
 
     <!-- 根据查询Bean获取集合总数 -->
     <select id="querySystemParCount" resultType="java.lang.Integer"
             parameterType="com.letv.tbtSps.domain.query.SystemParQuery">
-        select count(1) from bs_system_par where <include refid="querySystemParListWhere"/>
+        select count(1) from t_system_par where <include refid="querySystemParListWhere"/>
     </select>
 
     <!-- 删除信息-逻辑删除 -->
     <update id="delete" parameterType="SystemPar">
-		update bs_system_par 
+		update t_system_par
 		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id}
     </update>

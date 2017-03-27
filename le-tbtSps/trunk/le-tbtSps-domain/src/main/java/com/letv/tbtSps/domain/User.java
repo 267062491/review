@@ -6,7 +6,7 @@ import java.util.Date;
  * User：用户表实体类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-26 9:37:54
  * 
  */
 public class User implements java.io.Serializable  {
@@ -34,7 +34,7 @@ public class User implements java.io.Serializable  {
     private String userOthername; 
     /** 用户类型 */
     private Integer userType; 
-    /** 用户状态 */
+    /** 用户状态 1、启用 ； 0：禁用*/
     private Integer userState; 
     /** 用户地址 */
     private String userAddress; 
@@ -49,7 +49,24 @@ public class User implements java.io.Serializable  {
     /** 修改人 */
     private String updateUser; 
     /** 是否删除（0：删除；1：不删除） */
-    private Integer yn; 
+    private Integer yn;
+    /**
+     * 角色名称
+     */
+    private String roleName ;
+
+    /**
+     * 仓库名称
+     */
+    private String warehouseName ;
+    /**
+     * 原始密码
+     */
+    private String oraPassword ;
+    /**
+     * 确认密码
+     */
+    private String confirmPassword ;
     
     public Long getId(){
         return id;
@@ -193,5 +210,37 @@ public class User implements java.io.Serializable  {
         
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
+    }
+
+    public String getOraPassword() {
+        return oraPassword;
+    }
+
+    public void setOraPassword(String oraPassword) {
+        this.oraPassword = oraPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

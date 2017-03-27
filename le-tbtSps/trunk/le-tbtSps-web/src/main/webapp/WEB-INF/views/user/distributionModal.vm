@@ -1,0 +1,244 @@
+<!-- Modal -->
+<div class="modal fade" id="myUserDistribution" tabindex="-1" role="dialog" aria-labelledby="myUserModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myUserModalLabel">分配角色</h4>
+			</div>
+			<div class="modal-body">
+                <div class="modal-content">
+                    <div class="modal-header">
+##                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="blue bigger">分配角色给用户 <span id="role_user_info" class="green"></span></h4>
+                    </div>
+
+                    <div class="modal-body overflow-visible">
+
+                        <input type="hidden" id="role_user_id"/>
+                        <input type="hidden" id="userIds"/>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <h5>可用角色：</h5>
+                                <input type="text" id="selectAuto" name="selectAuto" placeholder="" class="col-xs-10 col-sm-9"/>
+                                <i id="icon-search-auto" class="icon-search btn btn-xs btn-primary"
+                                   style="margin-left:8px;padding:5px;width:28px;height:28px;"></i>
+                                <select multiple="multiple" id="select1" style="width:210px;height:200px;margin-top:3px;"
+                                        class="select1" multiple>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <p>&nbsp; &nbsp;</p>
+                                <p>&nbsp; &nbsp;</p>
+                                <p>&nbsp; &nbsp;</p>
+                                <p>
+                                    <button id="add" class="btn btn-info btn-xs">添加选中&nbsp;&gt;&gt;</button>
+                                </p>
+                                <p>
+                                    <button id="remove" class="btn btn-info btn-xs">&lt;&lt;&nbsp;删除选中</button>
+                                </p>
+                                <p>&nbsp; &nbsp;</p>
+                                <p>
+                                    <button id="add_all" class="btn btn-success btn-xs">全部添加&nbsp;&gt;&gt;</button>
+                                </p>
+                                <p>
+                                    <button id="remove_all" class="btn btn-success btn-xs">&lt;&lt;&nbsp;全部删除</button>
+                                </p>
+                            </div>
+                            <div class="col-sm-5">
+                                <h5>已选角色：</h5>
+                                <select multiple="multiple" id="select2" style="width: 210px;height:220px;margin-top:5px;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-sm btn-primary" id="user-role-submit-btn">
+                            <i class="icon-ok"></i>提交
+                        </button>
+                        <button class="btn btn-sm" data-dismiss="modal">
+                            <i class="icon-remove"></i>取消
+                        </button>
+                    </div>
+                </div>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script language="javascript">
+    var roleListTotal;
+    function toDistribution(userCode, userName , showName){
+        $("#role_user_id").val(userCode);
+        $("#userIds").attr("value",'');
+        $("#selectAuto").val("");
+        $("#role_user_info").html("  "+showName+" ("+userName+")");
+
+        jQuery.ajax({
+            type: "POST",
+            url: basePath + "/role/queryChooseRoleListByUserCode",
+            dataType : 'json',
+            data: "userCode=" + userCode,
+            async:false,
+
+            success: function(data){
+                $("#select1").empty();
+                if(data!=null && data.code==200){
+                    var roleList=data.result;
+                    if(roleList==null || roleList.length==0){
+                        return;
+                    } else {
+                        roleListTotal = roleList;
+                        for(var i=0;i<roleList.length;i++){
+                            $("#select1").append($("<option/>").text(roleList[i].roleName).attr("value",roleList[i].roleCode));
+                        }
+                    }
+                }
+            },
+
+            error : function(data) {
+                dialog.dialog.confirm("获取可用角色异常");
+            }
+        });
+
+        jQuery.ajax({
+            type: "POST",
+            url: basePath + "/role/queryRoleListByUserCode",
+            dataType : 'json',
+            data: "userCode=" + userCode,
+            success: function(data){
+                $("#select2").empty();
+                if(data!=null && data.code==200){
+                    var roleList=data.result;
+                    if(roleList==null || roleList.length==0){
+                        return;
+                    } else {
+                        for(var i=0;i<roleList.length;i++){
+                            $("#select2").append($("<option/>").text(roleList[i].roleName).attr("value",roleList[i].roleCode));
+                        }
+                    }
+                }
+            }
+        });
+
+        $('#myUserDistribution').modal('show');
+    }
+
+    //移到右边
+    $('#add').click(function () {
+        //获取选中的选项，删除并追加给对方
+        $('#select1 option:selected').appendTo('#select2');
+    });
+    //移到左边
+    $('#remove').click(function () {
+        $('#select2 option:selected').appendTo('#select1');
+    });
+    //全部移到右边
+    $('#add_all').click(function () {
+        //获取全部的选项,删除并追加给对方
+        $('#select1 option').appendTo('#select2');
+    });
+    //全部移到左边
+    $('#remove_all').click(function () {
+        $('#select2 option').appendTo('#select1');
+    });
+    //双击选项
+    $('#select1').dblclick(function () { //绑定双击事件
+        //获取全部的选项,删除并追加给对方
+        $("option:selected", this).appendTo('#select2'); //追加给对方
+    });
+    //双击选项
+    $('#select2').dblclick(function () {
+        $("option:selected", this).appendTo('#select1');
+    });
+
+    $('#icon-search-auto').click(function () {
+        $("#selectAuto").change();
+    });
+
+    $("#selectAuto").change(function () {
+        $("#select1").empty();
+
+        if (this.value != null && this.value != "") {
+            var tempVal = this.value;
+            for (var i = 0; i < roleListTotal.length; i++) {
+                if (roleListTotal[i].roleName.indexOf(tempVal) >= 0) {
+                    $("#select1").append($("<option/>").text(roleListTotal[i].roleName).attr("value", roleListTotal[i].roleCode));
+                }
+            }
+        } else {
+            for (var i = 0; i < roleListTotal.length; i++) {
+                $("#select1").append($("<option/>").text(roleListTotal[i].roleName).attr("value", roleListTotal[i].roleCode));
+            }
+        }
+    });
+
+    //提交
+    $('#user-role-submit-btn').click(function () {
+        var uId = $("#role_user_id").val();
+        var userIds = $("#userIds").val();
+        var items = $("#select2 option");
+        var info = "";
+        if (items.length == 0) {
+            dialog.alert("请选择一个角色");
+            return;
+        }
+
+        for (var i = 0; i < items.length; i++) {
+            // 如果i+1等于选项长度则取值后添加空字符串，否则为逗号
+            info = (info + items[i].value) + (((i + 1) == items.length) ? '' : ',');
+        }
+        if (uId != null && uId != '') {
+            jQuery.ajax({
+                type: "POST",
+                url: basePath + "/userRole/save",
+                dataType: 'json',
+                data: "userCode=" + uId + "&roleCodes=" + info,
+                success: function (data) {
+                    if (data == null) {
+                        dialog.alert("操作失败");
+                    } else if (data.code == 200) {
+                        dialog.alert("操作成功");
+                        $('#myUserDistribution').modal('hide');
+                    } else {
+                        dialog.alert(data.message);
+                    }
+                },
+                error: function (data) {
+                    if (data == null) {
+                        dialog.alert("操作失败");
+                    } else {
+                        dialog.alert(data.message);
+                    }
+                }
+            });
+        } else {
+            jQuery.ajax({
+                type: "POST",
+                url: basePath + "/userRole/saves",
+                dataType: 'json',
+                data: "userIds=" + userIds + "&roleIds=" + info,
+                success: function (data) {
+                    if (data == null) {
+                        dialog.alert("操作失败");
+                    } else if (data.code == 200) {
+                        dialog.alert("操作成功");
+                        $('#myUserDistribution').modal('hide');
+                    } else {
+                        dialog.alert(data.message);
+                    }
+                },
+                error: function (data) {
+                    if (data == null) {
+                        dialog.alert("操作失败");
+                    } else {
+                        dialog.alert(data.message);
+                    }
+                }
+            });
+
+        }
+
+    });
+</script>

@@ -39,16 +39,16 @@
 		<aop:advisor id="txAdviceAop" advice-ref="txAdvice" pointcut-ref="managers"/>
 	</aop:config>
 
-	<bean id="taskCommonManager" class="com.letv.schedule.task.manager.impl.TaskCommonManagerImpl">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="taskCommonDao" ref="taskCommonDao" />
-	</bean>
+	<!--<bean id="taskCommonManager" class="com.letv.schedule.task.manager.impl.TaskCommonManagerImpl">-->
+		<!--<property name="transactionManager" ref="transactionManager" />-->
+		<!--<property name="taskCommonDao" ref="taskCommonDao" />-->
+	<!--</bean>-->
 
-	<aop:config>
-		<aop:pointcut id="taskManagers"
-			expression="execution(* com.letv.schedule.task.manager.impl.*.*(..)) " />
-		<aop:advisor id="taskAdviceAop" advice-ref="txAdvice"
-			pointcut-ref="taskManagers" />
-	</aop:config>
+	<!--<aop:config>-->
+		<!--<aop:pointcut id="taskManagers"-->
+			<!--expression="execution(* com.letv.schedule.task.manager.impl.*.*(..)) " />-->
+		<!--<aop:advisor id="taskAdviceAop" advice-ref="txAdvice"-->
+			<!--pointcut-ref="taskManagers" />-->
+	<!--</aop:config>-->
 
 </beans>

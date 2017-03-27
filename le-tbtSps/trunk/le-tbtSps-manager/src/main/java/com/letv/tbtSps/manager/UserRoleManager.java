@@ -1,15 +1,16 @@
 package com.letv.tbtSps.manager;
 
-import java.util.List;
-
 import com.letv.tbtSps.domain.UserRole;
 import com.letv.tbtSps.domain.query.UserRoleQuery;
-import com.letv.common.utils.page.PageUtil;
+import com.letv.wmscommon.dto.PageUtil;
+
+import java.util.List;
+
 /**
  * UserRoleManager接口
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public interface UserRoleManager {
@@ -55,7 +56,7 @@ public interface UserRoleManager {
      * @return
      */
     public List<UserRole> queryUserRoleListWithPage(UserRoleQuery queryBean,
-            PageUtil pageUtil);
+                                                    PageUtil pageUtil);
 
     /**
      * 根据查询Bean获取对象信息总数
@@ -100,4 +101,8 @@ public interface UserRoleManager {
      * @return
      */
     public boolean exist(UserRole userRole);
+
+
+
+    public boolean batchUpdate(String userCode, String[] roleIds, String createUser);
 }

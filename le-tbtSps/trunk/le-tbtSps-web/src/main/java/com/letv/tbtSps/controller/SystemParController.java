@@ -1,15 +1,14 @@
 package com.letv.tbtSps.controller;
-   
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import com.letv.tbtSps.service.test.HighChartsDomain;
-import com.letv.tbtSps.service.test.Person;
-import com.letv.tbtSps.service.test.SolrJTest;
-import com.letv.tbtSps.utils.solr.SolrUtils;
+import com.letv.common.utils.exception.ExistedException;
+import com.letv.common.utils.page.PageUtil;
+import com.letv.common.utils.wrap.WrapMapper;
+import com.letv.common.utils.wrap.Wrapper;
+import com.letv.tbtSps.common.controller.ReviewBaseController;
+import com.letv.tbtSps.domain.SystemPar;
+import com.letv.tbtSps.domain.query.SystemParQuery;
+import com.letv.tbtSps.service.SystemParService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.tbtSps.domain.SystemPar;
-import com.letv.tbtSps.domain.query.SystemParQuery;
-import com.letv.tbtSps.service.SystemParService;
-import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.controller.base.BaseController;
-import com.letv.common.utils.page.PageUtil;
-import com.letv.common.utils.wrap.WrapMapper;
-import com.letv.common.utils.wrap.Wrapper;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+//import com.letv.tbtSps.service.test.HighChartsDomain;
+//import com.letv.tbtSps.service.test.Person;
+//import com.letv.tbtSps.service.test.SolrJTest;
+//import com.letv.tbtSps.utils.solr.SolrUtils;
 
 /**
  * SystemParController ：系统参数表控制器
@@ -37,7 +37,7 @@ import com.letv.common.utils.wrap.Wrapper;
 */
 @Controller
 @RequestMapping("systemPar")
-public class SystemParController extends BaseController {
+public class SystemParController extends ReviewBaseController {
 
     @Autowired
     private SystemParService systemParService;
@@ -69,12 +69,12 @@ public class SystemParController extends BaseController {
     @RequestMapping(value = "queryByPage")
     public String queryByPage(Model model, PageUtil page, SystemParQuery query) {
         try {
-            SolrJTest solr = new SolrJTest();
-            List<Person> list = solr.querySolr();
+//            SolrJTest solr = new SolrJTest();
+//            List<Person> list = solr.querySolr();
 
 
             List<SystemPar> dataList = systemParService.querySystemParListWithPage(query, page);
-            model.addAttribute("dataList", list);// 数据集合
+//            model.addAttribute("dataList", list);// 数据集合
             model.addAttribute("query", query);// 查询参数
             model.addAttribute("page", page);// 分页
         } catch (Exception e) {
@@ -251,21 +251,21 @@ public class SystemParController extends BaseController {
         title.add("十一月");
         title.add("十二月");
 
-        List<HighChartsDomain> arrs = new ArrayList<HighChartsDomain>() ;
-        for(int i = 0 ; i<4 ; i++){
-            HighChartsDomain highChartsDomain = new HighChartsDomain();
-            highChartsDomain.setName("name"+i);
-            List<Integer> data = new ArrayList<Integer>() ;
-            for(int j = 0 ; j<12 ; j++){
-                data.add(123);
-            }
-            highChartsDomain.setData(data);
-            arrs.add(highChartsDomain);
-        }
+//        List<HighChartsDomain> arrs = new ArrayList<HighChartsDomain>() ;
+//        for(int i = 0 ; i<4 ; i++){
+//            HighChartsDomain highChartsDomain = new HighChartsDomain();
+//            highChartsDomain.setName("name"+i);
+//            List<Integer> data = new ArrayList<Integer>() ;
+//            for(int j = 0 ; j<12 ; j++){
+//                data.add(123);
+//            }
+//            highChartsDomain.setData(data);
+//            arrs.add(highChartsDomain);
+//        }
 
         Map<String , Object> map = new HashMap<String,Object>();
         map.put("title",title);
-        map.put("arr",arrs);
+//        map.put("arr",arrs);
         return new Wrapper<Map<String , Object>>().result(map);
     }
 

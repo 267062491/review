@@ -1,15 +1,17 @@
 package com.letv.tbtSps.manager;
 
-import java.util.List;
-
 import com.letv.tbtSps.domain.Role;
 import com.letv.tbtSps.domain.query.RoleQuery;
-import com.letv.common.utils.page.PageUtil;
+import com.letv.tbtSps.domain.query.UserRoleQuery;
+import com.letv.wmscommon.dto.PageUtil;
+
+import java.util.List;
+
 /**
  * RoleManager接口
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public interface RoleManager {
@@ -55,7 +57,7 @@ public interface RoleManager {
      * @return
      */
     public List<Role> queryRoleListWithPage(RoleQuery queryBean,
-            PageUtil pageUtil);
+                                            PageUtil pageUtil);
 
     /**
      * 根据查询Bean获取对象信息总数
@@ -100,4 +102,39 @@ public interface RoleManager {
      * @return
      */
     public boolean exist(Role role);
+
+
+    /**
+     * 根据用户编码查询用户拥有的角色
+     * @param userRoleQuery
+     * @return
+     */
+    public List<Role> queryRoleListByUserCode(UserRoleQuery userRoleQuery);
+
+    /**
+     * 根据用编码， 查询用户可选择的角色
+     * @param userRoleQuery
+     * @return
+     */
+    public List<Role> queryChooseRoleListByUserCode(UserRoleQuery userRoleQuery);
+
+    /**
+     * 按照角色角色编码集合查询角色信息
+     * @param roleQuery
+     * @return
+     */
+    public List<Role> queryRoleListByUserCodes(RoleQuery roleQuery);
+    /**
+     * 根据角色编码查询角色信息
+     * @param list
+     * @return
+     */
+    public List<Role> queryRoleListByRoleCodes(List<String> list);
+
+    /**
+     * 启用、禁用角色
+     * @param role
+     * @return
+     */
+    public boolean enableOrDisable(Role role);
 }

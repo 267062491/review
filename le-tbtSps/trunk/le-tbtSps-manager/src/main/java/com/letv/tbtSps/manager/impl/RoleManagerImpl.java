@@ -1,22 +1,26 @@
 package com.letv.tbtSps.manager.impl;
 
-import java.util.List;
-
 import com.letv.common.manager.BaseManager;
-import com.letv.common.utils.page.PageUtil;
-import com.letv.tbtSps.domain.Role;
-import com.letv.tbtSps.domain.query.RoleQuery;
 import com.letv.tbtSps.dao.RoleDao;
+import com.letv.tbtSps.dao.RoleResourceDao;
+import com.letv.tbtSps.dao.UserRoleDao;
+import com.letv.tbtSps.domain.Role;
+import com.letv.tbtSps.domain.RoleResource;
+import com.letv.tbtSps.domain.query.RoleQuery;
+import com.letv.tbtSps.domain.query.UserRoleQuery;
 import com.letv.tbtSps.manager.RoleManager;
-
+import com.letv.tbtSps.manager.UserRoleManager;
+import com.letv.wmscommon.dto.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * RoleManager接口的实现类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 @Component
@@ -24,6 +28,12 @@ public class RoleManagerImpl extends BaseManager implements RoleManager {
 	
     @Autowired
     private RoleDao roleDao;
+    @Autowired
+    private UserRoleDao userRoleDao;
+    @Autowired
+    private UserRoleManager userRoleManager;
+    @Autowired
+    private RoleResourceDao roleResourceDao;
 
     /**
      * {@inheritDoc}
@@ -82,7 +92,7 @@ public class RoleManagerImpl extends BaseManager implements RoleManager {
         pageUtil.init();
         
         if (totalItem > 0) {
-            queryBean.setPageIndex(pageUtil.getCurPage());
+            queryBean.setStartIndex(pageUtil.getStart());
             queryBean.setPageSize(pageUtil.getPageSize());
             // 调用Dao翻页方法
             return roleDao.queryRoleListWithPage(queryBean);
@@ -101,7 +111,12 @@ public class RoleManagerImpl extends BaseManager implements RoleManager {
      * {@inheritDoc}
      */
     public boolean delete(Role role) {
-        return roleDao.delete(role);
+        roleDao.deleteByCode(role);
+        RoleResource roleResource = new RoleResource ();
+        roleResource.setRoleCode(role.getRoleCode());
+        roleResource.setUpdateUser(role.getUpdateUser());
+        roleResourceDao.deleteByRoleCode(roleResource) ;
+        return true ;
     }
 
     /**
@@ -133,5 +148,54 @@ public class RoleManagerImpl extends BaseManager implements RoleManager {
      */
     public boolean exist(Role role) {
         return roleDao.exist(role);
+    }
+
+
+    /**
+     * 根据用户编码查询用户拥有的角色
+     * @param userRoleQuery
+     * @return
+     */
+    public List<Role> queryRoleListByUserCode(UserRoleQuery userRoleQuery){
+        return roleDao.queryRoleListByUserCode(userRoleQuery);
+    }
+
+    /**
+     * 根据用编码， 查询用户可选择的角色
+     * @param userRoleQuery
+     * @return
+     */
+    public List<Role> queryChooseRoleListByUserCode(UserRoleQuery userRoleQuery){
+        return roleDao.queryChooseRoleListByUserCode(userRoleQuery);
+    }
+
+    /**
+     * 按照角色角色编码集合查询角色信息
+     * @param roleQuery
+     * @return
+     */
+    @Override
+    public List<Role> queryRoleListByUserCodes(RoleQuery roleQuery) {
+        return roleDao.queryRoleListByUserCodes(roleQuery);
+    }
+
+    /**
+     * 根据角色编码查询角色信息
+     * @param list
+     * @return
+     */
+    @Override
+    public List<Role> queryRoleListByRoleCodes(List<String> list){
+        return roleDao.queryRoleListByRoleCodes(list);
+    }
+
+    /**
+     * 启用、禁用角色
+     * @param role
+     * @return
+     */
+    @Override
+    public boolean enableOrDisable(Role role) {
+        return roleDao.enableOrDisable(role);
     }
 }

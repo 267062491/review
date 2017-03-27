@@ -58,9 +58,10 @@ public class UserResource {
         }
 
         try {
-            User user = userService.getUserById(request.getId());
-            UserResponseDto responseDto = convert(user);
-            return WrapMapper.ok().result(responseDto);
+//            User user = userService.getUserById(request.getId());
+//            UserResponseDto responseDto = convert(user);
+//            return WrapMapper.ok().result(responseDto);
+            return null ;
         } catch (Exception e) {
             this.logger.error("查询用户表数据异常", e);
             return WrapMapper.error();

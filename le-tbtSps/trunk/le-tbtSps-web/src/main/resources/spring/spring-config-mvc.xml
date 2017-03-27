@@ -98,7 +98,7 @@
 	<bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="formatterRegistrars">
-			<bean class="com.letv.common.web.springmvc.converter.DefaultFormatterRegistrar" />
+			<bean class="com.letv.tbtSps.common.converter.DefaultFormatterRegistrar" />
 		</property>
 	</bean>
 	
@@ -127,6 +127,6 @@
 
 	<context:property-placeholder location="classpath*:conf/authen.properties"
 		ignore-unresolvable="true" />
-	<!--<import resource="classpath*:spring/spring-config-authen.xml" />-->
+	<import resource="classpath*:spring/review-spring-config-authen.xml" />
 	
 </beans>

@@ -1,15 +1,16 @@
 package com.letv.tbtSps.manager;
 
-import java.util.List;
-
 import com.letv.tbtSps.domain.Resource;
 import com.letv.tbtSps.domain.query.ResourceQuery;
-import com.letv.common.utils.page.PageUtil;
+import com.letv.wmscommon.dto.PageUtil;
+
+import java.util.List;
+
 /**
  * ResourceManager接口
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public interface ResourceManager {
@@ -55,7 +56,7 @@ public interface ResourceManager {
      * @return
      */
     public List<Resource> queryResourceListWithPage(ResourceQuery queryBean,
-            PageUtil pageUtil);
+                                                    PageUtil pageUtil);
 
     /**
      * 根据查询Bean获取对象信息总数
@@ -84,6 +85,8 @@ public interface ResourceManager {
      */
     public Resource getResourceById(Long id);
 
+    public Resource getResourceByCode(String resourceCode);
+
     /**
      * 根据主键集合批量删除对象信息，该处做的是逻辑删除
      * 
@@ -100,4 +103,34 @@ public interface ResourceManager {
      * @return
      */
     public boolean exist(Resource resource);
+
+    /**
+     * 根据资源编码集合查询资源
+     * @param queryBean
+     * @return
+     */
+    public List<Resource> queryResourceListByCodes(ResourceQuery queryBean) ;
+
+    /**
+     * 查询某个节点以及节点的子节点
+     * @param queryBean
+     * @return
+     */
+    public List<Resource> queryResourceListByLikeCode(ResourceQuery queryBean) ;
+
+    /**
+     * 删除资源节点及其下所有子节点
+     * @param resource
+     * @return
+     */
+    public boolean deleteTreeNode(Resource resource);
+
+    /**
+     * 插入资源以及资源对应的角色
+     * @param resource
+     * @return
+     */
+    public boolean insertResourceAndBelongRole(Resource resource);
+
+    public boolean insertRequestURL(Resource resource);
 }

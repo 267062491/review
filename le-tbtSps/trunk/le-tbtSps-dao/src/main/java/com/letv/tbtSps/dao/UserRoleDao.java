@@ -13,18 +13,18 @@ import com.letv.tbtSps.domain.query.UserRoleQuery;
  * 
  */
 public interface UserRoleDao {
-    
+
     /**
      * 新增对象
-     * 
-     * @param userRole 
+     *
+     * @param userRole
      * @return
      */
     public boolean insert(UserRole userRole);
 
     /**
      * 更新对象
-     * 
+     *
      * @param userRole
      * @return
      */
@@ -32,7 +32,7 @@ public interface UserRoleDao {
 
     /**
      * 根据查询Bean获取对象集合，不带翻页
-     * 
+     *
      * @param queryBean
      * @return
      */
@@ -40,7 +40,7 @@ public interface UserRoleDao {
 
     /**
      * 根据查询Bean获取总数
-     * 
+     *
      * @param queryBean
      * @return
      */
@@ -48,7 +48,7 @@ public interface UserRoleDao {
 
     /**
      * 根据查询Bean获取集合，带翻页
-     * 
+     *
      * @param queryBean
      * @return
      */
@@ -56,7 +56,7 @@ public interface UserRoleDao {
 
     /**
      * 删除记录
-     * 
+     *
      * @param userRole
      * @return
      */
@@ -64,7 +64,7 @@ public interface UserRoleDao {
 
     /**
      * 根据主键获取对象
-     * 
+     *
      * @param id
      *            主键字段
      * @return
@@ -73,10 +73,24 @@ public interface UserRoleDao {
 
     /**
      * 判断是否存在
-     * 
+     *
      * @param userRole
      * @return
      */
     public boolean exist(UserRole userRole);
+    /**
+     * 根据用编码查询用户拥有的角色
+     * @param queryBean
+     * @return
+     */
+    public List<UserRole> queryUserRoleListByUserCode(UserRoleQuery queryBean);
+
+
+    /**
+     * 根据用户编码删除用户就是
+     * @param queryBean
+     * @return
+     */
+    public boolean deleteUserRoleByUserCode(UserRoleQuery queryBean);
 
 }

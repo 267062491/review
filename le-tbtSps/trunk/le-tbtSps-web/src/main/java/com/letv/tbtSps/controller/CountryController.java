@@ -3,6 +3,8 @@ package com.letv.tbtSps.controller;
 
 import java.util.List;
 
+import com.letv.tbtSps.common.controller.ReviewBaseController;
+import com.letv.tbtSps.common.controller.ReviewBaseController;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import com.letv.tbtSps.domain.Country;
 import com.letv.tbtSps.domain.query.CountryQuery;
 import com.letv.tbtSps.service.CountryService;
 import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.controller.base.BaseController;
 import com.letv.common.utils.page.PageUtil;
 import com.letv.common.utils.wrap.WrapMapper;
 import com.letv.common.utils.wrap.Wrapper;
@@ -30,7 +31,7 @@ import com.letv.common.utils.wrap.Wrapper;
 */
 @Controller
 @RequestMapping("country")
-public class CountryController extends BaseController {
+public class CountryController extends ReviewBaseController {
 
     @Autowired
     private CountryService countryService;
@@ -44,8 +45,6 @@ public class CountryController extends BaseController {
      * 首页
      * 
      * @param model
-     * @param page
-     * @param query
      * @return
      */
     @RequestMapping(value = "")
@@ -77,7 +76,6 @@ public class CountryController extends BaseController {
     /**
      * 通报成员----添加跳转
      * 
-     * @param model
      * @return
      */
     @RequestMapping(value = "addForward")

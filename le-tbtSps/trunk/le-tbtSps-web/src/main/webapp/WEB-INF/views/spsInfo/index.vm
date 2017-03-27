@@ -153,9 +153,9 @@
                                     <div class="col-sm-3">
                                         <input type="text" name="back4" id="back4" class="col-xs-10 col-sm-8" value="$!query.back4"/>
                                     </div>
-									<label class="col-sm-1 control-label no-padding-right" for="back5">#springMessage('tbtSps.spsInfo.back5')</label>
+									<label class="col-sm-1 control-label no-padding-right" for="versions">#springMessage('tbtSps.spsInfo.versions')</label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="back5" id="back5" class="col-xs-10 col-sm-8" value="$!query.back5"/>
+                                        <input type="text" name="versions" id="versions" class="col-xs-10 col-sm-8" value="$!query.versions"/>
                                     </div>
 								</div>
 								<div class="form-group">
@@ -203,7 +203,7 @@
 							<th class="center">#springMessage('tbtSps.spsInfo.back2')</th>
 							<th class="center">#springMessage('tbtSps.spsInfo.back3')</th>
 							<th class="center">#springMessage('tbtSps.spsInfo.back4')</th>
-							<th class="center">#springMessage('tbtSps.spsInfo.back5')</th>
+							<th class="center">#springMessage('tbtSps.spsInfo.versions')</th>
 							<th class="center">#springMessage('tbtSps.spsInfo.createTime')</th>
 							<th class="center">#springMessage('tbtSps.spsInfo.createUser')</th>
     						<th class="center">#springMessage('view.lable.operate')</th>
@@ -236,7 +236,7 @@
                                 <td>$!item.back2</td>
                                 <td>$!item.back3</td>
                                 <td>$!item.back4</td>
-                                <td>$!item.back5</td>
+                                <td>$!item.versions</td>
                                 <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>
                                 <td>$!item.createUser</td>
                                 <td>

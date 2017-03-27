@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-2.0.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+       default-autowire="byName">
+
+    <!--池化的httpClient调度器-->
+    <bean id="poolingClientConnectionManager" class="org.apache.http.impl.conn.PoolingClientConnectionManager"
+          p:maxTotal="200" p:defaultMaxPerRoute="20"/>
+    <bean id="wmsHttpClient" class="com.letv.wmscommon.resteasy.WmsHttpClient"
+          c:conman-ref="poolingClientConnectionManager" p:token="${service.token.wmsportal}"/>
+    <bean id="pooledHttpClient4Executor" class="org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor"
+          c:httpClient-ref="wmsHttpClient"/>
+    <bean id="indexService" class="org.jboss.resteasy.client.ProxyFactory" factory-method="create">
+        <constructor-arg name="clazz" value="com.letv.wmsportal.service.IndexService">
+        </constructor-arg>
+        <constructor-arg name="baseUri" value="${portal.api.domain}"/>
+        <constructor-arg name="executor" ref="pooledHttpClient4Executor"/>
+        <constructor-arg name="providerFactory">
+            <bean class="org.jboss.resteasy.spi.ResteasyProviderFactory" factory-method="getInstance"/>
+        </constructor-arg>
+        <constructor-arg name="extractorFactory">
+            <bean class="org.jboss.resteasy.client.core.extractors.DefaultEntityExtractorFactory"/>
+        </constructor-arg>
+    </bean>
+    <bean id="resourceService" class="org.jboss.resteasy.client.ProxyFactory" factory-method="create">
+        <constructor-arg name="clazz" value="com.letv.wmsportal.service.RoleResourceService">
+        </constructor-arg>
+        <constructor-arg name="baseUri" value="${portal.api.domain}"/>
+        <constructor-arg name="executor" ref="pooledHttpClient4Executor"/>
+        <constructor-arg name="providerFactory">
+            <bean class="org.jboss.resteasy.spi.ResteasyProviderFactory" factory-method="getInstance"/>
+        </constructor-arg>
+        <constructor-arg name="extractorFactory">
+            <bean class="org.jboss.resteasy.client.core.extractors.DefaultEntityExtractorFactory"/>
+        </constructor-arg>
+    </bean>
+</beans>

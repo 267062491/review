@@ -16,9 +16,9 @@
 
 	<context:component-scan base-package="com.letv.tbtSps.service" />
 	
-	<bean id="taskCommonService" class="com.letv.schedule.task.service.impl.TaskCommonServiceImpl">
-		<property name="taskCommonManager" ref="taskCommonManager" />
-	</bean>
+	<!--<bean id="taskCommonService" class="com.letv.schedule.task.service.impl.TaskCommonServiceImpl">-->
+		<!--<property name="taskCommonManager" ref="taskCommonManager" />-->
+	<!--</bean>-->
 	
 	<bean class="com.letv.common.utils.config.SpringHelper" />
 

@@ -6,7 +6,7 @@ import java.util.Date;
  * RoleResource：角色-资源实体类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public class RoleResource implements java.io.Serializable  {
@@ -16,8 +16,6 @@ public class RoleResource implements java.io.Serializable  {
 	
     /** id */
     private Long id; 
-    /** 角色表_id */
-    private Long tRId; 
     /** 角色编码 */
     private String roleCode; 
     /** 资源编码 */
@@ -33,7 +31,16 @@ public class RoleResource implements java.io.Serializable  {
     /** 修改人 */
     private String updateUser; 
     /** 是否删除（0：删除；1：不删除） */
-    private Integer yn; 
+    private Integer yn;
+
+    /**
+     * pc端资源编码
+     */
+    private String pcResourceCode ;
+    /**
+     * rf端资源编码
+     */
+    private String rfResourceCode ;
     
     public Long getId(){
         return id;
@@ -41,14 +48,6 @@ public class RoleResource implements java.io.Serializable  {
         
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    public Long getTRId(){
-        return tRId;
-    }
-        
-    public void setTRId(Long tRId) {
-        this.tRId = tRId;
     }
     
     public String getRoleCode(){
@@ -113,5 +112,21 @@ public class RoleResource implements java.io.Serializable  {
         
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public String getPcResourceCode() {
+        return pcResourceCode;
+    }
+
+    public void setPcResourceCode(String pcResourceCode) {
+        this.pcResourceCode = pcResourceCode;
+    }
+
+    public String getRfResourceCode() {
+        return rfResourceCode;
+    }
+
+    public void setRfResourceCode(String rfResourceCode) {
+        this.rfResourceCode = rfResourceCode;
     }
 }

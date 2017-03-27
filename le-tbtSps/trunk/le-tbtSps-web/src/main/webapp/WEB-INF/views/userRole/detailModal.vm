@@ -11,25 +11,22 @@
 					<tbody>
 						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.id')</th><td id="r_id" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.tUId')</th><td id="r_tUId" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.userCode')</th><td id="r_userCode" style='width:25%;'></td>
+						</tr>
+						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.roleCode')</th><td id="r_roleCode" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.note')</th><td id="r_note" style='width:25%;'></td>
+						</tr>
+						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.createTime')</th><td id="r_createTime" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+						</tr>
+						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.createUser')</th><td id="r_createUser" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.yn')</th><td id="r_yn" style='width:25%;'></td>
 						</tr>
 						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.userRole.yn')</th><td id="r_yn" style='width:25%;'></td>
 						</tr>
 					</tbody>
 				</table>
@@ -53,7 +50,6 @@
     			if(data!=null && data.code==200 && data.result!=null){
     				var r = data.result;
     				$("#r_id").text(r.id==null?"":r.id);
-    				$("#r_tUId").text(r.tUId==null?"":r.tUId);
     				$("#r_userCode").text(r.userCode==null?"":r.userCode);
     				$("#r_roleCode").text(r.roleCode==null?"":r.roleCode);
     				$("#r_note").text(r.note==null?"":r.note);

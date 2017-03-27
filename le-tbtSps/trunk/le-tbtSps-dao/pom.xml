@@ -13,10 +13,10 @@
 			<groupId>com.letv.common</groupId>
 			<artifactId>letv-common-dao</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.letv.schedule</groupId>
-			<artifactId>letv-schedule-task</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.letv.schedule</groupId>-->
+			<!--<artifactId>letv-schedule-task</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>com.le.tbtSps</groupId>
 			<artifactId>le-tbtSps-domain</artifactId>

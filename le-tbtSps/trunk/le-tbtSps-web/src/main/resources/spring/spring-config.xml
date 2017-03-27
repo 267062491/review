@@ -14,7 +14,14 @@
 	default-autowire="byName">
 	
 	<context:property-placeholder location="classpath*:conf/app.properties" ignore-unresolvable="true"/>
+	<context:property-placeholder location="classpath*:conf/authen.properties" ignore-unresolvable="true"/>
 	<context:property-placeholder location="classpath*:conf/important.properties" ignore-unresolvable="true"/>
+
+    <bean id="portalWeb" class="com.letv.tbtSps.utils.PortalWeb">
+        <property name="webDomain" value="${my.web.domain}" />
+        <property name="cookieNames" value="${portal.cookie.names}" />
+        <property name="cookieDomains" value="${portal.cookie.domains}" />
+    </bean>
 
 	<import resource="classpath*:spring/spring-config-service.xml" />
 </beans>

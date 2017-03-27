@@ -3,6 +3,7 @@ package com.letv.tbtSps.controller;
 
 import java.util.List;
 
+import com.letv.tbtSps.common.controller.ReviewBaseController;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import com.letv.tbtSps.domain.NotificationCategory;
 import com.letv.tbtSps.domain.query.NotificationCategoryQuery;
 import com.letv.tbtSps.service.NotificationCategoryService;
 import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.controller.base.BaseController;
 import com.letv.common.utils.page.PageUtil;
 import com.letv.common.utils.wrap.WrapMapper;
 import com.letv.common.utils.wrap.Wrapper;
@@ -30,7 +30,7 @@ import com.letv.common.utils.wrap.Wrapper;
 */
 @Controller
 @RequestMapping("notificationCategory")
-public class NotificationCategoryController extends BaseController {
+public class NotificationCategoryController extends ReviewBaseController {
 
     @Autowired
     private NotificationCategoryService notificationCategoryService;
@@ -44,8 +44,6 @@ public class NotificationCategoryController extends BaseController {
      * 首页
      * 
      * @param model
-     * @param page
-     * @param query
      * @return
      */
     @RequestMapping(value = "")
@@ -77,7 +75,6 @@ public class NotificationCategoryController extends BaseController {
     /**
      * 通报内部分类----添加跳转
      * 
-     * @param model
      * @return
      */
     @RequestMapping(value = "addForward")

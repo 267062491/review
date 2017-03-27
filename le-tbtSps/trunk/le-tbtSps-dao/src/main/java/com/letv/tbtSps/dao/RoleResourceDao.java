@@ -1,15 +1,17 @@
 package com.letv.tbtSps.dao;
 
-import java.util.List;
 
 import com.letv.tbtSps.domain.RoleResource;
 import com.letv.tbtSps.domain.query.RoleResourceQuery;
+
+import java.util.List;
+
 /**
  * RoleResourceDao接口<br/>
  * 对'角色-资源'表进行基本的操作
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public interface RoleResourceDao {
@@ -78,5 +80,34 @@ public interface RoleResourceDao {
      * @return
      */
     public boolean exist(RoleResource roleResource);
+
+    /**
+     * 根据用编码获取用户拥有的资源
+     * @param queryBean
+     * @return
+     */
+    public List<RoleResource> queryRoleResourceListByUserCode(RoleResourceQuery queryBean);
+
+    /**
+     * 根据角色编码删除角色下的资源
+     * @param roleResource
+     * @return
+     */
+    public boolean deleteByRoleCode(RoleResource roleResource);
+
+    /**
+     * 根据资源编码和角色批量查询角色资源
+     * @param queryBean
+     * @return
+     */
+    public List<RoleResource> queryRoleResourceByRoleAndResourceCode(RoleResourceQuery queryBean);
+
+    /**
+     * 批量插入
+     * @param list_roleResource
+     * @return
+     */
+    public boolean insertBatch(List<RoleResource> list_roleResource);
+
 
 }

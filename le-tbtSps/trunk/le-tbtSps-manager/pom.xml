@@ -39,6 +39,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>com.le.wmscommon</groupId>
+            <artifactId>le-wmscommon-domain</artifactId>
+            <version>1.0.0.1-SNAPSHOT</version>
+        </dependency>
 		<!-- Spring end -->
 	</dependencies>
 </project>

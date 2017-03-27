@@ -6,7 +6,7 @@ import java.util.Date;
  * Role：角色表实体类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public class Role implements java.io.Serializable  {
@@ -31,7 +31,21 @@ public class Role implements java.io.Serializable  {
     /** 修改人 */
     private String updateUser; 
     /** 是否删除（0：删除；1：不删除） */
-    private Integer yn; 
+    private Integer yn;
+    /**
+     * 用户编码
+     */
+    private String userCode ;
+
+    /**
+     * 启用、禁用标示 1启用 ， 0禁用
+     */
+    private Integer enable ;
+
+    /**
+     * 角色类型，和用户类型一致
+     */
+    private Integer roleType ;
     
     public Long getId(){
         return id;
@@ -103,5 +117,29 @@ public class Role implements java.io.Serializable  {
         
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public Integer getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Integer enable) {
+        this.enable = enable;
+    }
+
+    public Integer getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Integer roleType) {
+        this.roleType = roleType;
     }
 }

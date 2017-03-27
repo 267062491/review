@@ -1,15 +1,17 @@
 package com.letv.tbtSps.dao;
 
-import java.util.List;
 
 import com.letv.tbtSps.domain.Resource;
 import com.letv.tbtSps.domain.query.ResourceQuery;
+
+import java.util.List;
+
 /**
  * ResourceDao接口<br/>
  * 对'资源表'表进行基本的操作
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public interface ResourceDao {
@@ -71,6 +73,9 @@ public interface ResourceDao {
      */
     public Resource getResourceById(Long id);
 
+
+    public Resource getResourceByCode(String resourceCode);
+
     /**
      * 判断是否存在
      * 
@@ -78,5 +83,36 @@ public interface ResourceDao {
      * @return
      */
     public boolean exist(Resource resource);
+
+
+    public  List<Resource> iterative(String parentCode_);
+
+    /**
+     * 根据资源编码集合查询资源
+     * @param queryBean
+     * @return
+     */
+    public List<Resource> queryResourceListByCodes(ResourceQuery queryBean) ;
+
+    /**
+     * 查询某个节点以及节点的子节点
+     * @param queryBean
+     * @return
+     */
+    public List<Resource> queryResourceListByLikeCode(ResourceQuery queryBean) ;
+    /**
+     * 根据父节点查询父节点的一级子节点
+     * @param queryBean
+     * @return
+     */
+    public List<Resource> queryResourceListByParentCode(ResourceQuery queryBean) ;
+
+
+    /**
+     * 删除资源节点及其下所有子节点
+     * @param resource
+     * @return
+     */
+    public boolean deleteTreeNode(Resource resource);
 
 }

@@ -2,7 +2,14 @@
 <html lang="zh-cn">
     <head>
         #parse("/layout/head.vm")
-		<script language="javascript"> 
+        <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/ztree/demo.css"/>
+        <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/ztree/metroStyle.css"/>
+        <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/ztree/TreeGrid.css"/>
+        <script type="text/javascript" src="#springUrl('')/static/js/ztree/jquery.ztree.core-3.5new.js"></script>
+        <script type="text/javascript" src="#springUrl('')/static/js/ztree/jquery.ztree.excheck-3.5.min.js"></script>
+        <script type="text/javascript" src="#springUrl('')/static/js/ztree/jquery.ztree.exedit-3.5.min.js"></script>
+        <script type="text/javascript" src="#springUrl('')/static/js/ztree/TreeGrid.js"></script>
+		<script language="javascript">
 			$(function() {
 				$("#btn-query").click(function() {
         			pageSubmit(1);
@@ -24,9 +31,16 @@
         	}
         	
         	function toDelete(parameterId){
-        		MyPopWindow.ExecuteDelete("$basePath/role/delete",{ id : parameterId });
+        		MyPopWindow.ExecuteDelete("$basePath/role/delete",{ roleCode : parameterId });
         	}
-        	
+
+            function toEnable(roleCode , roleState){
+                if(roleState==1){
+                    MyPopWindow.ExecuteEnable("确定禁用该角色么？","$basePath/role/enableOrDisable",{ roleCode : roleCode , enable:0 });
+                }else{
+                    MyPopWindow.ExecuteEnable("确定启用该角色么？","$basePath/role/enableOrDisable",{ roleCode : roleCode , enable:1 });
+                }
+            }
         </script>
 	</head>
     <body>
@@ -35,7 +49,7 @@
                 <div class="widget-box">
                     <div class="widget-header">
                         <h5 class="lighter">
-                            <i class="icon-search green"></i>#springMessage('tbtSps.role')#springMessage('view.lable.search')
+                            <i class="icon-search green"></i>#springMessage('tbtSps.role')#springMessage('wmsmaster.manager.value')
                         </h5>
                         <div class="widget-toolbar">
                             <a href="#" data-action="collapse">
@@ -55,21 +69,14 @@
                                     <div class="col-sm-3">
                                         <input type="text" name="roleCode" id="roleCode" class="col-xs-10 col-sm-8" value="$!query.roleCode"/>
                                     </div>
-									<label class="col-sm-1 control-label no-padding-right" for="note">#springMessage('tbtSps.role.note')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="note" id="note" class="col-xs-10 col-sm-8" value="$!query.note"/>
-                                    </div>
 								</div>
 								<div class="form-group">
 								</div>
 								<div class="form-group">
-									<div class="col-sm-4 col-sm-offset-8">
+									<div class="col-sm-12 text-center">
     									#parse("/layout/page.vm")
-                                        <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
-                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-info btn-sm mr10" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
                                         <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-										 &nbsp; &nbsp; &nbsp;
-              							<button class="btn btn-success btn-sm" type="button" id="btn-add"><i class="icon-plus"></i>#springMessage('view.lable.add')</button>
                                     </div>
                                 </div>
                             </form>
@@ -77,32 +84,53 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <div class="widget-main">
+                            <button class="btn btn-success btn-sm mr10" type="button" id="btn-add"><i class="icon-plus"></i>#springMessage('view.lable.add')</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 			<div class="col-xs-12 col-sm-12 table-responsive">
                 <table class="table table-striped table-bordered table-condensed table-hover">
                     <thead>
                         <tr>
-							<th class="center">#springMessage('tbtSps.role.id')</th>
+							<th class="center" hidden="true">#springMessage('tbtSps.role.id')</th>
 							<th class="center">#springMessage('tbtSps.role.roleName')</th>
 							<th class="center">#springMessage('tbtSps.role.roleCode')</th>
 							<th class="center">#springMessage('tbtSps.role.note')</th>
 							<th class="center">#springMessage('tbtSps.role.createTime')</th>
 							<th class="center">#springMessage('tbtSps.role.createUser')</th>
-    						<th class="center">#springMessage('view.lable.operate')</th>
+    						<th class="center" style="width: 210px;">#springMessage('view.lable.operate')</th>
                         </tr>
                     </thead>
                     <tbody>
                         #foreach( $item in $dataList)
                             <tr>
-                                <td>$!item.id</td>
+                                <td hidden="true">$!item.id</td>
                                 <td>$!item.roleName</td>
                                 <td>$!item.roleCode</td>
                                 <td>$!item.note</td>
                                 <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>
                                 <td>$!item.createUser</td>
                                 <td>
+                                    <a href="javascript:void(0)" onclick="toEnable('$!item.roleCode',$!item.enable)">
+                                        <i class="icon-remove pink">
+                                            #if($!item.enable==1)
+                                                #springMessage('tbtSps.user.disable')
+                                            #else
+                                                #springMessage('tbtSps.user.enable')
+                                            #end
+                                        </i>
+                                    </a>
 									<a href="javascript:void(0)" onclick="toDetail($!item.id);" data-toggle="modal"><i class="icon-list">#springMessage('view.lable.detail')</i></a>
 									<a href="javascript:void(0)" onclick="toUpdate($!item.id)"><i class="icon-pencil pink">#springMessage('view.lable.update')</i></a>
-									<a href="javascript:void(0)" onclick="toDelete($!item.id)"><i class="icon-remove red">#springMessage('view.lable.delete')</i></a>
+									<a href="javascript:void(0)" onclick="toDelete('$!item.roleCode')"><i class="icon-remove red">#springMessage('view.lable.delete')</i></a>
+									<a href="javascript:void(0)" onclick="toDistribution('$!item.roleCode')"><i class="icon-hand-right green">#springMessage('view.lable.distribution')</i></a>
 								</td>
                             </tr>
                         #end
@@ -114,5 +142,6 @@
 			</div>
         </div>
 		#parse("/role/detailModal.vm")
+		#parse("/role/distributionModal.vm")
     </body>
 </html>

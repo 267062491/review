@@ -10,6 +10,9 @@
 				$("#btn-add").click(function() {
         			window.location.href=("$basePath/user/addForward");
    				});
+				$("#btn-toDownload").click(function() {
+        			window.location.href=("$basePath/static/file/系统用户导入模板.xlsx");
+   				});
 			});
         	// Submit Search Form
         	function pageSubmit(pageNoParam) {
@@ -22,11 +25,19 @@
         	function toUpdate(parameterId){
         		window.location.href=("$basePath/user/updateForward?id="+parameterId);
         	}
-        	
+
         	function toDelete(parameterId){
-        		MyPopWindow.ExecuteDelete("$basePath/user/delete",{ id : parameterId });
+        		MyPopWindow.ExecuteDelete("$basePath/user/delete",{ userCode : parameterId });
         	}
-        	
+        	function toEnable(userCode , userState){
+
+                if(userState==1){
+                    MyPopWindow.ExecuteEnable("确定禁用该用户么？","$basePath/user/enableOrDisable",{ userCode : userCode , userState:0 });
+                }else{
+                    MyPopWindow.ExecuteEnable("确定启用该用户么？","$basePath/user/enableOrDisable",{ userCode : userCode , userState:1 });
+                }
+        	}
+
         </script>
 	</head>
     <body>
@@ -35,7 +46,7 @@
                 <div class="widget-box">
                     <div class="widget-header">
                         <h5 class="lighter">
-                            <i class="icon-search green"></i>#springMessage('tbtSps.user')#springMessage('view.lable.search')
+                            <i class="icon-search green"></i>#springMessage('tbtSps.user')
                         </h5>
                         <div class="widget-toolbar">
                             <a href="#" data-action="collapse">
@@ -45,29 +56,30 @@
                     </div>
                     <div class="widget-body">
                         <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
-                            <form class="form-horizontal" role="form" id="queryForm">
+                            <form class="form-horizontal" role="form" id="queryForm" method="post">
 								<div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-right" for="showName">#springMessage('tbtSps.user.showName')</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="showName" id="showName" class="col-xs-10 col-sm-8" value="$!query.showName"/>
+                                    </div>
 									<label class="col-sm-1 control-label no-padding-right" for="userName">#springMessage('tbtSps.user.userName')</label>
                                     <div class="col-sm-3">
                                         <input type="text" name="userName" id="userName" class="col-xs-10 col-sm-8" value="$!query.userName"/>
                                     </div>
-									<label class="col-sm-1 control-label no-padding-right" for="showName">#springMessage('tbtSps.user.showName')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="showName" id="showName" class="col-xs-10 col-sm-8" value="$!query.showName"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="userCode">#springMessage('tbtSps.user.userCode')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="userCode" id="userCode" class="col-xs-10 col-sm-8" value="$!query.userCode"/>
-                                    </div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="password">#springMessage('tbtSps.user.password')</label>
+									<label class="col-sm-1 control-label no-padding-right" for="phoneno">#springMessage('tbtSps.role.roleName')</label>
                                     <div class="col-sm-3">
-                                        <input type="text" name="password" id="password" class="col-xs-10 col-sm-8" value="$!query.password"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="email">#springMessage('tbtSps.user.email')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="email" id="email" class="col-xs-10 col-sm-8" value="$!query.email"/>
+                                        <select name = "roleCode">
+                                            <option value="">#springMessage('tbtSps.please.choose')</option>
+                                            #foreach($role in $!list_role)
+                                                <option value="$!role.roleCode"
+                                                        #if($!role.roleCode==$!query.roleCode)
+                                                            selected="true"
+                                                        #end
+                                                        >$!role.roleName</option>
+                                            #end
+                                        </select>
                                     </div>
 									<label class="col-sm-1 control-label no-padding-right" for="phoneno">#springMessage('tbtSps.user.phoneno')</label>
                                     <div class="col-sm-3">
@@ -75,94 +87,99 @@
                                     </div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="duty">#springMessage('tbtSps.user.duty')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="duty" id="duty" class="col-xs-10 col-sm-8" value="$!query.duty"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="userOthername">#springMessage('tbtSps.user.userOthername')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="userOthername" id="userOthername" class="col-xs-10 col-sm-8" value="$!query.userOthername"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="userType">#springMessage('tbtSps.user.userType')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="userType" id="userType" class="col-xs-10 col-sm-8" value="$!query.userType"/>
-                                    </div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="userState">#springMessage('tbtSps.user.userState')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="userState" id="userState" class="col-xs-10 col-sm-8" value="$!query.userState"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="userAddress">#springMessage('tbtSps.user.userAddress')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="userAddress" id="userAddress" class="col-xs-10 col-sm-8" value="$!query.userAddress"/>
-                                    </div>
-									<label class="col-sm-1 control-label no-padding-right" for="note">#springMessage('tbtSps.user.note')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" name="note" id="note" class="col-xs-10 col-sm-8" value="$!query.note"/>
-                                    </div>
-								</div>
-								<div class="form-group">
-								</div>
-								<div class="form-group">
-									<div class="col-sm-4 col-sm-offset-8">
+									<div class="col-sm-12 text-center">
     									#parse("/layout/page.vm")
-                                        <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
-                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-info btn-sm mr10" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
                                         <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-										 &nbsp; &nbsp; &nbsp;
-              							<button class="btn btn-success btn-sm" type="button" id="btn-add"><i class="icon-plus"></i>#springMessage('view.lable.add')</button>
                                     </div>
                                 </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <div class="widget-main">
+                            <form class="form-horizontal mt5 mb5" role="form" id="uploadForm" enctype="multipart/form-data" method="post">
+                                <button class="btn btn-success btn-sm mr10" type="button" id="btn-add" ><i class="icon-plus"></i>#springMessage('view.lable.add')</button>
+                                <button class="btn btn-info btn-sm mr10" type="button" id="btn-toDownload"><i class="icon-download"></i>view.lable.download</button>
+                                <input type="file" name="file" id="file" style="margin-left:-240px;line-height: 34px;height: 34px;"/>
+                                <div class="col-sm-0"  id="loading" style="display:none">
+                                    <img  src="#springUrl('')/static/css/images/loading.gif" />tbtSps.view.lable.view
+                                </div>
+                                <button class="btn btn-primary btn-sm ml10" id="btn-upload" type="button" onclick="fileUpload()"><i class="icon-upload"></i>tbtSps.view.lable.import</button>
+                                <div class="clearfix"></div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
 			<div class="col-xs-12 col-sm-12 table-responsive">
-                <table class="table table-striped table-bordered table-condensed table-hover">
+                <table class="table table-striped table-bordered table-condensed table-hover" style="table-layout: fixed">
                     <thead>
                         <tr>
-							<th class="center">#springMessage('tbtSps.user.id')</th>
-							<th class="center">#springMessage('tbtSps.user.userName')</th>
-							<th class="center">#springMessage('tbtSps.user.showName')</th>
-							<th class="center">#springMessage('tbtSps.user.userCode')</th>
-							<th class="center">#springMessage('tbtSps.user.password')</th>
-							<th class="center">#springMessage('tbtSps.user.email')</th>
-							<th class="center">#springMessage('tbtSps.user.phoneno')</th>
-							<th class="center">#springMessage('tbtSps.user.duty')</th>
-							<th class="center">#springMessage('tbtSps.user.userOthername')</th>
-							<th class="center">#springMessage('tbtSps.user.userType')</th>
-							<th class="center">#springMessage('tbtSps.user.userState')</th>
-							<th class="center">#springMessage('tbtSps.user.userAddress')</th>
-							<th class="center">#springMessage('tbtSps.user.note')</th>
-							<th class="center">#springMessage('tbtSps.user.createTime')</th>
-							<th class="center">#springMessage('tbtSps.user.createUser')</th>
-    						<th class="center">#springMessage('view.lable.operate')</th>
+							<th class="center" hidden="true">#springMessage('tbtSps.user.id')</th>
+							<th class="center ">#springMessage('tbtSps.user.userName')</th>
+							<th class="center ">#springMessage('tbtSps.user.showName')</th>
+                            <th class="center ">#springMessage('tbtSps.user.duty')</th>
+                            <th class="center ">#springMessage('tbtSps.role.roleName')</th>
+                            <th class="center ">tbtSps.warehouse.warehouseName</th>
+							<th class="center " hidden="true">#springMessage('tbtSps.user.userCode')</th>
+							<th class="center " hidden="true">#springMessage('tbtSps.user.password')</th>
+							<th class="center ">#springMessage('tbtSps.user.email')</th>
+							<th class="center ">#springMessage('tbtSps.user.phoneno')</th>
+							<th class="center " hidden="true">#springMessage('tbtSps.user.userOthername')</th>
+							<th class="center " hidden="true">#springMessage('tbtSps.user.userType')</th>
+							<th class="center " hidden="true">#springMessage('tbtSps.user.userState')</th>
+							<th class="center " hidden="true">#springMessage('tbtSps.user.userAddress')</th>
+							<th class="center " hidden="true">#springMessage('tbtSps.user.note')</th>
+							<th class="center width150">#springMessage('tbtSps.user.createTime')</th>
+							<th class="center ">#springMessage('tbtSps.user.createUser')</th>
+    						<th class="center" style="width: 320px;max-width: 320px;">#springMessage('view.lable.operate')</th>
                         </tr>
                     </thead>
                     <tbody>
                         #foreach( $item in $dataList)
                             <tr>
-                                <td>$!item.id</td>
+                                <td hidden="true">$!item.id</td>
                                 <td>$!item.userName</td>
                                 <td>$!item.showName</td>
-                                <td>$!item.userCode</td>
-                                <td>$!item.password</td>
+                                <td>$!item.duty</td>
+                                <td>$!item.roleName</td>
+                                <td>$!item.warehouseName</td>
+                                <td hidden="true">$!item.userCode</td>
+                                <td hidden="true">$!item.password</td>
                                 <td>$!item.email</td>
                                 <td>$!item.phoneno</td>
-                                <td>$!item.duty</td>
-                                <td>$!item.userOthername</td>
-                                <td>$!item.userType</td>
-                                <td>$!item.userState</td>
-                                <td>$!item.userAddress</td>
-                                <td>$!item.note</td>
+                                <td hidden="true">$!item.userOthername</td>
+                                <td hidden="true">$!item.userType</td>
+                                <td hidden="true">$!item.userState</td>
+                                <td hidden="true">$!item.userAddress</td>
+                                <td hidden="true">$!item.note</td>
                                 <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>
                                 <td>$!item.createUser</td>
                                 <td>
+                                    <a href="javascript:void(0)" onclick="toEnable('$!item.userCode',$!item.userState)">
+                                        <i class="icon-remove pink">
+                                            #if($!item.userState==1)
+                                                #springMessage('tbtSps.user.disable')
+                                            #else
+                                                #springMessage('tbtSps.user.enable')
+                                            #end
+                                        </i>
+                                    </a>
 									<a href="javascript:void(0)" onclick="toDetail($!item.id);" data-toggle="modal"><i class="icon-list">#springMessage('view.lable.detail')</i></a>
 									<a href="javascript:void(0)" onclick="toUpdate($!item.id)"><i class="icon-pencil pink">#springMessage('view.lable.update')</i></a>
-									<a href="javascript:void(0)" onclick="toDelete($!item.id)"><i class="icon-remove red">#springMessage('view.lable.delete')</i></a>
+									<a href="javascript:void(0)" onclick="toDelete('$!item.userCode')"><i class="icon-remove red">#springMessage('view.lable.delete')</i></a>
+									<a href="javascript:void(0)" onclick="toDistribution('$!item.userCode','$!item.userName','$!item.showName')"><i class="icon-hand-right yellow">#springMessage('view.lable.distribution.role')</i></a>
+									<a href="javascript:void(0)" onclick="toDistributionWarehouse('$!item.userCode','$!item.userName','$!item.showName')"><i class="icon-hand-right green">#springMessage('view.lable.distribution.warehouse')</i></a>
 								</td>
                             </tr>
                         #end
@@ -174,5 +191,8 @@
 			</div>
         </div>
 		#parse("/user/detailModal.vm")
+		#parse("/user/distributionModal.vm")
+		#parse("/user/distributionModalWarehouse.vm")
+		#parse("/user/uploadFile.vm")
     </body>
 </html>

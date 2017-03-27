@@ -18,10 +18,6 @@
 			<artifactId>letv-common-proxy</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.letv.common</groupId>
-			<artifactId>letv-common-utils</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.letv.mail</groupId>
 			<artifactId>letv-mail-sdk</artifactId>
 		</dependency>

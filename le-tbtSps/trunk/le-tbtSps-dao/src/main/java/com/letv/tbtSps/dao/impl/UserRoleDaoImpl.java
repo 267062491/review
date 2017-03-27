@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 public class UserRoleDaoImpl extends BaseDao implements UserRoleDao {
     /** namespace */
     private final String namespace = UserRoleDaoImpl.class.getName();
-    
+
     /**
      * {@inheritDoc}
      */
@@ -68,13 +68,33 @@ public class UserRoleDaoImpl extends BaseDao implements UserRoleDao {
      */
     public UserRole getUserRoleById(Long id) {
         return (UserRole) queryForObject(namespace +".getUserRoleById", id);
-    } 
-    
+    }
+
     /**
      * {@inheritDoc}
      */
     public boolean exist(UserRole userRole) {
         int count = (Integer) queryForObject(namespace +".exist", userRole);
         return count > 0;
+    }
+
+    /**
+     * 根据用编码查询用户拥有的角色
+     * @param queryBean
+     * @return
+     */
+    @Override
+    public List<UserRole> queryUserRoleListByUserCode(UserRoleQuery queryBean) {
+        return (List<UserRole>) queryForList(namespace +".queryUserRoleListByUserCode", queryBean);
+    }
+
+    /**
+     * 根据用户编码删除用户角色
+     * @param queryBean
+     * @return
+     */
+    @Override
+    public boolean deleteUserRoleByUserCode(UserRoleQuery queryBean) {
+        return update(namespace +".deleteUserRoleByUserCode", queryBean);
     }
 }

@@ -1,14 +1,15 @@
 package com.letv.tbtSps.domain.query;
 
-import java.util.Date;
-
 import com.letv.common.utils.page.Query;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * RoleResourceQuery：角色-资源查询类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public class RoleResourceQuery extends Query implements java.io.Serializable  {
@@ -18,8 +19,6 @@ public class RoleResourceQuery extends Query implements java.io.Serializable  {
     
     /** id */
 	private Long id; 
-    /** 角色表_id */
-	private Long tRId; 
     /** 角色编码 */
 	private String roleCode; 
     /** 资源编码 */
@@ -39,7 +38,31 @@ public class RoleResourceQuery extends Query implements java.io.Serializable  {
     /** 开始时间 */
     private Date startTime; 
     /** 结束时间 */
-    private Date endTime; 
+    private Date endTime;
+
+    /**
+     * 用户编码
+     */
+    private String userCode ;
+
+    private Integer level ;
+
+    /**
+     * 是否按钮
+     */
+    private Integer buttonFlag ;
+
+    /**
+     *
+     */
+    private String platForm ;
+
+    /**
+     * 资源类型，同用户类型
+     */
+    private Integer resourceType ;
+
+    List<String> codes ;
 	
     public Long getId(){
 		return id;
@@ -47,14 +70,6 @@ public class RoleResourceQuery extends Query implements java.io.Serializable  {
 	    
     public void setId(Long id) {
 		this.id = id;
-	}
-	
-    public Long getTRId(){
-		return tRId;
-	}
-	    
-    public void setTRId(Long tRId) {
-		this.tRId = tRId;
 	}
 	
     public String getRoleCode(){
@@ -135,5 +150,53 @@ public class RoleResourceQuery extends Query implements java.io.Serializable  {
     
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public Integer getButtonFlag() {
+        return buttonFlag;
+    }
+
+    public void setButtonFlag(Integer buttonFlag) {
+        this.buttonFlag = buttonFlag;
+    }
+
+    public String getPlatForm() {
+        return platForm;
+    }
+
+    public void setPlatForm(String platForm) {
+        this.platForm = platForm;
+    }
+
+    public List<String> getCodes() {
+        return codes;
+    }
+
+    public void setCodes(List<String> codes) {
+        this.codes = codes;
+    }
+
+    public Integer getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(Integer resourceType) {
+        this.resourceType = resourceType;
     }
 }

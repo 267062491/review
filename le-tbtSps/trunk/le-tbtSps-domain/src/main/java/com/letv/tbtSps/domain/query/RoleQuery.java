@@ -1,14 +1,15 @@
 package com.letv.tbtSps.domain.query;
 
-import java.util.Date;
-
 import com.letv.common.utils.page.Query;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * RoleQuery：角色表查询类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public class RoleQuery extends Query implements java.io.Serializable  {
@@ -37,8 +38,23 @@ public class RoleQuery extends Query implements java.io.Serializable  {
     /** 开始时间 */
     private Date startTime; 
     /** 结束时间 */
-    private Date endTime; 
-	
+    private Date endTime;
+
+    /**
+     * 用户编码list集合
+     */
+    private List<String> list_userCode ;
+
+    /**
+     * 启用、禁用标示 1启用 ， 0禁用
+     */
+    private Integer enable ;
+
+    /**
+     * 角色类型，和用户类型一致
+     */
+    private Integer roleType ;
+
     public Long getId(){
 		return id;
 	}
@@ -125,5 +141,29 @@ public class RoleQuery extends Query implements java.io.Serializable  {
     
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public List<String> getList_userCode() {
+        return list_userCode;
+    }
+
+    public void setList_userCode(List<String> list_userCode) {
+        this.list_userCode = list_userCode;
+    }
+
+    public Integer getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Integer enable) {
+        this.enable = enable;
+    }
+
+    public Integer getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Integer roleType) {
+        this.roleType = roleType;
     }
 }

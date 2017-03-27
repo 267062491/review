@@ -1,8 +1,16 @@
 package com.letv.tbtSps.controller;
-   
 
-import java.util.List;
 
+import com.letv.common.utils.exception.ExistedException;
+import com.letv.common.utils.wrap.WrapMapper;
+import com.letv.common.utils.wrap.Wrapper;
+import com.letv.tbtSps.common.controller.ReviewBaseController;
+import com.letv.tbtSps.domain.RoleResource;
+import com.letv.tbtSps.domain.query.RoleResourceQuery;
+import com.letv.tbtSps.service.RoleResourceService;
+import com.letv.wmscommon.dto.PageUtil;
+import com.letv.wmscommon.dto.PagedQueryDto;
+import com.letv.wmscommon.dto.PagedResultDto;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,24 +21,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.tbtSps.domain.RoleResource;
-import com.letv.tbtSps.domain.query.RoleResourceQuery;
-import com.letv.tbtSps.service.RoleResourceService;
-import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.controller.base.BaseController;
-import com.letv.common.utils.page.PageUtil;
-import com.letv.common.utils.wrap.WrapMapper;
-import com.letv.common.utils.wrap.Wrapper;
+import java.util.List;
 
 /**
  * RoleResourceController ：角色-资源控制器
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:04
+ * @version 2016-10-24 17:11:38
 */
 @Controller
 @RequestMapping("roleResource")
-public class RoleResourceController extends BaseController {
+public class RoleResourceController extends ReviewBaseController {
 
     @Autowired
     private RoleResourceService roleResourceService;
@@ -44,8 +45,6 @@ public class RoleResourceController extends BaseController {
      * 首页
      * 
      * @param model
-     * @param page
-     * @param query
      * @return
      */
     @RequestMapping(value = "")
@@ -64,10 +63,14 @@ public class RoleResourceController extends BaseController {
     @RequestMapping(value = "queryByPage")
     public String queryByPage(Model model, PageUtil page, RoleResourceQuery query) {
         try {
-            List<RoleResource> dataList = roleResourceService.queryRoleResourceListWithPage(query, page);
+        PagedQueryDto<RoleResourceQuery> pagedQuery = new PagedQueryDto<RoleResourceQuery>();
+        pagedQuery.setPageUtil(page);
+        pagedQuery.setQueryDto(query);
+        PagedResultDto<RoleResource> pagedResult = roleResourceService.queryRoleResourceListWithPage(pagedQuery);
+        List<RoleResource> dataList = pagedResult.getResult();
             model.addAttribute("dataList", dataList);// 数据集合
             model.addAttribute("query", query);// 查询参数
-            model.addAttribute("page", page);// 分页
+            model.addAttribute("page", pagedResult.getPageUtil());// 分页
         } catch (Exception e) {
             LOG.error("roleResource queryByPage has error.", e);
         }
@@ -76,8 +79,7 @@ public class RoleResourceController extends BaseController {
 
     /**
      * 角色-资源----添加跳转
-     * 
-     * @param model
+     *
      * @return
      */
     @RequestMapping(value = "addForward")

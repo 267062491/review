@@ -1,27 +1,35 @@
 package com.letv.tbtSps.service.impl;
 
-import java.util.List;
-
+import com.letv.common.sdk.api.response.LetvResponse;
+import com.letv.common.utils.exception.ExistedException;
+import com.letv.common.utils.serialize.JsonHelper;
+import com.letv.tbtSps.domain.RoleResource;
+import com.letv.tbtSps.domain.query.ResourceQuery;
+import com.letv.tbtSps.domain.query.RoleResourceQuery;
+import com.letv.tbtSps.domain.query.TreeDomain;
+import com.letv.tbtSps.manager.ResourceManager;
+import com.letv.tbtSps.manager.RoleResourceManager;
+import com.letv.tbtSps.service.ResourceService;
+import com.letv.tbtSps.service.RoleResourceService;
+import com.letv.tbtSps.utils.constant.PortalSystemTipCodeEnum;
+import com.letv.wmscommon.dto.PageUtil;
+import com.letv.wmscommon.dto.PagedQueryDto;
+import com.letv.wmscommon.dto.PagedResultDto;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.letv.tbtSps.domain.RoleResource;
-import com.letv.tbtSps.domain.query.RoleResourceQuery;
-import com.letv.tbtSps.manager.RoleResourceManager;
-import com.letv.tbtSps.service.RoleResourceService;
-import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.utils.page.PageUtil;
-
+import org.perf4j.aop.Profiled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.perf4j.aop.Profiled;
- 
+
+import java.util.List;
+
 /**
  * RoleResourceService接口的实现类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:04
+ * @version 2016-10-24 17:11:37
  * 
  */
 @Service
@@ -32,12 +40,16 @@ public class RoleResourceServiceImpl implements RoleResourceService {
 
     @Autowired
     private RoleResourceManager roleResourceManager;
+    @Autowired
+    private ResourceManager resourceManager;
+    @Autowired
+    private ResourceService resourceService;
 
     /**
      * {@inheritDoc}
      */
     @Profiled(tag = "RoleResourceService.batchInsert")
-    public boolean insert(List<RoleResource> roleResourceList) {
+    public boolean batchInsert(List<RoleResource> roleResourceList) {
         boolean resultFlag = false;
         try {
             if (CollectionUtils.isNotEmpty(roleResourceList)) {
@@ -111,14 +123,16 @@ public class RoleResourceServiceImpl implements RoleResourceService {
      * {@inheritDoc}
      */
     @Profiled(tag = "RoleResourceService.queryRoleResourceListWithPage")
-    public List<RoleResource> queryRoleResourceListWithPage(RoleResourceQuery queryBean, PageUtil pageUtil) {
+    public PagedResultDto<RoleResource> queryRoleResourceListWithPage(PagedQueryDto<RoleResourceQuery> pagedQuery) {
+        RoleResourceQuery queryBean = pagedQuery.getQueryDto();
+        PageUtil pageUtil = pagedQuery.getPageUtil();
         List<RoleResource> roleResourceList = null;
         try {
             roleResourceList = roleResourceManager.queryRoleResourceListWithPage(queryBean, pageUtil);
         } catch (Exception e) {
             LOG.error("RoleResourceServiceImpl#queryRoleResourceListWithPage has error.", e);
         }
-        return roleResourceList;
+        return new PagedResultDto(roleResourceList,pageUtil);
     }
 
     /**
@@ -143,7 +157,7 @@ public class RoleResourceServiceImpl implements RoleResourceService {
      * {@inheritDoc}
      */
     @Profiled(tag = "RoleResourceService.batchDelete")
-    public boolean delete(RoleResource[] roleResources) {
+    public boolean batchDelete(RoleResource[] roleResources) {
         boolean resultFlag = false;
         try {
             if (null != roleResources && roleResources.length > 0) {
@@ -173,6 +187,136 @@ public class RoleResourceServiceImpl implements RoleResourceService {
             LOG.error("RoleResourceServiceImpl#getRoleResourceById has error.", e);
         }
         return roleResource;
+    }
+
+    /**
+     * 根据用编码获取用户拥有的资源
+     * @param queryBean
+     * @return
+     */
+    @Override
+    public LetvResponse<List<RoleResource>> queryRoleResourceListByUserCode(RoleResourceQuery queryBean){
+        LOG.info("inputPar:RoleResourceServiceImpl#queryRoleResourceListByUserCode.queryBean"+ JsonHelper.toJson(queryBean));
+        LetvResponse<List<RoleResource>> letvResponse = new LetvResponse<List<RoleResource>>() ;
+        if(null==queryBean || StringUtils.isEmpty(queryBean.getUserCode())){
+            letvResponse.setCode(PortalSystemTipCodeEnum.PAR_ERROR.getValue());
+            letvResponse.setMessage(PortalSystemTipCodeEnum.PAR_ERROR.getNote());
+            LOG.error("error:RoleResourceServiceImpl#queryRoleResourceListByUserCode.queryBean"+ JsonHelper.toJson(queryBean));
+            return  letvResponse ;
+        }
+        try{
+            List<RoleResource> list_roleResource = roleResourceManager.queryRoleResourceListByUserCode(queryBean);
+            if(CollectionUtils.isEmpty(list_roleResource)){
+                letvResponse.setCode(PortalSystemTipCodeEnum.DATA_NOTEXIST.getValue());
+                letvResponse.setMessage(PortalSystemTipCodeEnum.DATA_NOTEXIST.getNote());
+            }else{
+                letvResponse.setCode(PortalSystemTipCodeEnum.SCUESS.getValue());
+                letvResponse.setMessage(PortalSystemTipCodeEnum.SCUESS.getNote());
+                letvResponse.setResult(list_roleResource);
+            }
+
+        }catch (Exception e){
+            letvResponse.setCode(PortalSystemTipCodeEnum.ERROR.getValue());
+            letvResponse.setMessage(e.getMessage());
+            LOG.error("error:RoleResourceServiceImpl#queryRoleResourceListByUserCode.e"+e);
+        }
+        LOG.info("outputPar:RoleResourceServiceImpl#queryRoleResourceListByUserCode.letvResponse"+ JsonHelper.toJson(letvResponse));
+        return letvResponse ;
+    }
+
+    /**
+     * 根据角色编码， 获取角色拥有的资源
+     * @param queryBean
+     * @return
+     */
+    @Override
+    public LetvResponse<List<TreeDomain>>  queryRoleResourceByRoleCode(RoleResourceQuery queryBean) {
+        LOG.info("inputPar:RoleResourceServiceImpl#queryRoleResourceByRoleCode.queryBean"+ JsonHelper.toJson(queryBean));
+        LetvResponse<List<TreeDomain>> letvResponse = new LetvResponse<List<TreeDomain>>() ;
+       if(null == queryBean || StringUtils.isEmpty(queryBean.getRoleCode())
+               || StringUtils.isEmpty(queryBean.getPlatForm())){
+           letvResponse.setCode(PortalSystemTipCodeEnum.PAR_ERROR.getValue());
+           letvResponse.setMessage(PortalSystemTipCodeEnum.PAR_ERROR.getNote());
+           LOG.error("error:RoleResourceServiceImpl#queryRoleResourceByRoleCode.queryBean"+ JsonHelper.toJson(queryBean));
+           return letvResponse ;
+       }
+       try{
+           /**
+            * 1、查询数据库中的全部资源
+            */
+           ResourceQuery resourceQuery = new ResourceQuery () ;
+           resourceQuery.setPlatfrom(queryBean.getPlatForm());
+           if(null!=queryBean.getResourceType()){
+               resourceQuery.setResourceType(queryBean.getResourceType());
+           }
+           LetvResponse<List<TreeDomain>> list_resource_response = resourceService.queryResourceListByCodes(resourceQuery);
+           if(list_resource_response.getCode()==PortalSystemTipCodeEnum.SCUESS.getValue()){
+               List<TreeDomain> list_resource = list_resource_response.getResult();
+               /**
+                * 2、查询角色拥有的资源
+                */
+               RoleResourceQuery roleResourceQuery = new RoleResourceQuery() ;
+               roleResourceQuery.setRoleCode(queryBean.getRoleCode());
+               List<RoleResource> list_roleResource = roleResourceManager.queryRoleResourceList(roleResourceQuery);
+               for(TreeDomain treeDomain : list_resource){
+                   for(RoleResource roleResource : list_roleResource){
+                       if(treeDomain.getId().equals(roleResource.getResourceCode())){
+                           treeDomain.setChecked(true);
+                           break ;
+                       }
+                   }
+               }
+               letvResponse.setCode(PortalSystemTipCodeEnum.SCUESS.getValue());
+               letvResponse.setMessage(PortalSystemTipCodeEnum.SCUESS.getNote());
+               letvResponse.setResult(list_resource);
+           }else{
+               letvResponse.setCode(list_resource_response.getCode());
+               letvResponse.setMessage(list_resource_response.getMessage());
+           }
+       }catch (Exception e){
+           letvResponse.setCode(PortalSystemTipCodeEnum.ERROR.getValue());
+           letvResponse.setMessage(e.getMessage());
+           LOG.error("error:RoleResourceServiceImpl#queryRoleResourceByRoleCode.e"+ e);
+       }
+        LOG.info("outputPar:RoleResourceServiceImpl#queryRoleResourceByRoleCode.letvResponse"+ JsonHelper.toJson(letvResponse));
+        return letvResponse;
+    }
+
+    /**
+     * 修改某个角色拥有的所有资源
+     * @param roleResource
+     * @return
+     */
+    @Override
+    public LetvResponse<Boolean> updateRoleResource(RoleResource roleResource) {
+        LOG.info("inputPar:RoleResourceServiceImpl#updateRoleResource.roleResource"+ JsonHelper.toJson(roleResource));
+        LetvResponse<Boolean> letvResponse = new LetvResponse<Boolean>() ;
+        if(null==roleResource || StringUtils.isEmpty(roleResource.getRoleCode())
+                || (StringUtils.isEmpty(roleResource.getPcResourceCode())
+                && StringUtils.isEmpty(roleResource.getRfResourceCode()))){
+            letvResponse.setCode(PortalSystemTipCodeEnum.PAR_ERROR.getValue());
+            letvResponse.setMessage(PortalSystemTipCodeEnum.PAR_ERROR.getNote());
+            LOG.error("error:RoleResourceServiceImpl#updateRoleResource.roleResource"+ JsonHelper.toJson(roleResource));
+            return letvResponse ;
+        }
+        try{
+            boolean ret = roleResourceManager.updateRoleResource(roleResource) ;
+            if(ret){
+                letvResponse.setCode(PortalSystemTipCodeEnum.SCUESS.getValue());
+                letvResponse.setMessage(PortalSystemTipCodeEnum.SCUESS.getNote());
+                letvResponse.setResult(ret);
+            }else{
+                letvResponse.setCode(PortalSystemTipCodeEnum.UPDATE_FAIL.getValue());
+                letvResponse.setMessage(PortalSystemTipCodeEnum.UPDATE_FAIL.getNote());
+                letvResponse.setResult(ret);
+            }
+        }catch (Exception e){
+            letvResponse.setCode(PortalSystemTipCodeEnum.ERROR.getValue());
+            letvResponse.setMessage(e.getMessage());
+            LOG.error("error:RoleResourceServiceImpl#updateRoleResource.e"+ e);
+        }
+        LOG.info("outputPar:RoleResourceServiceImpl#updateRoleResource.letvResponse"+ JsonHelper.toJson(letvResponse));
+        return letvResponse;
     }
 }
 

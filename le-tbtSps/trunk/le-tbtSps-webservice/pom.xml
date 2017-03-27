@@ -10,10 +10,10 @@
 	<packaging>war</packaging>
 
 	<dependencies>
-		<dependency>
-			<groupId>com.letv.common</groupId>
-			<artifactId>letv-common-web</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.letv.common</groupId>-->
+			<!--<artifactId>letv-common-web</artifactId>-->
+		<!--</dependency>-->
 			
 		<dependency>
 			<groupId>com.le.tbtSps</groupId>

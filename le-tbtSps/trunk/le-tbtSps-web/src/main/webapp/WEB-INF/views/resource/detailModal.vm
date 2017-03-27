@@ -30,22 +30,19 @@
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.buttonflag')</th><td id="r_buttonflag" style='width:25%;'></td>
 						</tr>
 						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.opens')</th><td id="r_opens" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.parentflag')</th><td id="r_parentflag" style='width:25%;'></td>
-						</tr>
-						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.open')</th><td id="r_open" style='width:25%;'></td>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.note')</th><td id="r_note" style='width:25%;'></td>
+						</tr>
+						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.createTime')</th><td id="r_createTime" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
+						</tr>
+						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.createUser')</th><td id="r_createUser" style='width:25%;'></td>
-						</tr>
-						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.updateUser')</th><td id="r_updateUser" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.yn')</th><td id="r_yn" style='width:25%;'></td>
 						</tr>
 						<tr>
+							<th class="center" style='width:25%;'>#springMessage('tbtSps.resource.yn')</th><td id="r_yn" style='width:25%;'></td>
 						</tr>
 					</tbody>
 				</table>
@@ -78,8 +75,7 @@
     				$("#r_icon").text(r.icon==null?"":r.icon);
     				$("#r_platfrom").text(r.platfrom==null?"":r.platfrom);
     				$("#r_buttonflag").text(r.buttonflag==null?"":r.buttonflag);
-    				$("#r_opens").text(r.opens==null?"":r.opens);
-    				$("#r_parentflag").text(r.parentflag==null?"":r.parentflag);
+    				$("#r_open").text(r.open==null?"":r.open);
     				$("#r_note").text(r.note==null?"":r.note);
     				$("#r_createTime").text(r.createTime==null?"":r.createTime);
     				$("#r_updateTime").text(r.updateTime==null?"":r.updateTime);

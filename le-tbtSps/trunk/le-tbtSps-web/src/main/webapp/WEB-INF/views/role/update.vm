@@ -8,15 +8,15 @@
 					errorElement:"em",
 					errorClass:"red",
 					rules: {
-												roleName: {required: true},
+                        roleName: {required: true},
 						roleCode: {required: true},
-						note: {required: true},
+						note: {required: false}
 					},
 			
 					messages: {
 						roleName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.roleName')"},
 						roleCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.roleCode')"},
-						note: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.note')"},
+						note: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.note')"}
 					}
 				});
 				
@@ -50,13 +50,13 @@
                         <div class="widget-main" style="background-color: #fff;padding:5px;">
                             <form class="form-horizontal" role="form" id="updateForm">
                                 <div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="roleName">#springMessage('tbtSps.role.roleName')</label>
+                                    <label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="roleCode">#springMessage('tbtSps.role.roleCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="roleCode" id="roleCode" class="col-xs-12 col-sm-12" value="$!role.roleCode" readonly="true"/>
+                                    </div>
+                                    <label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="roleName"><span style="color: red">#springMessage('tbtSps.role.roleName')<span></span></label>
                                     <div class="col-sm-4">
                                         <input type="text" name="roleName" id="roleName" class="col-xs-12 col-sm-12" value="$!role.roleName" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="roleCode">#springMessage('tbtSps.role.roleCode')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="roleCode" id="roleCode" class="col-xs-12 col-sm-12" value="$!role.roleCode" />
                                     </div>
 								</div>
 								<div class="form-group">
@@ -64,6 +64,12 @@
                                     <div class="col-sm-4">
                                         <input type="text" name="note" id="note" class="col-xs-12 col-sm-12" value="$!role.note" />
                                     </div>
+                                    #if($!roleType)
+                                        <label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="note">角色类型</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" name="roleType" id="roleType" value="$!role.roleType" class="col-xs-12 col-sm-12" />
+                                        </div>
+                                    #end
                                 </div>
 								<div class="form-group">
 									<input type="hidden" name="id" id="id" value="$!role.id" />

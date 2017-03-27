@@ -1,8 +1,14 @@
 package com.letv.tbtSps.controller;
-   
 
-import java.util.List;
 
+import com.letv.common.utils.exception.ExistedException;
+import com.letv.common.utils.page.PageUtil;
+import com.letv.common.utils.wrap.WrapMapper;
+import com.letv.common.utils.wrap.Wrapper;
+import com.letv.tbtSps.common.controller.ReviewBaseController;
+import com.letv.tbtSps.domain.RelationSpsRelationMedicine;
+import com.letv.tbtSps.domain.query.RelationSpsRelationMedicineQuery;
+import com.letv.tbtSps.service.RelationSpsRelationMedicineService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.tbtSps.domain.RelationSpsRelationMedicine;
-import com.letv.tbtSps.domain.query.RelationSpsRelationMedicineQuery;
-import com.letv.tbtSps.service.RelationSpsRelationMedicineService;
-import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.controller.base.BaseController;
-import com.letv.common.utils.page.PageUtil;
-import com.letv.common.utils.wrap.WrapMapper;
-import com.letv.common.utils.wrap.Wrapper;
+import java.util.List;
 
 /**
  * RelationSpsRelationMedicineController ：sps信息表-相关农药关联表控制器
@@ -30,7 +29,7 @@ import com.letv.common.utils.wrap.Wrapper;
 */
 @Controller
 @RequestMapping("relationSpsRelationMedicine")
-public class RelationSpsRelationMedicineController extends BaseController {
+public class RelationSpsRelationMedicineController extends ReviewBaseController {
 
     @Autowired
     private RelationSpsRelationMedicineService relationSpsRelationMedicineService;
@@ -44,8 +43,6 @@ public class RelationSpsRelationMedicineController extends BaseController {
      * 首页
      * 
      * @param model
-     * @param page
-     * @param query
      * @return
      */
     @RequestMapping(value = "")
@@ -77,7 +74,6 @@ public class RelationSpsRelationMedicineController extends BaseController {
     /**
      * sps信息表-相关农药关联表----添加跳转
      * 
-     * @param model
      * @return
      */
     @RequestMapping(value = "addForward")

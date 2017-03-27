@@ -1,15 +1,16 @@
 package com.letv.tbtSps.manager;
 
-import java.util.List;
-
 import com.letv.tbtSps.domain.User;
 import com.letv.tbtSps.domain.query.UserQuery;
-import com.letv.common.utils.page.PageUtil;
+import com.letv.wmscommon.dto.PageUtil;
+
+import java.util.List;
+
 /**
  * UserManager接口
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 public interface UserManager {
@@ -55,7 +56,7 @@ public interface UserManager {
      * @return
      */
     public List<User> queryUserListWithPage(UserQuery queryBean,
-            PageUtil pageUtil);
+                                            PageUtil pageUtil);
 
     /**
      * 根据查询Bean获取对象信息总数
@@ -100,4 +101,61 @@ public interface UserManager {
      * @return
      */
     public boolean exist(User user);
+
+    /**
+     * 根据用户登录名或者中文名称查询用户信息
+     * @param queryBean
+     * @return
+     */
+    public List<User> searchUserByCodeOrName(UserQuery queryBean) ;
+
+    /**
+     * 根据角色编码联合查询用户，翻页
+     * @param queryBean
+     * @param pageUtil
+     * @return
+     */
+    public List<User> queryUserListByRoleCodeWithPage(UserQuery queryBean, PageUtil pageUtil);
+
+    /**
+     * 启用、禁用用户
+     * @param user
+     * @return
+     */
+    public boolean enableOrDisable(User user) ;
+
+    /**
+     * 根据用户编码删除用户
+     * @param user
+     * @return
+     */
+    public boolean deleteByUserCode(User user);
+
+    /**
+     * 根据用户编码修改用户
+     * @param user
+     * @return
+     */
+    public boolean updateByUserCode(final User user);
+
+    /**
+     * 根据用户名集合查询用户信息
+     * @param list
+     * @return
+     */
+    public List<User> searchUserByUserNames(List<String> list);
+
+    /**
+     * 批量保存用户信息
+     * @param list_user
+     * @return
+     */
+    public boolean saveUsers(List<User> list_user);
+
+    /**
+     * 根据用户编码查询用户信息 ， 批量接口
+     * @param queryBean
+     * @return
+     */
+    public List<User> searchUserByCodes(UserQuery queryBean) ;
 }

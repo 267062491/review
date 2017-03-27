@@ -64,7 +64,7 @@ public class SpsInfoRequest extends LetvRequest {
     /** 备用字段4 */
     private String back4; 
     /** 备用字段5 */
-    private String back5; 
+    private String versions;
     /** 创建时间 */
     private Date createTime; 
     /** 修改时间 */
@@ -268,12 +268,12 @@ public class SpsInfoRequest extends LetvRequest {
         this.back4 = back4;
     }
     
-    public String getBack5(){
-        return back5;
+    public String getversions(){
+        return versions;
     }
         
-    public void setBack5(String back5) {
-        this.back5 = back5;
+    public void setversions(String versions) {
+        this.versions = versions;
     }
     
     public Date getCreateTime(){

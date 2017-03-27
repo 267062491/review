@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 public class UserDaoImpl extends BaseDao implements UserDao {
     /** namespace */
     private final String namespace = UserDaoImpl.class.getName();
-    
+
     /**
      * {@inheritDoc}
      */
@@ -68,13 +68,89 @@ public class UserDaoImpl extends BaseDao implements UserDao {
      */
     public User getUserById(Long id) {
         return (User) queryForObject(namespace +".getUserById", id);
-    } 
-    
+    }
+
     /**
      * {@inheritDoc}
      */
     public boolean exist(User user) {
         int count = (Integer) queryForObject(namespace +".exist", user);
         return count > 0;
+    }
+    /**
+     * 根据用户登录名或者中文名称查询用户信息
+     * @param queryBean
+     * @return
+     */
+    @Override
+    public List<User> searchUserByCodeOrName(UserQuery queryBean) {
+        return (List<User>) queryForList(namespace +".searchUserByCodeOrName", queryBean);
+    }
+
+    /**
+     * 根据角色编码联合查询用户数
+     *
+     * @param queryBean
+     * @return
+     */
+    @Override
+    public int queryUserCountByRoleCode(UserQuery queryBean) {
+        return (Integer) queryForObject(namespace +".queryUserCountByRoleCode", queryBean);
+    }
+
+    /**
+     * 根据角色编码联合查询用户，翻页
+     *
+     * @param queryBean
+     * @return
+     */
+    @Override
+    public List<User> queryUserByRoleCode(UserQuery queryBean) {
+        return (List<User>) queryForList(namespace +".queryUserByRoleCode", queryBean);
+    }
+    /**
+     * 启用、禁用用户
+     * @param user
+     * @return
+     */
+    @Override
+    public boolean enableOrDisable(User user) {
+        return delete(namespace +".enableOrDisable", user);
+    }
+    /**
+     * 根据用编码删除用户
+     * @param user
+     * @return
+     */
+    @Override
+    public boolean deleteByUserCode(User user) {
+        return delete(namespace +".deleteByUserCode", user);
+    }
+    /**
+     * 根据用户编码删除
+     * @param user
+     * @return
+     */
+    public boolean updateByUserCode(User user) {
+        return update(namespace +".updateByUserCode", user);
+    }
+    /**
+     * 根据用户名集合查询用户信息
+     * @param list
+     * @return
+     */
+    @Override
+    public List<User> searchUserByUserNames(List<String> list) {
+        return (List<User>) queryForList(namespace +".searchUserByUserNames", list);
+    }
+
+    /**
+     * 根据用户编码查询用户信息 ， 批量接口
+     * @param queryBean
+     * @return
+     */
+    @Override
+    public List<User> searchUserByCodes(UserQuery queryBean) {
+        return (List<User>) queryForList(namespace +".searchUserByCodes", queryBean);
     }
 }

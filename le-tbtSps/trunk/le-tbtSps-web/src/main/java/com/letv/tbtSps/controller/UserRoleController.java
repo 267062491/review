@@ -1,8 +1,19 @@
 package com.letv.tbtSps.controller;
-   
 
-import java.util.List;
 
+import com.letv.common.sdk.api.response.LetvResponse;
+import com.letv.common.utils.exception.ExistedException;
+import com.letv.common.utils.serialize.JsonHelper;
+import com.letv.common.utils.wrap.WrapMapper;
+import com.letv.common.utils.wrap.Wrapper;
+import com.letv.tbtSps.common.controller.ReviewBaseController;
+import com.letv.tbtSps.domain.UserRole;
+import com.letv.tbtSps.domain.query.UserRoleQuery;
+import com.letv.tbtSps.service.UserRoleService;
+import com.letv.tbtSps.utils.constant.PortalSystemTipCodeEnum;
+import com.letv.wmscommon.dto.PageUtil;
+import com.letv.wmscommon.dto.PagedQueryDto;
+import com.letv.wmscommon.dto.PagedResultDto;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +22,20 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.letv.tbtSps.domain.UserRole;
-import com.letv.tbtSps.domain.query.UserRoleQuery;
-import com.letv.tbtSps.service.UserRoleService;
-import com.letv.common.utils.exception.ExistedException;
-import com.letv.common.controller.base.BaseController;
-import com.letv.common.utils.page.PageUtil;
-import com.letv.common.utils.wrap.WrapMapper;
-import com.letv.common.utils.wrap.Wrapper;
+import java.util.List;
 
 /**
  * UserRoleController ：用户-角色控制器
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:04
+ * @version 2016-10-24 17:11:38
 */
 @Controller
 @RequestMapping("userRole")
-public class UserRoleController extends BaseController {
+public class UserRoleController extends ReviewBaseController {
 
     @Autowired
     private UserRoleService userRoleService;
@@ -44,8 +49,6 @@ public class UserRoleController extends BaseController {
      * 首页
      * 
      * @param model
-     * @param page
-     * @param query
      * @return
      */
     @RequestMapping(value = "")
@@ -64,10 +67,14 @@ public class UserRoleController extends BaseController {
     @RequestMapping(value = "queryByPage")
     public String queryByPage(Model model, PageUtil page, UserRoleQuery query) {
         try {
-            List<UserRole> dataList = userRoleService.queryUserRoleListWithPage(query, page);
+        PagedQueryDto<UserRoleQuery> pagedQuery = new PagedQueryDto<UserRoleQuery>();
+        pagedQuery.setPageUtil(page);
+        pagedQuery.setQueryDto(query);
+        PagedResultDto<UserRole> pagedResult = userRoleService.queryUserRoleListWithPage(pagedQuery);
+        List<UserRole> dataList = pagedResult.getResult();
             model.addAttribute("dataList", dataList);// 数据集合
             model.addAttribute("query", query);// 查询参数
-            model.addAttribute("page", page);// 分页
+            model.addAttribute("page", pagedResult.getPageUtil());// 分页
         } catch (Exception e) {
             LOG.error("userRole queryByPage has error.", e);
         }
@@ -76,8 +83,7 @@ public class UserRoleController extends BaseController {
 
     /**
      * 用户-角色----添加跳转
-     * 
-     * @param model
+     *
      * @return
      */
     @RequestMapping(value = "addForward")
@@ -218,6 +224,35 @@ public class UserRoleController extends BaseController {
         } catch (Exception e) {
             LOG.warn("detail userRole has error.", e);
             return error();
+        }
+    }
+
+
+    /**
+     * 修改用户拥有的角色
+     * @param userCode
+     * @param roleCodes
+     * @return
+     */
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    @ResponseBody
+    public Wrapper<?> save(String userCode, @RequestParam("roleCodes") String[] roleCodes) {
+        try {
+            UserRole userRole = new UserRole () ;
+            userRole.setUserCode(userCode);
+            userRole.setRoleCodes(roleCodes);
+            userRole.setCreateUser(getLoginUserName());
+            LOG.info("inputPar:UserRoleController#save.userRole="+ JsonHelper.toJson(userRole));
+            LetvResponse<Boolean> letvResponse= userRoleService.batchSave(userRole);
+            LOG.info("UserRoleController#save.letvResponse="+ JsonHelper.toJson(letvResponse));
+            if(letvResponse.getCode()== PortalSystemTipCodeEnum.SCUESS.getValue()){
+                return new Wrapper<Boolean>().result(letvResponse.getResult());
+            } else{
+                return WrapMapper.wrap(letvResponse.getCode(), letvResponse.getMessage());
+            }
+        } catch (Exception e) {
+            LOG.error("error:UserRoleController#save.e=", e);
+            return WrapMapper.wrap(PortalSystemTipCodeEnum.ERROR.getValue(), e.getMessage());
         }
     }
 }

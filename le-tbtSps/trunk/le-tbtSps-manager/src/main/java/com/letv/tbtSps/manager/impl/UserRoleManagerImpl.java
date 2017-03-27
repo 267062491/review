@@ -1,22 +1,23 @@
 package com.letv.tbtSps.manager.impl;
 
-import java.util.List;
-
 import com.letv.common.manager.BaseManager;
-import com.letv.common.utils.page.PageUtil;
+import com.letv.tbtSps.dao.UserRoleDao;
 import com.letv.tbtSps.domain.UserRole;
 import com.letv.tbtSps.domain.query.UserRoleQuery;
-import com.letv.tbtSps.dao.UserRoleDao;
 import com.letv.tbtSps.manager.UserRoleManager;
-
+import com.letv.tbtSps.utils.constant.SystemConstant;
+import com.letv.wmscommon.dto.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * UserRoleManager接口的实现类
  * 
  * @author yuguodong
- * @version 2017-3-25 22:43:03
+ * @version 2016-10-24 17:11:37
  * 
  */
 @Component
@@ -133,5 +134,27 @@ public class UserRoleManagerImpl extends BaseManager implements UserRoleManager 
      */
     public boolean exist(UserRole userRole) {
         return userRoleDao.exist(userRole);
+    }
+
+
+    public boolean batchUpdate(String userCode, String[] roleCodes, String createUser) {
+        UserRoleQuery userRoleQuery = new UserRoleQuery();
+        userRoleQuery.setUserCode(userCode);
+        String[] userIds = new String[]{userCode};
+        UserRoleQuery uquery = new UserRoleQuery () ;
+        uquery.setUserCode(userCode);
+        this.userRoleDao.deleteUserRoleByUserCode(uquery);
+        List<UserRole> beanList = new ArrayList<UserRole>(roleCodes.length);
+        for (String roleCode : roleCodes) {
+            UserRole userRole = new UserRole();
+            userRole.setUserCode(userCode);
+            userRole.setRoleCode(roleCode);
+            userRole.setCreateUser(createUser);
+            userRole.setUpdateUser(createUser);
+            userRole.setNote("");
+            userRole.setYn(SystemConstant.YES);
+            beanList.add(userRole);
+        }
+        return this.insert(beanList);
     }
 }

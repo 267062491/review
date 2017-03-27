@@ -25,7 +25,7 @@
 		<result column="back_2" property="back2" jdbcType="VARCHAR" />
 		<result column="back_3" property="back3" jdbcType="VARCHAR" />
 		<result column="back_4" property="back4" jdbcType="VARCHAR" />
-		<result column="back_5" property="back5" jdbcType="VARCHAR" />
+		<result column="versions" property="versions" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
 		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
@@ -34,17 +34,17 @@
     </resultMap>
     
     <sql id="tbinfoColumns">
-    	id,tbt_code,publish_date,tbt_country_code,tbt_org,cover_product,file_title,content_des,target_reason,ora_link,file_code,notification_basis,expect_approval_date,expect_effective_date,feedback_end_date,file_get_org,par_sps_code,state,back_1,back_2,back_3,back_4,back_5,create_time,update_time,create_user,update_user,yn
+    	id,tbt_code,publish_date,tbt_country_code,tbt_org,cover_product,file_title,content_des,target_reason,ora_link,file_code,notification_basis,expect_approval_date,expect_effective_date,feedback_end_date,file_get_org,par_sps_code,state,back_1,back_2,back_3,back_4,versions,create_time,update_time,create_user,update_user,yn
     </sql>
     
      <sql id="tbinfoUsedColumns">
-    	tbt_code,publish_date,tbt_country_code,tbt_org,cover_product,file_title,content_des,target_reason,ora_link,file_code,notification_basis,expect_approval_date,expect_effective_date,feedback_end_date,file_get_org,par_sps_code,state,back_1,back_2,back_3,back_4,back_5,create_time,update_time,create_user,update_user,yn
+    	tbt_code,publish_date,tbt_country_code,tbt_org,cover_product,file_title,content_des,target_reason,ora_link,file_code,notification_basis,expect_approval_date,expect_effective_date,feedback_end_date,file_get_org,par_sps_code,state,back_1,back_2,back_3,back_4,versions,create_time,update_time,create_user,update_user,yn
     </sql>
 
     <!-- 创建信息 -->
     <insert id="insert" parameterType="Tbinfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_tbt_info(<include refid="tbinfoUsedColumns"/>) 
-        VALUES (#{tbtCode},#{publishDate},#{tbtCountryCode},#{tbtOrg},#{coverProduct},#{fileTitle},#{contentDes},#{targetReason},#{oraLink},#{fileCode},#{notificationBasis},#{expectApprovalDate},#{expectEffectiveDate},#{feedbackEndDate},#{fileGetOrg},#{parSpsCode},#{state},#{back1},#{back2},#{back3},#{back4},#{back5},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        VALUES (#{tbtCode},#{publishDate},#{tbtCountryCode},#{tbtOrg},#{coverProduct},#{fileTitle},#{contentDes},#{targetReason},#{oraLink},#{fileCode},#{notificationBasis},#{expectApprovalDate},#{expectEffectiveDate},#{feedbackEndDate},#{fileGetOrg},#{parSpsCode},#{state},#{back1},#{back2},#{back3},#{back4},#{versions},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
 	</insert>
 	
     <!-- 修改信息 -->
@@ -115,8 +115,8 @@
 		        <if test="back4 != null and back4 != ''">
                 	back_4 = #{back4,jdbcType=VARCHAR},
 		        </if>
-		        <if test="back5 != null and back5 != ''">
-                	back_5 = #{back5,jdbcType=VARCHAR},
+		        <if test="versions != null and versions != ''">
+                	versions = #{versions,jdbcType=VARCHAR},
 		        </if>
 		        <if test="updateUser != null and updateUser != ''">
                 	update_user = #{updateUser,jdbcType=VARCHAR},
@@ -236,8 +236,8 @@
         <if test="back4 != null and back4 != ''">
         	and back_4 = #{back4,jdbcType=VARCHAR}
         </if>
-        <if test="back5 != null and back5 != ''">
-        	and back_5 = #{back5,jdbcType=VARCHAR}
+        <if test="versions != null and versions != ''">
+        	and versions = #{versions,jdbcType=VARCHAR}
         </if>
         <if test="createTime != null and createTime != ''">
         	and create_time = #{createTime,jdbcType=TIMESTAMP}

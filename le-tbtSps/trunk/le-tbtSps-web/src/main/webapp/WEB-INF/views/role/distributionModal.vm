@@ -1,0 +1,224 @@
+<script>
+    var pcTree ;
+    var rfTree ;
+    var roleC ;
+    function filter(treeId, parentNode, childNodes) {
+        if (!childNodes) return null;
+
+        for (var i=0, l=childNodes.result.length; i<l; i++) {
+            childNodes.result[i].name = childNodes.result[i].name.replace(/\.n/g, '.');
+        }
+        return childNodes.result;
+    }
+
+    //当鼠标移动到节点上时，显示用户自定义控件
+    function addHoverDom(treeId, treeNode) {
+    };
+
+    //当鼠标移出节点时，移除用户自定义控件
+    function removeHoverDom(treeId, treeNode) {
+        $("#addBtn_"+treeNode.tId).unbind().remove();
+    };
+
+    //节点被点击的事件回调函数
+    function zTreeOnClick(event, treeId, treeNode) {
+    }
+
+    //点击删除操作
+    function zTreeBeforeRemove(treeId, treeNode) {
+    }
+    // 打开分配角色资源页面
+    function toDistribution(roleCode){
+
+        jQuery.ajax({
+            type: "POST",
+            url: basePath + "/role/detailByRoleCode",
+            dataType: 'json',
+            data: {roleCode:roleCode},
+            success: function (data) {
+                if (data == null) {
+                    dialog.alert("获取角色名称失败");
+                } else if (data.code == 200) {
+                    $('#role_user_info').html(data.result.roleName);
+                } else {
+                    dialog.alert(data.message);
+                }
+            },
+            error: function (data) {
+                if (data == null) {
+                    dialog.alert("操作失败");
+                } else {
+                    dialog.alert(data.message);
+                }
+            }
+        });
+
+        roleC = roleCode ;
+        var settingPC = {
+            view: {
+                addHoverDom: addHoverDom,
+                removeHoverDom: removeHoverDom
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            edit: {
+                enable: true,
+                showRenameBtn: false,
+                showRemoveBtn: false
+            },
+            callback:{
+                onClick: zTreeOnClick,
+                beforeRemove: zTreeBeforeRemove
+            }  ,
+            async: {
+                enable: true,
+                url:basePath + "/role/queryRoleResourceByRoleCode",
+                autoParam:["id", "name", "level"],
+                otherParam:{"roleCode":roleCode,"platForm":"PC"},
+                dataFilter: filter
+            },
+            check: {
+                enable: true,
+                autoCheckTrigger: true
+            }
+        };
+        var settingRF = {
+            view: {
+                addHoverDom: addHoverDom,
+                removeHoverDom: removeHoverDom
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            edit: {
+                enable: true,
+                showRenameBtn: false,
+                showRemoveBtn: false
+            },
+            callback:{
+                onClick: zTreeOnClick,
+                beforeRemove: zTreeBeforeRemove
+            }  ,
+            async: {
+                enable: true,
+                url:basePath + "/role/queryRoleResourceByRoleCode",
+                autoParam:["id", "name", "level"],
+                otherParam:{"roleCode":roleCode,"platForm":"RF"},
+                dataFilter: filter
+            } ,
+            check: {
+                enable: true,
+                autoCheckTrigger: true
+            }
+        };
+        pcTree = $.fn.zTree.init($("#treePC"), settingPC);
+        rfTree = $.fn.zTree.init($("#treeRF"), settingRF);
+        $('#myDistributionModal').modal('show');
+    }
+
+    $(document).ready(function(){
+        //点击提交按钮
+        $('#user-role-submit-btn').click(function () {
+
+            var pcTreeChecked = pcTree.getCheckedNodes(true);
+            var rfTreeChecked = rfTree.getCheckedNodes(true);
+            var  pcTreeCheckedNote= "";
+            var  rfTreeCheckedNote= "";
+            if (pcTreeChecked.length == 0 && rfTreeChecked.length == 0) {
+                dialog.alert("请选择一个资源");
+                return;
+            }
+            for (var i = 0; i < pcTreeChecked.length; i++) {
+                // 如果i+1等于选项长度则取值后添加空字符串，否则为逗号
+                pcTreeCheckedNote = (pcTreeCheckedNote + pcTreeChecked[i].id) + (((i + 1) == pcTreeChecked.length) ? '' : ',');
+            }
+            for (var i = 0; i < rfTreeChecked.length; i++) {
+                // 如果i+1等于选项长度则取值后添加空字符串，否则为逗号
+                rfTreeCheckedNote = (rfTreeCheckedNote + rfTreeChecked[i].id) + (((i + 1) == rfTreeChecked.length) ? '' : ',');
+            }
+
+            jQuery.ajax({
+                type: "POST",
+                url: basePath + "/role/updateRoleResource",
+                dataType: 'json',
+                data: {roleCode:roleC,pcResourceCode:pcTreeCheckedNote,rfResourceCode:rfTreeCheckedNote},
+                success: function (data) {
+                    if (data == null) {
+                        dialog.alert("操作失败");
+                    } else if (data.code == 200) {
+                        $('#myDistributionModal').modal('hide');
+                        dialog.alert("操作成功");
+                    } else {
+                        dialog.alert(data.message);
+                    }
+                },
+                error: function (data) {
+                    if (data == null) {
+                        dialog.alert("操作失败");
+                    } else {
+                        dialog.alert(data.message);
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+<!-- Modal -->
+<div class="modal fade" id="myDistributionModal" tabindex="-1" role="dialog" aria-labelledby="myDistributionModalLabel" aria-hidden="true">
+
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myUserModalLabel">#springMessage('tbtSps.role')#springMessage('view.lable.distribution')</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-content">
+                    <div class="modal-header">
+##                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="blue bigger">角色名称: <span id="role_user_info" class="green"></span></h4>
+                    </div>
+
+                    <div class="modal-body overflow-visible">
+                        <input type="hidden" id="role_user_id"/>
+                        <input type="hidden" id="userIds"/>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <h5>PC</h5>
+                                <div >
+                                    <ul id="treePC" class="ztree" style="width: 240px;"></ul>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-1">
+                            </div>
+
+                            <div class="col-sm-5">
+                                <h5>RF</h5>
+                                <div >
+                                    <ul id="treeRF" class="ztree" style="width: 240px;"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-sm btn-primary" id="user-role-submit-btn">
+                            <i class="icon-ok"></i>提交
+                        </button>
+                        <button class="btn btn-sm" data-dismiss="modal">
+                            <i class="icon-remove"></i>取消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div>
+</div><!-- /.modal -->
