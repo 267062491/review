@@ -9,7 +9,7 @@
             <a href="#" class="navbar-brand">
                 <small>
                     <img src="#springUrl('')/static/avatars/logo.png" width="33%"  style="margin-top:-6px;"/>
-                    <span class="bold">电商管理平台</span>
+                    <span class="bold">农药</span>
                 </small>
             </a><!-- /.brand -->
         </div><!-- /.navbar-header -->
@@ -51,13 +51,20 @@
 <div class="navbar navbar-default" id="tab" style="min-height:33px">
     <div id="tab-header">
         <ul>
-            <li class="selected">公告</li>
-            <li>规则</li>
-            <li>完美</li>
-            <li>功劳</li>
-            <li>产品</li>
+            <li class="selected"><a href="javascript:void(0)" onclick="link('200','首页','user','20','首页')">首页</a></li>
             <li><a href="javascript:void(0)" onclick="link('200','参数','user','20','参数')">用户</a></li>
-            <li><a href="javascript:void(0)" onclick="link('200','参数','systemPar','20','参数')">参数</a></li>
+            <li><a href="javascript:void(0)" onclick="link('210','角色管理','role','20','参数')">角色</a></li>
+            <li><a href="javascript:void(0)" onclick="link('220','通报类型管理','notificationType','20','通报类型管理')">通报类型</a></li>
+            <li><a href="javascript:void(0)" onclick="link('230','通报成员管理','country','20','通报成员管理')">通报成员</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','原文语种','language','20','原文语种')">原文语种</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','目标理由','targereason','20','目标理由')">目标理由</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','国际标准','internationalStandard','20','国际标准')">国际标准</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','相关农药','relationMedicine','20','相关农药')">相关农药</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','sps通报','spsInfo','20','sps通报')">sps通报</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','tbt通报','relationMedicine','20','tbt通报')">tbt通报</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','全文检索','relationMedicine','20','全文检索')">全文检索</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','统计','relationMedicine','20','统计')">统计</a></li>
+##            <li><a href="javascript:void(0)" onclick="link('320','参数','systemPar','20','参数')">参数</a></li>
         </ul>
     </div>
 </div>

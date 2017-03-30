@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+		#parse("/layout/head.vm")
+        <script language="javascript">
+            $(function() {
+				$('#addForm').validate({
+					errorElement:"em",
+					errorClass:"red",
+					rules: {
+												spsCode: {required: true},
+						countryCode: {required: true},
+						publishDate: {required: true},
+						spsOrg: {required: true},
+						coverProduct: {required: true},
+						fileTitle: {required: true},
+						contentDes: {required: true},
+						standardYn: {required: true},
+						oraLink: {required: true},
+						fileCode: {required: true},
+						affectCountry: {required: true},
+						expectApprovalDate: {required: true},
+						expectEffectiveDate: {required: true},
+						expectPublishDate: {required: true},
+						feedbackEndDate: {required: true},
+						fileGetOrg: {required: true},
+						parSpsCode: {required: true},
+						errorReason: {required: true},
+						state: {required: true},
+						back1: {required: true},
+						back2: {required: true},
+						back3: {required: true},
+						back4: {required: true},
+						versions: {required: true},
+					},
+			
+					messages: {
+						spsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.spsCode')"},
+						countryCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.countryCode')"},
+						publishDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.publishDate')"},
+						spsOrg: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.spsOrg')"},
+						coverProduct: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.coverProduct')"},
+						fileTitle: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileTitle')"},
+						contentDes: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.contentDes')"},
+						standardYn: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.standardYn')"},
+						oraLink: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.oraLink')"},
+						fileCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileCode')"},
+						affectCountry: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.affectCountry')"},
+						expectApprovalDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectApprovalDate')"},
+						expectEffectiveDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectEffectiveDate')"},
+						expectPublishDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectPublishDate')"},
+						feedbackEndDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.feedbackEndDate')"},
+						fileGetOrg: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileGetOrg')"},
+						parSpsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.parSpsCode')"},
+						errorReason: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.errorReason')"},
+						state: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.state')"},
+						back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back1')"},
+						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back2')"},
+						back3: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back3')"},
+						back4: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back4')"},
+						versions: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.versions')"},
+					}
+				});
+				
+				$("#btn-back").click(function(){
+					window.location.href=("$basePath/spsInfo");
+				});
+				$("#btn-submit").click(function(){
+            		var form = $("#addForm");
+					if(form.valid()==false){
+						return;
+					}
+					jQuery.post('$basePath/spsInfo/add',
+            			form.serialize(),
+            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/spsInfo"); }
+            		);
+            	});
+            });
+        </script>
+    </head>
+	<body>
+		<div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h5 class="lighter">
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.add')
+                        </h5>
+                        <div class="widget-toolbar"></div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #fff;padding:5px;">
+                            <form class="form-horizontal" role="form" id="addForm">
+                                <div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfo.spsCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="spsCode" id="spsCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.countryCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="countryCode" id="countryCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="publishDate">#springMessage('tbtSps.spsInfo.publishDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="publishDate" id="publishDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="spsOrg">#springMessage('tbtSps.spsInfo.spsOrg')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="spsOrg" id="spsOrg" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="coverProduct" id="coverProduct" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="fileTitle" id="fileTitle" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="contentDes" id="contentDes" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.spsInfo.standardYn')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="standardYn" id="standardYn" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="oraLink" id="oraLink" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileCode">#springMessage('tbtSps.spsInfo.fileCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="fileCode" id="fileCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="affectCountry">#springMessage('tbtSps.spsInfo.affectCountry')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="affectCountry" id="affectCountry" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="expectApprovalDate">#springMessage('tbtSps.spsInfo.expectApprovalDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="expectApprovalDate" id="expectApprovalDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="expectEffectiveDate">#springMessage('tbtSps.spsInfo.expectEffectiveDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="expectEffectiveDate" id="expectEffectiveDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="expectPublishDate">#springMessage('tbtSps.spsInfo.expectPublishDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="expectPublishDate" id="expectPublishDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="feedbackEndDate">#springMessage('tbtSps.spsInfo.feedbackEndDate')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="feedbackEndDate" id="feedbackEndDate" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileGetOrg">#springMessage('tbtSps.spsInfo.fileGetOrg')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="fileGetOrg" id="fileGetOrg" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="parSpsCode">#springMessage('tbtSps.spsInfo.parSpsCode')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="parSpsCode" id="parSpsCode" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="errorReason">#springMessage('tbtSps.spsInfo.errorReason')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="errorReason" id="errorReason" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="state">#springMessage('tbtSps.spsInfo.state')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="state" id="state" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.spsInfo.back1')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back1" id="back1" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.spsInfo.back2')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back2" id="back2" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back3">#springMessage('tbtSps.spsInfo.back3')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back3" id="back3" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back4">#springMessage('tbtSps.spsInfo.back4')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="back4" id="back4" class="col-xs-12 col-sm-12" />
+                                    </div>
+									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="versions">#springMessage('tbtSps.spsInfo.versions')</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" name="versions" id="versions" class="col-xs-12 col-sm-12" />
+                                    </div>
+								</div>
+								<div class="form-group">
+                                </div>
+								<div class="form-group">
+									<div class="col-sm-8 col-sm-offset-4">
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+										 &nbsp; &nbsp; &nbsp;
+              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+	</body>
+</html>

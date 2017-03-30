@@ -6,9 +6,10 @@ import com.letv.common.utils.page.PageUtil;
 import com.letv.common.utils.wrap.WrapMapper;
 import com.letv.common.utils.wrap.Wrapper;
 import com.letv.tbtSps.common.controller.ReviewBaseController;
-import com.letv.tbtSps.domain.SpsInfo;
+import com.letv.tbtSps.domain.*;
 import com.letv.tbtSps.domain.query.SpsInfoQuery;
 import com.letv.tbtSps.service.SpsInfoService;
+import com.letv.tbtSps.utils.ParameterLoad;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class SpsInfoController extends ReviewBaseController {
 
     @Autowired
     private SpsInfoService spsInfoService;
+    @Autowired
+    private ParameterLoad parameterLoad;
 
     /** 视图前缀 */
     private static final String viewPrefix ="spsInfo";
@@ -77,7 +80,21 @@ public class SpsInfoController extends ReviewBaseController {
      * @return
      */
     @RequestMapping(value = "addForward")
-    public String addForward() {
+    public String addForward(Model model) {
+        List<Country> list_country = parameterLoad.getList_country();
+        List<Language> list_language = parameterLoad.getList_language();
+        List<NotificationType> list_notificationType = parameterLoad.getList_notificationType();
+        List<Targereason> list_targereason = parameterLoad.getList_targereason();
+        List<InternationalStandard> list_internationalStandard =  parameterLoad.getList_internationalStandard();
+        List<RelationMedicine> list_relationMedicine = parameterLoad.getList_relationMedicine();
+        List<RelationMedicineProduct> list_relationMedicineProduct = parameterLoad.getList_relationMedicineProduct();
+        model.addAttribute("list_country",list_country);
+        model.addAttribute("list_language",list_language);
+        model.addAttribute("list_notificationType",list_notificationType);
+        model.addAttribute("list_targereason",list_targereason);
+        model.addAttribute("list_internationalStandard",list_internationalStandard);
+        model.addAttribute("list_relationMedicine",list_relationMedicine);
+        model.addAttribute("list_relationMedicineProduct",list_relationMedicineProduct);
         return viewPrefix + "/add";
     }
 

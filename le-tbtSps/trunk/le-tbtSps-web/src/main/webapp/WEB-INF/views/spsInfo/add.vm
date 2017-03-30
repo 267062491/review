@@ -2,231 +2,347 @@
 <html lang="zh-cn">
     <head>
 		#parse("/layout/head.vm")
-        <script language="javascript">
-            $(function() {
-				$('#addForm').validate({
-					errorElement:"em",
-					errorClass:"red",
-					rules: {
-												spsCode: {required: true},
-						countryCode: {required: true},
-						publishDate: {required: true},
-						spsOrg: {required: true},
-						coverProduct: {required: true},
-						fileTitle: {required: true},
-						contentDes: {required: true},
-						standardYn: {required: true},
-						oraLink: {required: true},
-						fileCode: {required: true},
-						affectCountry: {required: true},
-						expectApprovalDate: {required: true},
-						expectEffectiveDate: {required: true},
-						expectPublishDate: {required: true},
-						feedbackEndDate: {required: true},
-						fileGetOrg: {required: true},
-						parSpsCode: {required: true},
-						errorReason: {required: true},
-						state: {required: true},
-						back1: {required: true},
-						back2: {required: true},
-						back3: {required: true},
-						back4: {required: true},
-						versions: {required: true},
-					},
-			
-					messages: {
-						spsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.spsCode')"},
-						countryCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.countryCode')"},
-						publishDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.publishDate')"},
-						spsOrg: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.spsOrg')"},
-						coverProduct: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.coverProduct')"},
-						fileTitle: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileTitle')"},
-						contentDes: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.contentDes')"},
-						standardYn: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.standardYn')"},
-						oraLink: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.oraLink')"},
-						fileCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileCode')"},
-						affectCountry: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.affectCountry')"},
-						expectApprovalDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectApprovalDate')"},
-						expectEffectiveDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectEffectiveDate')"},
-						expectPublishDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectPublishDate')"},
-						feedbackEndDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.feedbackEndDate')"},
-						fileGetOrg: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileGetOrg')"},
-						parSpsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.parSpsCode')"},
-						errorReason: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.errorReason')"},
-						state: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.state')"},
-						back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back1')"},
-						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back2')"},
-						back3: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back3')"},
-						back4: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back4')"},
-						versions: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.versions')"},
-					}
-				});
-				
-				$("#btn-back").click(function(){
-					window.location.href=("$basePath/spsInfo");
-				});
-				$("#btn-submit").click(function(){
-            		var form = $("#addForm");
-					if(form.valid()==false){
-						return;
-					}
-					jQuery.post('$basePath/spsInfo/add',
-            			form.serialize(),
-            			function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/spsInfo"); }
-            		);
-            	});
-            });
-        </script>
+
+        <script type="text/javascript" src="//cdn.bootcss.com/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+        <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" type="text/css"/>
+        <link rel="stylesheet" href="#springUrl('')/static/css/content_tab.css" />
+        <script src="#springUrl('')/static/js/prefixfree.min.js"></script>
     </head>
 	<body>
-		<div class="row">
-            <div class="col-xs-12 col-sm-12">
-                <div class="widget-box">
-                    <div class="widget-header">
-                        <h5 class="lighter">
-                            <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.add')
-                        </h5>
-                        <div class="widget-toolbar"></div>
-                    </div>
-                    <div class="widget-body">
-                        <div class="widget-main" style="background-color: #fff;padding:5px;">
-                            <form class="form-horizontal" role="form" id="addForm">
-                                <div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfo.spsCode')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="spsCode" id="spsCode" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.countryCode')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="countryCode" id="countryCode" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="publishDate">#springMessage('tbtSps.spsInfo.publishDate')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="publishDate" id="publishDate" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="spsOrg">#springMessage('tbtSps.spsInfo.spsOrg')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="spsOrg" id="spsOrg" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="coverProduct" id="coverProduct" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="fileTitle" id="fileTitle" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="contentDes" id="contentDes" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.spsInfo.standardYn')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="standardYn" id="standardYn" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="oraLink" id="oraLink" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileCode">#springMessage('tbtSps.spsInfo.fileCode')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="fileCode" id="fileCode" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="affectCountry">#springMessage('tbtSps.spsInfo.affectCountry')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="affectCountry" id="affectCountry" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="expectApprovalDate">#springMessage('tbtSps.spsInfo.expectApprovalDate')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="expectApprovalDate" id="expectApprovalDate" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="expectEffectiveDate">#springMessage('tbtSps.spsInfo.expectEffectiveDate')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="expectEffectiveDate" id="expectEffectiveDate" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="expectPublishDate">#springMessage('tbtSps.spsInfo.expectPublishDate')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="expectPublishDate" id="expectPublishDate" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="feedbackEndDate">#springMessage('tbtSps.spsInfo.feedbackEndDate')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="feedbackEndDate" id="feedbackEndDate" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="fileGetOrg">#springMessage('tbtSps.spsInfo.fileGetOrg')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="fileGetOrg" id="fileGetOrg" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="parSpsCode">#springMessage('tbtSps.spsInfo.parSpsCode')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="parSpsCode" id="parSpsCode" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="errorReason">#springMessage('tbtSps.spsInfo.errorReason')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="errorReason" id="errorReason" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="state">#springMessage('tbtSps.spsInfo.state')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="state" id="state" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.spsInfo.back1')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="back1" id="back1" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.spsInfo.back2')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="back2" id="back2" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back3">#springMessage('tbtSps.spsInfo.back3')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="back3" id="back3" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back4">#springMessage('tbtSps.spsInfo.back4')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="back4" id="back4" class="col-xs-12 col-sm-12" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="versions">#springMessage('tbtSps.spsInfo.versions')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="versions" id="versions" class="col-xs-12 col-sm-12" />
-                                    </div>
-								</div>
-								<div class="form-group">
-                                </div>
-								<div class="form-group">
-									<div class="col-sm-8 col-sm-offset-4">
-                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
-                                        &nbsp; &nbsp; &nbsp;
-                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-										 &nbsp; &nbsp; &nbsp;
-              							<button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
-                                    </div>
-                                </div>
-                            </form>
+    <main>
+
+        <input id="tab1" type="radio" name="tabs" checked style="display: none">
+        <label for="tab1">Codepen</label>
+
+        <input id="tab2" type="radio" name="tabs" style="display: none">
+        <label for="tab2">Dribbble</label>
+
+        <input id="tab3" type="radio" name="tabs" style="display: none">
+        <label for="tab3">Dropbox</label>
+
+        <section id="content1">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <form class="form-horizontal" role="form" id="addForm">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfo.spsCode')</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="spsCode" id="spsCode" class="col-xs-10 col-sm-8" />
+                            </div>
+                            <label class="col-sm-1 control-label no-padding-right" for="publishDate">#springMessage('tbtSps.tbinfo.publishDate')</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="publishDate" id="publishDate" class="col-xs-10 col-sm-8" />
+                            </div>
+                            <label class="col-sm-1 control-label no-padding-right" for="language">#springMessage('tbtSps.language')</label>
+                            <div class="col-sm-3">
+                                <select name="language"  id="language" multiple="multiple" >
+                                    #foreach( $item_language in $list_language)
+                                        <option value="$!item_language.languageCode">$!item_language.languageContent</option>
+                                    #end
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.countryCode')</label>
+                            <div class="col-sm-3">
+                                <select id="countryCode" name="countryCode" class="chosen-select" >
+                                    <option value="">#springMessage('tbtSps.please.choose')</option>
+                                    #foreach( $item_country in $list_country)
+                                        <option value="$!item_country.countryCode">$!item_country.countryContent</option>
+                                    #end
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label no-padding-right" for="spsOrg">#springMessage('tbtSps.spsInfo.spsOrg')</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="spsOrg" id="spsOrg" class="col-xs-10 col-sm-8" />
+                            </div>
+                            <label class="col-sm-1 control-label no-padding-right" for="notificationType">#springMessage('tbtSps.notificationType')</label>
+                            <div class="col-sm-3">
+                                <select name="notificationType"  id="notificationType" multiple="multiple" >
+                                    #foreach( $item_notificationType in $list_notificationType)
+                                        <option value="$!item_notificationType.notificationTypeCode">$!item_notificationType.notificationTypeContent</option>
+                                    #end
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
+                            <div class="col-sm-10">
+                                <textarea name="coverProduct" id="coverProduct" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
+                            <div class="col-sm-10">
+                                <textarea name="fileTitle" id="fileTitle" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
+                            <div class="col-sm-10">
+                                <textarea name="contentDes" id="contentDes" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="targetReason">#springMessage('tbtSps.tbinfo.targetReason')</label>
+                            <div class="col-sm-3">
+                                <select name="targetReason"  id="targetReason" multiple="multiple" >
+                                    #foreach( $item_targereason in $list_targereason)
+                                        <option value="$!item_targereason.targetReasonCode">$!item_targereason.targetReasonContent</option>
+                                    #end
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label no-padding-right" for="internationalStandard">#springMessage('tbtSps.internationalStandard')</label>
+                            <div class="col-sm-3">
+                                <select name="internationalStandard"  id="internationalStandard" multiple="multiple" >
+                                    #foreach( $item_internationalStandard in $list_internationalStandard)
+                                        <option value="$!item_internationalStandard.internationalStandardCode">$!item_internationalStandard.internationalStandardContent</option>
+                                    #end
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.spsInfo.standardYn')</label>
+                            <div class="col-sm-3">
+                                #springMessage('constan.yes')<input type="radio" name="standardYn" value="1" checked="true">
+                                &nbsp;&nbsp;
+                                #springMessage('constan.no')<input type="radio" name="standardYn" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+                            <div class="col-sm-10">
+                                <textarea name="oraLink" id="oraLink" class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label"  >#springMessage('relation.nongyao.nongchanpin')</label>
+                            <div class="col-sm-3">
+                            </div>
+                            <label class="col-sm-1 control-label no-padding-right" for="internationalStandard">#springMessage('tbtSps.tbresidualInfo.medicineCode.add')</label>
+                            <div class="col-sm-3">
+                                <select id="relationMedicine" name="relationMedicine" class="chosen-select" >
+                                    <option value="">#springMessage('tbtSps.please.choose')</option>
+                                    #foreach( $item_relationMedicine in $list_relationMedicine)
+                                        <option value="$!item_relationMedicine.relationMedicineCode">$!item_relationMedicine.relationMedicineZh</option>
+                                    #end
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.tbresidualInfo.medicineProductCode.add')</label>
+                            <div class="col-sm-3">
+                                <select id="relationMedicineProduct" name="relationMedicineProduct" class="chosen-select" >
+                                    <option value="">#springMessage('tbtSps.please.choose')</option>
+                                    #foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)
+                                        <option value="$!item_relationMedicineProduct.relationMedicineProductCode">$!item_relationMedicineProduct.relationMedicineProductZh</option>
+                                    #end
+                                </select>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </div> 
+            </div>
+        </section>
+
+        <section id="content2">
+            <p>
+                Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs.
+            </p>
+            <p>
+                Jerky jowl pork chop tongue, kielbasa shank venison. Capicola shank pig ribeye leberkas filet mignon brisket beef kevin tenderloin porchetta. Capicola fatback venison shank kielbasa, drumstick ribeye landjaeger beef kevin tail meatball pastrami prosciutto pancetta. Tail kevin spare ribs ground round ham ham hock brisket shoulder. Corned beef tri-tip leberkas flank sausage ham hock filet mignon beef ribs pancetta turkey.
+            </p>
+        </section>
+
+        <section id="content3">
+            <table border="1px #ooo" id="tab" cellpadding="0"
+                   cellspacing="0" width="30%">
+                <tr align="center">
+                    <td width="30%"><input id="allCkb" type="checkbox"/></td>
+                    <td width="30%">科目</td>
+                    <td width="30%">成绩</td>
+                </tr>
+                <tr align="center">
+                    <td width="30%"></td>
+                    <td width="30%">语文</td>
+                    <td width="30%">80</td>
+                </tr>
+            </table>
+            <input type="button" onclick="addTr2('tab', -1)" value="添加">
+            <input type="button" onclick="delTr2()" value="删除">
+        </section>
+
+        <div class="form-group">
+            <div class="col-sm-8 col-sm-offset-4">
+                <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                &nbsp; &nbsp; &nbsp;
+                <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+                &nbsp; &nbsp; &nbsp;
+                <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+            </div>
         </div>
+    </main>
+
+    <script type="text/javascript">
+        $(document).ready(function() { debugger ;
+            $('#notificationType').multiselect();
+            $('#language').multiselect();
+            $('#targetReason').multiselect();
+            $('#internationalStandard').multiselect();
+        });
+
+        var config = {
+            '.chosen-select' : {width:"100%", search_contains: true, no_results_text:'没有找到'}
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
+    <script type="text/javascript">
+        ////////添加一行、删除一行封装方法///////
+        /**
+         * 为table指定行添加一行
+         *
+         * tab 表id
+         * row 行数，如：0->第一行 1->第二行 -2->倒数第二行 -1->最后一行
+         * trHtml 添加行的html代码
+         *
+         */
+        function addTr(tab, row, trHtml){
+            //获取table最后一行 $("#tab tr:last")
+            //获取table第一行 $("#tab tr").eq(0)
+            //获取table倒数第二行 $("#tab tr").eq(-2)
+            var $tr=$("#"+tab+" tr").eq(row);
+            if($tr.size()==0){
+                alert("指定的table id或行数不存在！");
+                return;
+            }
+            $tr.after(trHtml);
+        }
+
+        function delTr(ckb){
+            //获取选中的复选框，然后循环遍历删除
+            var ckbs=$("input[name="+ckb+"]:checked");
+            if(ckbs.size()==0){
+                alert("要删除指定行，需选中要删除的行！");
+                return;
+            }
+            ckbs.each(function(){
+                $(this).parent().parent().remove();
+            });
+        }
+
+        /**
+         * 全选
+         *
+         * allCkb 全选复选框的id
+         * items 复选框的name
+         */
+        function allCheck(allCkb, items){
+            $("#"+allCkb).click(function(){
+                $('[name='+items+']:checkbox').attr("checked", this.checked );
+            });
+        }
+
+        ////////添加一行、删除一行测试方法///////
+        $(function(){
+            //全选
+            allCheck("allCkb", "ckb");
+        });
+
+        function addTr2(tab, row){
+            var config = {
+                '.chosen-select' : {width:"100%", search_contains: true, no_results_text:'没有找到'}
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+
+
+
+            var trHtml="<tr align='center'>" +
+                            "<td width='30%'><input type='checkbox' name='ckb'/></td>" +
+                            "<td width='30%'>地理</td>" +
+                            "<td width='30%'><select name = '122' id= 'ewe' class='chosen-select'> <option value=''>#springMessage('tbtSps.please.choose')</option>#foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)<option value='$!item_relationMedicineProduct.relationMedicineProductCode'>$!item_relationMedicineProduct.relationMedicineProductZh</option>#end</select></td>" +
+                        "</tr>";
+            addTr(tab, row, trHtml);
+        }
+
+        function delTr2(){
+            delTr('ckb');
+        }
+    </script>
+
+    <script language="javascript">
+        $(function() {
+            $('#addForm').validate({
+                errorElement:"em",
+                errorClass:"red",
+                rules: {
+                    spsCode: {required: true},
+                    countryCode: {required: true},
+                    publishDate: {required: true},
+                    spsOrg: {required: true},
+                    coverProduct: {required: true},
+                    fileTitle: {required: true},
+                    contentDes: {required: true},
+                    standardYn: {required: true},
+                    oraLink: {required: true},
+                    fileCode: {required: true},
+                    affectCountry: {required: true},
+                    expectApprovalDate: {required: true},
+                    expectEffectiveDate: {required: true},
+                    expectPublishDate: {required: true},
+                    feedbackEndDate: {required: true},
+                    fileGetOrg: {required: true},
+                    parSpsCode: {required: true},
+                    errorReason: {required: true},
+                    state: {required: true},
+                    back1: {required: true},
+                    back2: {required: true},
+                    back3: {required: true},
+                    back4: {required: true},
+                    versions: {required: true}
+                },
+
+                messages: {
+                    spsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.spsCode')"},
+                    countryCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.countryCode')"},
+                    publishDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.publishDate')"},
+                    spsOrg: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.spsOrg')"},
+                    coverProduct: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.coverProduct')"},
+                    fileTitle: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileTitle')"},
+                    contentDes: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.contentDes')"},
+                    standardYn: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.standardYn')"},
+                    oraLink: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.oraLink')"},
+                    fileCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileCode')"},
+                    affectCountry: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.affectCountry')"},
+                    expectApprovalDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectApprovalDate')"},
+                    expectEffectiveDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectEffectiveDate')"},
+                    expectPublishDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.expectPublishDate')"},
+                    feedbackEndDate: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.feedbackEndDate')"},
+                    fileGetOrg: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.fileGetOrg')"},
+                    parSpsCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.parSpsCode')"},
+                    errorReason: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.errorReason')"},
+                    state: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.state')"},
+                    back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back1')"},
+                    back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back2')"},
+                    back3: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back3')"},
+                    back4: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.back4')"},
+                    versions: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.spsInfo.versions')"}
+                }
+            });
+
+            $("#btn-back").click(function(){
+                window.location.href=("$basePath/spsInfo");
+            });
+            $("#btn-submit").click(function(){
+                var form = $("#addForm");
+                if(form.valid()==false){
+                    return;
+                }
+                jQuery.post('$basePath/spsInfo/add',
+                        form.serialize(),
+                        function(data) { MyPopWindow.SubmitCompletedCallback2(data, "$basePath/spsInfo"); }
+                );
+            });
+        });
+    </script>
 	</body>
 </html>

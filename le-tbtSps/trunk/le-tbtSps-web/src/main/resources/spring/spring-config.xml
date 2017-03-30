@@ -22,6 +22,8 @@
         <property name="cookieNames" value="${portal.cookie.names}" />
         <property name="cookieDomains" value="${portal.cookie.domains}" />
     </bean>
+    <bean id="parameterLoad" class="com.letv.tbtSps.utils.ParameterLoad">
+    </bean>
 
 	<import resource="classpath*:spring/spring-config-service.xml" />
 </beans>
