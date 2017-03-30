@@ -152,7 +152,7 @@
 
         <section id="content3">
             <table border="1px #ooo" id="tab" cellpadding="0"
-                   cellspacing="0" width="30%">
+                   cellspacing="0" width="30%" class='table table-striped table-bordered table-condensed table-hover'>
                 <tr align="center">
                     <td width="30%"><input id="allCkb" type="checkbox"/></td>
                     <td width="30%">科目</td>
@@ -245,23 +245,25 @@
             //全选
             allCheck("allCkb", "ckb");
         });
-
-        function addTr2(tab, row){
+        var count = 0 ;
+        function addTr2(tab, row){   debugger;
+            count = count+1 ;
             var config = {
                 '.chosen-select' : {width:"100%", search_contains: true, no_results_text:'没有找到'}
             }
-            for (var selector in config) {
+            for (var selector in config) {     debugger ;
                 $(selector).chosen(config[selector]);
             }
-
-
-
-            var trHtml="<tr align='center'>" +
-                            "<td width='30%'><input type='checkbox' name='ckb'/></td>" +
-                            "<td width='30%'>地理</td>" +
-                            "<td width='30%'><select name = '122' id= 'ewe' class='chosen-select'> <option value=''>#springMessage('tbtSps.please.choose')</option>#foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)<option value='$!item_relationMedicineProduct.relationMedicineProductCode'>$!item_relationMedicineProduct.relationMedicineProductZh</option>#end</select></td>" +
+            if(count == 1){
+                var trHtml="<tr align='center'>" +
+                        "<td width='30%'><input type='checkbox' name='ckb'/></td>" +
+                        "<td width='30%'>地理</td>" +
+                        "<td width='30%'><select name = '122' id= 'ewe' class='chosen-select'> <option value=''>#springMessage('tbtSps.please.choose')</option>#foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)<option value='$!item_relationMedicineProduct.relationMedicineProductCode'>$!item_relationMedicineProduct.relationMedicineProductZh</option>#end</select></td>" +
                         "</tr>";
-            addTr(tab, row, trHtml);
+                addTr(tab, row, trHtml);
+                addTr2(tab, row);
+            }
+            count = 0 ;
         }
 
         function delTr2(){
