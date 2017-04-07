@@ -13,6 +13,18 @@ public class RelationSpsNotificationType implements java.io.Serializable  {
 
     /** 序列化标识 */
 	private static final long serialVersionUID = 1L;
+
+
+    public RelationSpsNotificationType(){}
+
+    public RelationSpsNotificationType(String spsCode , String notificationTypeCode , String userName){
+        this.spsCode = spsCode ;
+        this.notificationTypeCode = notificationTypeCode ;
+        this.createUser = userName ;
+        this.createTime = new Date() ;
+        this.updateUser = userName ;
+        this.updateTime = new Date();
+    }
 	
     /** id */
     private Long id; 

@@ -15,6 +15,8 @@
 		JSR-303 support will be detected on classpath and enabled
 		automatically
 	-->
+    <mvc:annotation-driven />
+
 	<mvc:annotation-driven conversion-service="conversionService" />
 
 	<mvc:default-servlet-handler />

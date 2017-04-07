@@ -60,8 +60,8 @@
             <li><a href="javascript:void(0)" onclick="link('240','目标理由','targereason','20','目标理由')">目标理由</a></li>
             <li><a href="javascript:void(0)" onclick="link('240','国际标准','internationalStandard','20','国际标准')">国际标准</a></li>
             <li><a href="javascript:void(0)" onclick="link('240','相关农药','relationMedicine','20','相关农药')">相关农药</a></li>
-            <li><a href="javascript:void(0)" onclick="link('240','sps通报','spsInfo','20','sps通报')">sps通报</a></li>
-            <li><a href="javascript:void(0)" onclick="link('240','tbt通报','relationMedicine','20','tbt通报')">tbt通报</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','sps通报/tbt通报','spsInfo','20','sps通报/tbt通报')">sps通报/tbt通报</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','在线评议管理','spsInfo/indexReview','20','在线评议管理')">在线评议管理</a></li>
             <li><a href="javascript:void(0)" onclick="link('240','全文检索','relationMedicine','20','全文检索')">全文检索</a></li>
             <li><a href="javascript:void(0)" onclick="link('240','统计','relationMedicine','20','统计')">统计</a></li>
 ##            <li><a href="javascript:void(0)" onclick="link('320','参数','systemPar','20','参数')">参数</a></li>

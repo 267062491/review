@@ -13,7 +13,18 @@ public class RelationSpsRelationMedicine implements java.io.Serializable  {
 
     /** 序列化标识 */
 	private static final long serialVersionUID = 1L;
-	
+
+
+    public RelationSpsRelationMedicine(){}
+
+    public RelationSpsRelationMedicine(String spsCode , String relationMedicineCode , String userName){
+        this.spsCode = spsCode ;
+        this.relationMedicineCode = relationMedicineCode ;
+        this.createUser = userName ;
+        this.createTime = new Date() ;
+        this.updateUser = userName ;
+        this.updateTime = new Date();
+    }
     /** id */
     private Long id; 
     /** 相关农药 */

@@ -13,7 +13,18 @@ public class RelationSpsInternationalStandard implements java.io.Serializable  {
 
     /** 序列化标识 */
 	private static final long serialVersionUID = 1L;
-	
+
+    public RelationSpsInternationalStandard(){}
+
+    public RelationSpsInternationalStandard(String spsCode , String internationalStandardCode , String userName){
+        this.spsCode = spsCode ;
+        this.internationalStandardCode = internationalStandardCode ;
+        this.createUser = userName ;
+        this.createTime = new Date() ;
+        this.updateUser = userName ;
+        this.updateTime = new Date();
+    }
+
     /** id */
     private Long id; 
     /** 国际标准 */

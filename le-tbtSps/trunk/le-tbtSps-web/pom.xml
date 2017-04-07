@@ -78,6 +78,10 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
 	</dependencies>
 	<build>
 		<finalName>le-tbtSps-web</finalName>

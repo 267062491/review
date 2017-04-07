@@ -13,7 +13,22 @@ public class SpsAttr implements java.io.Serializable  {
 
     /** 序列化标识 */
 	private static final long serialVersionUID = 1L;
-	
+
+    public SpsAttr(){
+
+    }
+
+    public SpsAttr(String spsCode ,String fileName ,String filePath ,String createUser ,String updateUser ){
+        this.spsCode = spsCode ;
+        this.fileName = fileName ;
+        this.filePath = filePath ;
+        this.createUser = createUser ;
+        this.createTime = new Date() ;
+        this.updateUser = updateUser ;
+        this.updateTime = new Date() ;
+    }
+
+
     /** id */
     private Long id; 
     /** 通报编号(关联sps信息表的通报编号) */
@@ -114,4 +129,6 @@ public class SpsAttr implements java.io.Serializable  {
     public void setYn(Integer yn) {
         this.yn = yn;
     }
+
+
 }

@@ -125,8 +125,5 @@
         <if test="updateUser != null and updateUser != ''">
         	and update_user = #{updateUser,jdbcType=VARCHAR}
         </if>
-        <if test="yn != null and yn != ''">
-        	and yn = #{yn,jdbcType=DECIMAL}
-        </if>
     </sql>
 </mapper>

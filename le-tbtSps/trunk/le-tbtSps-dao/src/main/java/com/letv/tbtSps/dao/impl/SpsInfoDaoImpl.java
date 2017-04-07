@@ -77,4 +77,20 @@ public class SpsInfoDaoImpl extends BaseDao implements SpsInfoDao {
         int count = (Integer) queryForObject(namespace +".exist", spsInfo);
         return count > 0;
     }
+    /**
+     * 根据通报成员分组查询通报成员拥有的年份
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> queryCountryDateByCountry(SpsInfoQuery queryBean) {
+        return (List<SpsInfo>) queryForList(namespace +".queryCountryDateByCountry", queryBean);
+    }
+    /**
+     * 根据spsCode 修改spsInfo
+     * @param spsInfo
+     * @return
+     */
+    public boolean updateSpsInfoBySpsCode(SpsInfo spsInfo) {
+        return update(namespace +".updateSpsInfoBySpsCode", spsInfo);
+    }
 }

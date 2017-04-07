@@ -117,6 +117,8 @@ public interface UserManager {
      */
     public List<User> queryUserListByRoleCodeWithPage(UserQuery queryBean, PageUtil pageUtil);
 
+    public List<User> queryUserByRoleCodeNoPage(UserQuery queryBean);
+
     /**
      * 启用、禁用用户
      * @param user

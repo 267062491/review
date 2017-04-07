@@ -28,7 +28,7 @@
     <!-- 创建信息 -->
     <insert id="insert" parameterType="RelationMedicine" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_relation_medicine(<include refid="relationMedicineUsedColumns"/>) 
-        VALUES (#{relationMedicineCode},#{relationMedicineZh},#{relationMedicineEm},#{relationMedicineZhAlias},#{back1},#{back2},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        VALUES (#{relationMedicineCode},#{relationMedicineZh},#{relationMedicineEm},#{relationMedicineZhAlias},#{back1},#{back2},#{createTime},#{updateTime},#{createUser},#{updateUser},1)
 	</insert>
 	
     <!-- 修改信息 -->
@@ -138,9 +138,6 @@
         </if>
         <if test="updateUser != null and updateUser != ''">
         	and update_user = #{updateUser,jdbcType=VARCHAR}
-        </if>
-        <if test="yn != null and yn != ''">
-        	and yn = #{yn,jdbcType=DECIMAL}
         </if>
     </sql>
 </mapper>

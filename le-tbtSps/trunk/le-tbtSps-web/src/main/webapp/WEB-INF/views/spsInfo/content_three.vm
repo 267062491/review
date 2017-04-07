@@ -1,0 +1,16 @@
+<table border="1px #ooo" id="tab" cellpadding="0"
+       cellspacing="0" width="30%" class='table table-striped table-bordered table-condensed table-hover'>
+    <tr align="center">
+        <td width="5%" type = "checkBox">复选框</td>
+        <td width="10%" type = "select">农药</td>
+        <td width="10%" type = "select">农产品</td>
+        <td width="10%" type = "select">修改类型</td>
+        <td width="10%" type = "text">残留量</td>
+        <td width="10%" type = "radio">单位</td>
+        <td width="10%" type = "text">安全期</td>
+        <td width="10%" type = "text">截止/撤销日期</td>
+    </tr>
+</table>
+<input type="text" id="table_content" name = "tableContent">
+<input type="button" onclick="addTr2('tab', -1)" value="添加">
+<input type="button" onclick="delTr2()" value="删除">

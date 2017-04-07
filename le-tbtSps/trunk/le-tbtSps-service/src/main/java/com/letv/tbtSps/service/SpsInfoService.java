@@ -1,10 +1,13 @@
 package com.letv.tbtSps.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.tbtSps.domain.SpsInfo;
+import com.letv.tbtSps.domain.dto.SpsBtbMulityDto;
 import com.letv.tbtSps.domain.query.SpsInfoQuery;
 import com.letv.common.utils.page.PageUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * SpsInfoService接口
@@ -84,4 +87,29 @@ public interface SpsInfoService {
      * @return
      */
     public boolean delete(SpsInfo[] spsInfos);
+
+    /**
+     * 创建sps、btb数据
+     * @param spsInfo
+     * @param files
+     * @param contents
+     * @param userName
+     * @param spsBtbMulityDto
+     * @return
+     */
+    public String[] createOrderInfo(SpsInfo spsInfo , List<MultipartFile> files ,String contents , String userName,SpsBtbMulityDto spsBtbMulityDto);
+
+    /**
+     * 根据通报成员分组查询通报成员拥有的年份
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> queryCountryDateByCountry(SpsInfoQuery queryBean);
+
+    /**
+     * 下发， 分配给专家
+     * @param tableContent
+     * @param userName
+     */
+    public String[] sendNotice(String tableContent,String userName);
 }

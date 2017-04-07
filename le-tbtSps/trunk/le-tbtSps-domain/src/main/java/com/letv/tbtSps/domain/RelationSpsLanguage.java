@@ -13,6 +13,17 @@ public class RelationSpsLanguage implements java.io.Serializable  {
 
     /** 序列化标识 */
 	private static final long serialVersionUID = 1L;
+
+    public RelationSpsLanguage(){}
+
+    public RelationSpsLanguage(String spsCode , String languageCode , String userName){
+        this.spsCode = spsCode ;
+        this.languageCode = languageCode ;
+        this.createUser = userName ;
+        this.createTime = new Date() ;
+        this.updateUser = userName ;
+        this.updateTime = new Date();
+    }
 	
     /** id */
     private Long id; 

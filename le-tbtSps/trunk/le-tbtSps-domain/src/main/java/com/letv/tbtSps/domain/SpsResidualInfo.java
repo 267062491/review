@@ -13,7 +13,26 @@ public class SpsResidualInfo implements java.io.Serializable  {
 
     /** 序列化标识 */
 	private static final long serialVersionUID = 1L;
-	
+
+
+    public SpsResidualInfo(){}
+
+    public SpsResidualInfo(String spsCode , String medicineCode , String medicineProductCode
+            ,String updateType , Double residuaAmount , String unit ,Double safeDay , Date endDate , String userName){
+        this.spsCode = spsCode ;
+        this.medicineCode = medicineCode ;
+        this.medicineProductCode = medicineProductCode ;
+        this.updateType = updateType ;
+        this.residuaAmount = residuaAmount ;
+        this.unit = unit ;
+        this.safeDay = safeDay ;
+        this.endDate = endDate ;
+        this.createUser = userName ;
+        this.createTime = new Date();
+        this.updateUser = userName ;
+        this.updateTime = new Date() ;
+    }
+
     /** id */
     private Long id; 
     /** 关联sps_info表 */
@@ -45,8 +64,10 @@ public class SpsResidualInfo implements java.io.Serializable  {
     /** 修改人 */
     private String updateUser; 
     /** yn */
-    private Integer yn; 
-    
+    private Integer yn;
+
+    private String endDateIn;
+
     public Long getId(){
         return id;
     }
@@ -173,5 +194,13 @@ public class SpsResidualInfo implements java.io.Serializable  {
         
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public String getEndDateIn() {
+        return endDateIn;
+    }
+
+    public void setEndDateIn(String endDateIn) {
+        this.endDateIn = endDateIn;
     }
 }

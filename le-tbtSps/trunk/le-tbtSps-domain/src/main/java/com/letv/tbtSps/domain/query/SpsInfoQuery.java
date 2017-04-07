@@ -55,15 +55,15 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
     /** 不符合标准原因 */
 	private String errorReason; 
     /** 当前状态 */
-	private String state; 
-    /** 备用字段1 */
-	private String back1; 
-    /** 备用字段2 */
-	private String back2; 
-    /** 备用字段3 */
-	private String back3; 
-    /** 备用字段4 */
-	private String back4; 
+	private String state;
+    /** 重要等级  高、中、低 */
+    private String levels;
+    /** 通报下发日期 */
+    private Date sendDate;
+    /** 专家评议截止日期 */
+    private Date expertsEndDate;
+    /** 操作前的状态 */
+	private String oraState;
     /** 备用字段5 */
 	private String versions;
     /** 创建时间 */
@@ -240,38 +240,38 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
     public void setState(String state) {
 		this.state = state;
 	}
-	
-    public String getBack1(){
-		return back1;
-	}
-	    
-    public void setBack1(String back1) {
-		this.back1 = back1;
-	}
-	
-    public String getBack2(){
-		return back2;
-	}
-	    
-    public void setBack2(String back2) {
-		this.back2 = back2;
-	}
-	
-    public String getBack3(){
-		return back3;
-	}
-	    
-    public void setBack3(String back3) {
-		this.back3 = back3;
-	}
-	
-    public String getBack4(){
-		return back4;
-	}
-	    
-    public void setBack4(String back4) {
-		this.back4 = back4;
-	}
+
+    public String getLevels() {
+        return levels;
+    }
+
+    public void setLevels(String levels) {
+        this.levels = levels;
+    }
+
+    public Date getSendDate() {
+        return sendDate;
+    }
+
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
+    }
+
+    public Date getExpertsEndDate() {
+        return expertsEndDate;
+    }
+
+    public void setExpertsEndDate(Date expertsEndDate) {
+        this.expertsEndDate = expertsEndDate;
+    }
+
+    public String getOraState() {
+        return oraState;
+    }
+
+    public void setOraState(String oraState) {
+        this.oraState = oraState;
+    }
 
     public String getVersions() {
         return versions;

@@ -13,6 +13,17 @@ public class RelationSpsTargereason implements java.io.Serializable  {
 
     /** 序列化标识 */
 	private static final long serialVersionUID = 1L;
+
+    public RelationSpsTargereason(){}
+
+    public RelationSpsTargereason(String spsCode , String targetReasonCode , String userName){
+        this.spsCode = spsCode ;
+        this.targetReasonCode = targetReasonCode ;
+        this.createUser = userName ;
+        this.createTime = new Date() ;
+        this.updateUser = userName ;
+        this.updateTime = new Date();
+    }
 	
     /** id */
     private Long id; 

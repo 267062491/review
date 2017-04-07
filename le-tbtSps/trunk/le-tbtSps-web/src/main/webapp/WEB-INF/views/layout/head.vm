@@ -94,7 +94,7 @@
 ##<script src="//wms.le.com/static/js/common/jquery.i18n.properties-min-1.0.9.js/js/jquery.i18n.properties-min-1.0.9.js"></script>
 ##<script src="//wms.le.com/static/js/common/tips.js"></script>
 
-<link rel="Shortcut Icon" href="//wms.le.com/static/images/favicon.ico"/>
+##<link rel="Shortcut Icon" href="//wms.le.com/static/images/favicon.ico"/>
 
 <script src="//wms.le.com/static/js/dialog-orange.js"></script>
 <style type="text/css">

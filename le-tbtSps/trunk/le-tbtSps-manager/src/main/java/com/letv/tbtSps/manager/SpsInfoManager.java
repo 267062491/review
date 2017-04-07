@@ -1,8 +1,10 @@
 package com.letv.tbtSps.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import com.letv.tbtSps.domain.SpsInfo;
+import com.letv.tbtSps.domain.SpsInfoLog;
 import com.letv.tbtSps.domain.query.SpsInfoQuery;
 import com.letv.common.utils.page.PageUtil;
 /**
@@ -100,4 +102,31 @@ public interface SpsInfoManager {
      * @return
      */
     public boolean exist(SpsInfo spsInfo);
+
+    /**
+     * 创建sps、tbt
+     * @param map
+     */
+    public boolean insertOrderInfo(Map<String,Object> map) throws Exception;
+
+    /**
+     * 根据通报成员分组查询通报成员拥有的年份
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> queryCountryDateByCountry(SpsInfoQuery queryBean);
+
+    /**
+     * 根据spsCode 修改spsInfo
+     * @param spsInfo
+     * @return
+     */
+    public boolean updateSpsInfoBySpsCode(SpsInfo spsInfo);
+
+    /**
+     * 下发任务
+     * @param spsInfo
+     * @return
+     */
+    public boolean updateSpsInfoSend(SpsInfo spsInfo, List<SpsInfoLog> list_spsInfoLog);
 }

@@ -32,7 +32,7 @@
     <!-- 创建信息 -->
     <insert id="insert" parameterType="TbinfoLog" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_tbt_info_log(<include refid="tbinfoLogUsedColumns"/>) 
-        VALUES (#{tbtCode},#{state},#{oraState},#{content},#{logAttrRelation},#{opertOrder},#{back1},#{back2},#{back3},#{back4},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        VALUES (#{tbtCode},#{state},#{oraState},#{content},#{logAttrRelation},#{opertOrder},#{back1},#{back2},#{back3},#{back4},#{createTime},#{updateTime},#{createUser},#{updateUser},1)
 	</insert>
 	
     <!-- 修改信息 -->
@@ -166,9 +166,6 @@
         </if>
         <if test="updateUser != null and updateUser != ''">
         	and update_user = #{updateUser,jdbcType=VARCHAR}
-        </if>
-        <if test="yn != null and yn != ''">
-        	and yn = #{yn,jdbcType=DECIMAL}
         </if>
     </sql>
 </mapper>

@@ -11,7 +11,7 @@ import com.letv.tbtSps.domain.Resource;
 import com.letv.tbtSps.domain.query.ResourceQuery;
 import com.letv.tbtSps.domain.query.TreeDomain;
 import com.letv.tbtSps.service.ResourceService;
-import com.letv.tbtSps.utils.JsonUtilHelp;
+import com.letv.tbtSps.utils.JsonHelperImpl;
 import com.letv.tbtSps.utils.constant.CommonConstants;
 import com.letv.tbtSps.utils.constant.PortalSystemTipCodeEnum;
 import com.letv.tbtSps.utils.constant.ResourceIcons;
@@ -264,7 +264,7 @@ public class ResourceController extends ReviewBaseController {
              */
             LetvResponse<List<TreeDomain>> letvResponse = resourceService.queryResourceListByCodes( query) ;
             if (letvResponse.getCode()== PortalSystemTipCodeEnum.SCUESS.getValue()) {
-                return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, JsonUtilHelp.listToJsonArray(letvResponse.getResult()));
+                return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, JsonHelperImpl.listToJsonArray(letvResponse.getResult()));
             } else {
                 return WrapMapper.wrap(Wrapper.ERROR_CODE, "查询配置信息失败！");
             }
@@ -288,7 +288,7 @@ public class ResourceController extends ReviewBaseController {
              */
             LetvResponse<List<TreeDomain>> letvResponse = resourceService.queryResourceListByLikeCode( query) ;
             if (letvResponse.getCode()== PortalSystemTipCodeEnum.SCUESS.getValue()) {
-                return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, JsonUtilHelp.listToJsonArray(letvResponse.getResult()));
+                return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, JsonHelperImpl.listToJsonArray(letvResponse.getResult()));
             } else {
                 return WrapMapper.wrap(letvResponse.getCode(), letvResponse.getMessage());
             }

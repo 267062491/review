@@ -91,7 +91,7 @@
 <script src="#springUrl('')/static/js/jquery_dialog/jquery_dialog.js"></script>
 <script src="#springUrl('')/static/js/inner/main.js"></script>
 
-<link rel="Shortcut Icon" href="#springUrl('')/static/images/favicon.ico"/>
+##<link rel="Shortcut Icon" href="#springUrl('')/static/images/favicon.ico"/>
 <style type="text/css">
 	body{ background-color: #FFFFFF; }
 	select{ height:32px; line-height:28px; padding:2px 0;}

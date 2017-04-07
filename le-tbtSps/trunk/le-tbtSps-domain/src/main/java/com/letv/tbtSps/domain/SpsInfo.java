@@ -1,6 +1,15 @@
 package com.letv.tbtSps.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.letv.common.utils.DateHelper;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * SpsInfo：sps信息表实体类
@@ -20,8 +29,8 @@ public class SpsInfo implements java.io.Serializable  {
     private String spsCode; 
     /** 通报成员,一般是国家 */
     private String countryCode; 
-    /** 发布日期 */
-    private Date publishDate; 
+    /** 发布日期 spring mvc 接收日期参数 没弄好， 先用别的字段string类型的接收吧 */
+    private Date publishDate;
     /** 负责机构 */
     private String spsOrg; 
     /** 覆盖产品 */
@@ -54,14 +63,14 @@ public class SpsInfo implements java.io.Serializable  {
     private String errorReason; 
     /** 当前状态 */
     private String state; 
-    /** 备用字段1 */
-    private String back1; 
-    /** 备用字段2 */
-    private String back2; 
-    /** 备用字段3 */
-    private String back3; 
-    /** 备用字段4 */
-    private String back4; 
+    /** 重要等级  高、中、低 */
+    private String levels;
+    /** 通报下发日期 */
+    private Date sendDate;
+    /** 专家评议截止日期 */
+    private Date expertsEndDate;
+    /** 上次状态 */
+    private String oraState;
     /** 备用字段5 */
     private String versions;
     /** 创建时间 */
@@ -73,8 +82,10 @@ public class SpsInfo implements java.io.Serializable  {
     /** 修改人 */
     private String updateUser; 
     /** yn */
-    private Integer yn; 
-    
+    private Integer yn;
+
+    private String publishDateIn;
+
     public Long getId(){
         return id;
     }
@@ -234,37 +245,37 @@ public class SpsInfo implements java.io.Serializable  {
     public void setState(String state) {
         this.state = state;
     }
-    
-    public String getBack1(){
-        return back1;
+
+    public String getLevels() {
+        return levels;
     }
-        
-    public void setBack1(String back1) {
-        this.back1 = back1;
+
+    public void setLevels(String levels) {
+        this.levels = levels;
     }
-    
-    public String getBack2(){
-        return back2;
+
+    public Date getSendDate() {
+        return sendDate;
     }
-        
-    public void setBack2(String back2) {
-        this.back2 = back2;
+
+    public void setSendDate(Date sendDate) {
+        this.sendDate = sendDate;
     }
-    
-    public String getBack3(){
-        return back3;
+
+    public Date getExpertsEndDate() {
+        return expertsEndDate;
     }
-        
-    public void setBack3(String back3) {
-        this.back3 = back3;
+
+    public void setExpertsEndDate(Date expertsEndDate) {
+        this.expertsEndDate = expertsEndDate;
     }
-    
-    public String getBack4(){
-        return back4;
+
+    public String getOraState() {
+        return oraState;
     }
-        
-    public void setBack4(String back4) {
-        this.back4 = back4;
+
+    public void setOraState(String oraState) {
+        this.oraState = oraState;
     }
 
     public String getVersions() {
@@ -314,4 +325,27 @@ public class SpsInfo implements java.io.Serializable  {
     public void setYn(Integer yn) {
         this.yn = yn;
     }
+
+    public String getPublishDateIn() {
+        return publishDateIn;
+    }
+
+    public void setPublishDateIn(String publishDateIn) {
+        this.publishDateIn = publishDateIn;
+    }
+
+    public void setSpsInfoCommonValues(SpsInfo spsInfo , String spsCode , String userName,String state,String oraState){
+        spsInfo.setSpsCode(spsCode);
+        spsInfo.setCreateTime(new Date());
+        spsInfo.setCreateUser(userName);
+        spsInfo.setUpdateTime(new Date());
+        spsInfo.setUpdateUser(userName);
+        spsInfo.setState(state);
+        spsInfo.setOraState(oraState);
+        if(!StringUtils.isEmpty(spsInfo.getPublishDateIn())){
+            spsInfo.setPublishDate(DateHelper.parseDate(spsInfo.getPublishDateIn()));
+        }
+        spsInfo.setVersions(UUID.randomUUID().toString());
+    }
+
 }

@@ -7,9 +7,22 @@ import com.letv.common.utils.wrap.WrapMapper;
 import com.letv.common.utils.wrap.Wrapper;
 import com.letv.tbtSps.common.controller.ReviewBaseController;
 import com.letv.tbtSps.domain.*;
+import com.letv.tbtSps.domain.dto.SpsBtbMulityDto;
+import com.letv.tbtSps.domain.dto.SpsBtbState;
+import com.letv.tbtSps.domain.dto.UpdateType;
+import com.letv.tbtSps.domain.query.SpsInfoLogQuery;
 import com.letv.tbtSps.domain.query.SpsInfoQuery;
+import com.letv.tbtSps.domain.query.SpsLogAttrQuery;
+import com.letv.tbtSps.domain.query.UserQuery;
+import com.letv.tbtSps.service.SpsInfoLogService;
 import com.letv.tbtSps.service.SpsInfoService;
+import com.letv.tbtSps.service.SpsLogAttrService;
+import com.letv.tbtSps.service.UserService;
+import com.letv.tbtSps.utils.JsonHelperImpl;
 import com.letv.tbtSps.utils.ParameterLoad;
+import com.letv.tbtSps.utils.constant.SystemConstant;
+import com.letv.tbtSps.utils.enums.Sps_Tbt_InfoStatus;
+import com.letv.tbtSps.utils.enums.SystemCodeEnum;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +31,17 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.util.*;
 
 /**
  * SpsInfoController ：sps信息表控制器
@@ -35,7 +56,13 @@ public class SpsInfoController extends ReviewBaseController {
     @Autowired
     private SpsInfoService spsInfoService;
     @Autowired
+    private SpsInfoLogService spsInfoLogService;
+    @Autowired
+    private SpsLogAttrService spsLogAttrService;
+    @Autowired
     private ParameterLoad parameterLoad;
+    @Autowired
+    private UserService userService;
 
     /** 视图前缀 */
     private static final String viewPrefix ="spsInfo";
@@ -50,9 +77,14 @@ public class SpsInfoController extends ReviewBaseController {
      */
     @RequestMapping(value = "")
     public String index(Model model) {
+        List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
+        List<Country> list_country = parameterLoad.getList_country();
+        model.addAttribute("list_country",list_country); // 通报成员
+        model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
         return viewPrefix + "/index";
     }
-    
+
+
     /**
      * 分页 查询数据
      * 
@@ -65,9 +97,15 @@ public class SpsInfoController extends ReviewBaseController {
     public String queryByPage(Model model, PageUtil page, SpsInfoQuery query) {
         try {
             List<SpsInfo> dataList = spsInfoService.querySpsInfoListWithPage(query, page);
-            model.addAttribute("dataList", dataList);// 数据集合
+            model.addAttribute("dataList", dataList);// 通报状态
             model.addAttribute("query", query);// 查询参数
             model.addAttribute("page", page);// 分页
+
+
+            List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
+            List<Country> list_country = parameterLoad.getList_country();
+            model.addAttribute("list_country",list_country); // 通报成员
+            model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
         } catch (Exception e) {
             LOG.error("spsInfo queryByPage has error.", e);
         }
@@ -88,6 +126,7 @@ public class SpsInfoController extends ReviewBaseController {
         List<InternationalStandard> list_internationalStandard =  parameterLoad.getList_internationalStandard();
         List<RelationMedicine> list_relationMedicine = parameterLoad.getList_relationMedicine();
         List<RelationMedicineProduct> list_relationMedicineProduct = parameterLoad.getList_relationMedicineProduct();
+        List<UpdateType> list_updateType = parameterLoad.getList_updateType();
         model.addAttribute("list_country",list_country);
         model.addAttribute("list_language",list_language);
         model.addAttribute("list_notificationType",list_notificationType);
@@ -95,6 +134,7 @@ public class SpsInfoController extends ReviewBaseController {
         model.addAttribute("list_internationalStandard",list_internationalStandard);
         model.addAttribute("list_relationMedicine",list_relationMedicine);
         model.addAttribute("list_relationMedicineProduct",list_relationMedicineProduct);
+        model.addAttribute("list_updateType",list_updateType);
         return viewPrefix + "/add";
     }
 
@@ -106,7 +146,7 @@ public class SpsInfoController extends ReviewBaseController {
      */
     @RequestMapping(value = "add")
     @ResponseBody
-    public Wrapper<?> add(SpsInfo spsInfo) {
+    public Wrapper<?> add(SpsInfo spsInfo,@RequestParam("file") MultipartFile file) {
         try {
             spsInfo.setCreateUser(getLoginUserCnName());
             if (spsInfoService.insert(spsInfo)) {
@@ -232,5 +272,206 @@ public class SpsInfoController extends ReviewBaseController {
             LOG.warn("detail spsInfo has error.", e);
             return error();
         }
+    }
+
+    /**
+     * 创建sps基础信息
+     * @param request
+     * @param files 附件
+     * @param spsInfo
+     * @param tableContent  contnet3的内容 jsonArray
+     * @return
+     */
+    @RequestMapping(value = "/createOrderInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Wrapper<?> createOrderInfo(HttpServletRequest request, @RequestParam("file") List<MultipartFile> files
+            , SpsInfo spsInfo,String tableContent , SpsBtbMulityDto spsBtbMulityDto) {
+        LOG.info("进入创建sps方法，传入user="+getLoginUserName()+" , spsInfo="+ JsonHelperImpl.toJson(spsInfo)+" , tableContent="+tableContent+",spsBtbMulityDto="+JsonHelperImpl.toJson(spsBtbMulityDto));
+        try{
+            String[] ret = spsInfoService.createOrderInfo(spsInfo,files,tableContent,getLoginUserName(),spsBtbMulityDto);
+            if(ret[0].equals(SystemCodeEnum.SUCCESS.getCode())){
+                return new Wrapper<SpsInfo>().result(spsInfo);
+            } else{
+                Wrapper wrapper = new Wrapper<SpsInfo>().result(spsInfo);
+                wrapper.setCode(Integer.parseInt(ret[0]));
+                wrapper.setMessage(ret[1]);
+                return wrapper;
+            }
+        }catch (Exception e){
+            return error();
+        }
+    }
+
+    /**
+     * 根据通报成员分组查询通报成员拥有的年份
+     * @param queryBean
+     * @return
+     */
+    @RequestMapping(value = "/queryCountryDateByCountry", method = RequestMethod.POST)
+    @ResponseBody
+    public Wrapper<?> queryCountryDateByCountry(SpsInfoQuery queryBean){
+        try{
+            List<SpsInfo> list_spsInfo = spsInfoService.queryCountryDateByCountry(queryBean);
+            return new Wrapper<List<SpsInfo>>().result(list_spsInfo);
+        } catch (Exception e){
+            return error();
+        }
+    }
+
+
+    /***************以下是在线评议管理*******************************/
+
+    /**
+     * 通报评审首页
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "indexReview")
+    public String indexReview(Model model) {
+        List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbStatePart();
+        model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
+        return viewPrefix + "/index_review";
+    }
+
+
+    /**
+     * 分页 查询数据 通报评审
+     *
+     * @param model
+     * @param page
+     * @param query
+     * @return
+     */
+    @RequestMapping(value = "queryByPageReview")
+    public String queryByPageReview(Model model, PageUtil page, SpsInfoQuery query) {
+        try {
+            List<SpsInfo> dataList = spsInfoService.querySpsInfoListWithPage(query, page);
+            model.addAttribute("dataList", dataList);// 查询的数据
+            model.addAttribute("query", query);// 查询参数
+            model.addAttribute("page", page);// 分页
+            UserQuery queryBean = new UserQuery ();
+            queryBean.setList_roleCode(parameterLoad.getList_role_review());
+            queryBean.setUserType(1);
+            List<User> list_user = userService.queryUserByRoleCodeNoPage(queryBean);
+            List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbStatePart();
+            List<SpsBtbState> list_leves = parameterLoad.getList_leves();
+            model.addAttribute("list_user",list_user); // 重要程度
+            model.addAttribute("list_leves",list_leves); // 重要程度
+            model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
+        } catch (Exception e) {
+            LOG.error("spsInfo queryByPage has error.", e);
+        }
+        return viewPrefix + "/index_review";
+    }
+
+    /**
+     * 下发 到 专家
+     * @param tableJson
+     * @return
+     */
+    @RequestMapping(value = "/sendNotice", method = RequestMethod.POST)
+    @ResponseBody
+    public Wrapper<?> sendNotice(String tableJson){
+        try{
+            String[] ret = spsInfoService.sendNotice(tableJson,this.getLoginUserName());
+            Wrapper wrapper = new Wrapper<String>().result(ret[1]);
+            wrapper.setCode(Integer.parseInt(ret[0]));
+            wrapper.setMessage(ret[1]);
+            return wrapper;
+        } catch (Exception e){
+            return error();
+        }
+    }
+
+    /**
+     * 进入基础信息页面
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "detailInfo")
+    public String detailInfo(Model model , String spsCode,HttpServletRequest request,HttpServletResponse response) {
+        try {
+            spsCode = URLDecoder.decode(spsCode, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        SpsInfoQuery spsInfoQuery = new SpsInfoQuery () ;
+        spsInfoQuery.setSpsCode(spsCode);
+        // 查询sps基础信息
+        List<SpsInfo> list_spsInfo = spsInfoService.querySpsInfoList(spsInfoQuery);
+        SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
+        spsInfoLogQuery.setSpsCode(spsCode);
+        // 查询sps的日志信息
+        List<SpsInfoLog> list_spsCodeLog = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery);
+        List<SpsLogAttr> list_attr = new ArrayList<SpsLogAttr>(); // 定义附件list
+        String logAttrRelation = "" ;// sps附件关联字段
+        for(SpsInfoLog spsInfoLog : list_spsCodeLog){
+            if(Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode().equals(spsInfoLog.getState())){    // 未分配
+                logAttrRelation = spsInfoLog.getLogAttrRelation();
+            }
+        }
+        // 查询附件信息
+        SpsLogAttrQuery spsLogAttrQuery = new SpsLogAttrQuery();
+        spsLogAttrQuery.setLogAttrRelation(logAttrRelation);
+        list_attr = spsLogAttrService.querySpsLogAttrList(spsLogAttrQuery) ;
+        model.addAttribute("spsInfo",list_spsInfo.get(0));
+        model.addAttribute("list_attr",list_attr);
+        return viewPrefix+"/detailInfo" ;
+    }
+
+    /**
+     * 进入评议页面
+     * @param model
+     * @param spsCode
+     * @param sendFalg 下发和未下发标识 ，10 未分配， 20已分配
+     * @return
+     */
+    @RequestMapping(value = "reviewForward")
+    public String reviewForward(Model model , String spsCode , String sendFalg) {
+        try {
+            spsCode = URLDecoder.decode(spsCode, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        /**
+         * 1、查询spsInfo 表 ， 查询出评议基本内容
+         * 2、查询spsInfoLog 表 ， 获得附件信息管理的字段 、专家评议的信息
+         *
+         */
+        SpsInfoQuery spsInfoQuery = new SpsInfoQuery () ;
+        spsInfoQuery.setSpsCode(spsCode);
+        // 查询sps基础信息
+        List<SpsInfo> list_spsInfo = spsInfoService.querySpsInfoList(spsInfoQuery);
+        SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
+        spsInfoLogQuery.setSpsCode(spsCode);
+        // 查询sps的日志信息
+        List<SpsInfoLog> list_spsCodeLog = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery);
+        List<SpsLogAttr> list_attr = new ArrayList<SpsLogAttr>(); // 定义附件list
+        List<SpsInfoLog> list_review = new ArrayList<SpsInfoLog>(); // 定义专家评议list，不包括自己可以修改的评议内容，包括自己不可以修改的评议内容（激活后原来评议的内容就不可以在进行编辑了，需要在进行新的评议）
+        SpsInfoLog review = new SpsInfoLog();// 定义自己可以修改的评议
+        String logAttrRelation = "" ;// sps附件关联字段
+        for(SpsInfoLog spsInfoLog : list_spsCodeLog){
+            if(Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode().equals(spsInfoLog.getState())){    // 未分配
+                logAttrRelation = spsInfoLog.getLogAttrRelation();
+            } else if(Sps_Tbt_InfoStatus.HAVE_FENPEI_HUIDA.getStatusCode().equals(spsInfoLog.getState())){  // 已评议
+                if(!this.getLoginUserName().equals(spsInfoLog.getCreateUser())){// 不是自己的都可以看到
+                    list_review.add(spsInfoLog);
+                }else if(this.getLoginUserName().equals(spsInfoLog.getCreateUser()) && String.valueOf(SystemConstant.NO).equals(spsInfoLog.getCanEdit())){
+                    list_review.add(spsInfoLog);
+                }else{
+                    review = spsInfoLog ;// 自己的可以编辑的
+                }
+            }
+        }
+       // 查询附件信息
+        SpsLogAttrQuery spsLogAttrQuery = new SpsLogAttrQuery();
+        list_attr = spsLogAttrService.querySpsLogAttrList(spsLogAttrQuery) ;
+        model.addAttribute("spsInfo",list_spsInfo.get(0));
+        model.addAttribute("review",review);
+        model.addAttribute("list_review",list_review);
+        model.addAttribute("list_attr",list_attr);
+        model.addAttribute("sendFalg",sendFalg);
+        return viewPrefix+"/detailInfo" ;
     }
 }

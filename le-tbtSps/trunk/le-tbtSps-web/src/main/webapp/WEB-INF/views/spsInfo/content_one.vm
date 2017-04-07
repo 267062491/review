@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfo.spsCode')</label>
+            <div class="col-sm-3">
+                <input type="text" name="spsCode" id="spsCode" class="col-xs-10 col-sm-8" />
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="publishDate">#springMessage('tbtSps.tbinfo.publishDate')</label>
+            <div class="col-sm-3">
+                <input type="text" name="publishDateIn" id="publishDate" class="col-xs-10 col-sm-8" />
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="language">#springMessage('tbtSps.language')</label>
+            <div class="col-sm-3">
+                <select name="language"  id="language" multiple="multiple" >
+                    #foreach( $item_language in $list_language)
+                        <option value="$!item_language.languageCode">$!item_language.languageContent</option>
+                    #end
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.countryCode')</label>
+            <div class="col-sm-3">
+                <select id="countryCode" name="countryCode" class="chosen-select" >
+                    <option value="">#springMessage('tbtSps.please.choose')</option>
+                    #foreach( $item_country in $list_country)
+                        <option value="$!item_country.countryCode">$!item_country.countryContent</option>
+                    #end
+                </select>
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="spsOrg">#springMessage('tbtSps.spsInfo.spsOrg')</label>
+            <div class="col-sm-3">
+                <input type="text" name="spsOrg" id="spsOrg" class="col-xs-10 col-sm-8" />
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="notificationType">#springMessage('tbtSps.notificationType')</label>
+            <div class="col-sm-3">
+                <select name="notificationType"  id="notificationType" multiple="multiple" >
+                    #foreach( $item_notificationType in $list_notificationType)
+                        <option value="$!item_notificationType.notificationTypeCode">$!item_notificationType.notificationTypeContent</option>
+                    #end
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
+            <div class="col-sm-10">
+                <textarea name="coverProduct" id="coverProduct" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
+            <div class="col-sm-10">
+                <textarea name="fileTitle" id="fileTitle" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
+            <div class="col-sm-10">
+                <textarea name="contentDes" id="contentDes" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="targetReason">#springMessage('tbtSps.tbinfo.targetReason')</label>
+            <div class="col-sm-3">
+                <select name="targetReason"  id="targetReason" multiple="multiple" >
+                    #foreach( $item_targereason in $list_targereason)
+                        <option value="$!item_targereason.targetReasonCode">$!item_targereason.targetReasonContent</option>
+                    #end
+                </select>
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="internationalStandard">#springMessage('tbtSps.internationalStandard')</label>
+            <div class="col-sm-3">
+                <select name="internationalStandard"  id="internationalStandard" multiple="multiple" >
+                    #foreach( $item_internationalStandard in $list_internationalStandard)
+                        <option value="$!item_internationalStandard.internationalStandardCode">$!item_internationalStandard.internationalStandardContent</option>
+                    #end
+                </select>
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.spsInfo.standardYn')</label>
+            <div class="col-sm-3">
+                #springMessage('constan.yes')<input type="radio" name="standardYn" value="1" checked="true" id="displayDiv">
+                &nbsp;&nbsp;
+                #springMessage('constan.no')<input type="radio" name="standardYn" value="0" id="showDiv">
+            </div>
+        </div>
+        <div class="form-group" style="display: none" id="hiddenDiv">
+            <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+            <div class="col-sm-10">
+                <textarea name="oraLink" id="oraLink" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+            <div class="col-sm-10">
+                <textarea name="oraLink" id="oraLink" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label"  >#springMessage('relation.nongyao.nongchanpin')</label>
+            <div class="col-sm-3">
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="internationalStandard">#springMessage('tbtSps.tbresidualInfo.medicineCode.add')</label>
+            <div class="col-sm-3">
+                <select id="relationMedicine" name="relationMedicine" class="chosen-select" >
+                    <option value="">#springMessage('tbtSps.please.choose')</option>
+                    #foreach( $item_relationMedicine in $list_relationMedicine)
+                        <option value="$!item_relationMedicine.relationMedicineCode">$!item_relationMedicine.relationMedicineZh</option>
+                    #end
+                </select>
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.tbresidualInfo.medicineProductCode.add')</label>
+            <div class="col-sm-3">
+                <select id="relationMedicineProduct" name="relationMedicineProduct" class="chosen-select" >
+                    <option value="">#springMessage('tbtSps.please.choose')</option>
+                    #foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)
+                        <option value="$!item_relationMedicineProduct.relationMedicineProductCode">$!item_relationMedicineProduct.relationMedicineProductZh</option>
+                    #end
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

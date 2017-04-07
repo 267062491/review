@@ -44,7 +44,7 @@
     <!-- 创建信息 -->
     <insert id="insert" parameterType="Tbinfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_tbt_info(<include refid="tbinfoUsedColumns"/>) 
-        VALUES (#{tbtCode},#{publishDate},#{tbtCountryCode},#{tbtOrg},#{coverProduct},#{fileTitle},#{contentDes},#{targetReason},#{oraLink},#{fileCode},#{notificationBasis},#{expectApprovalDate},#{expectEffectiveDate},#{feedbackEndDate},#{fileGetOrg},#{parSpsCode},#{state},#{back1},#{back2},#{back3},#{back4},#{versions},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        VALUES (#{tbtCode},#{publishDate},#{tbtCountryCode},#{tbtOrg},#{coverProduct},#{fileTitle},#{contentDes},#{targetReason},#{oraLink},#{fileCode},#{notificationBasis},#{expectApprovalDate},#{expectEffectiveDate},#{feedbackEndDate},#{fileGetOrg},#{parSpsCode},#{state},#{back1},#{back2},#{back3},#{back4},#{versions},#{createTime},#{updateTime},#{createUser},#{updateUser},1)
 	</insert>
 	
     <!-- 修改信息 -->
@@ -250,9 +250,6 @@
         </if>
         <if test="updateUser != null and updateUser != ''">
         	and update_user = #{updateUser,jdbcType=VARCHAR}
-        </if>
-        <if test="yn != null and yn != ''">
-        	and yn = #{yn,jdbcType=DECIMAL}
         </if>
     </sql>
 </mapper>

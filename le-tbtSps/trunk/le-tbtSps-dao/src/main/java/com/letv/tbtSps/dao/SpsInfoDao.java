@@ -79,4 +79,19 @@ public interface SpsInfoDao {
      */
     public boolean exist(SpsInfo spsInfo);
 
+    /**
+     * 根据通报成员分组查询通报成员拥有的年份
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> queryCountryDateByCountry(SpsInfoQuery queryBean);
+
+    /**
+     * 根据spsCode 修改spsInfo
+     * @param spsInfo
+     * @return
+     */
+    public boolean updateSpsInfoBySpsCode(SpsInfo spsInfo);
+
+
 }

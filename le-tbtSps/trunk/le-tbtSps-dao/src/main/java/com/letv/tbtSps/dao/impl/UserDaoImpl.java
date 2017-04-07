@@ -108,6 +108,11 @@ public class UserDaoImpl extends BaseDao implements UserDao {
     public List<User> queryUserByRoleCode(UserQuery queryBean) {
         return (List<User>) queryForList(namespace +".queryUserByRoleCode", queryBean);
     }
+
+    public List<User> queryUserByRoleCodeNoPage(UserQuery queryBean) {
+        return (List<User>) queryForList(namespace +".queryUserByRoleCodeNoPage", queryBean);
+    }
+
     /**
      * 启用、禁用用户
      * @param user

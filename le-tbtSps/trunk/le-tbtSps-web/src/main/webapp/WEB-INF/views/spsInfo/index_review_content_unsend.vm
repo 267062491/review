@@ -1,0 +1,42 @@
+    <table class="table table-striped table-bordered table-condensed table-hover" id="review_send_table">
+        <thead>
+        <tr>
+            <th class="center" style="width:2%"></th>
+            <th class="center" style="width:10%">#springMessage('tbtSps.spsInfo.spsCode')</th>
+            <th class="center" style="width:30%">#springMessage('tbtSps.spsInfo.fileTitle')</th>
+            <th class="center" style="width:10%">#springMessage('tbtSps.spsInfo.countryCode')</th>
+            <th class="center" style="width:5%">#springMessage('tbtSps.spsInfo.levels')</th>
+            <th class="center" style="width:10%">#springMessage('tbtSps.spsInfo.expertsEndDate')</th>
+            <th class="center" style="width:10%">#springMessage('tbtSps.spsInfo.experts')</th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach( $item in $dataList)
+            <tr>
+                <td type="checkbox"><input type="checkbox" ></td>
+                <td type="kong"><a href="javascript:detailInfo('$!item.spsCode')" >$!item.spsCode</a> </td>
+                <td type="kong">$!item.fileTitle</td>
+                <td type="kong">$!item.countryCode</td>
+                <td type="select">
+                    <select id="countryCode" name="countryCode"  >
+                        #foreach( $item_leves in $list_leves)
+                            <option value="$!item_leves.state"
+                                #if($!item_leves.state=="middle")
+                                    selected="selected"
+                                #end
+                                    >$!item_leves.content</option>
+                        #end
+                    </select>
+                </td>
+                <td type="text"><input type="text" name = "expertsEndDate"></td>
+                <td type="select">
+                    <select name="notificationType"  id="notificationType" multiple="multiple" class="multipleSelect">
+                        #foreach( $item_user in $list_user)
+                            <option value="$!item_user.userCode">$!item_user.showName</option>
+                        #end
+                    </select>
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>

@@ -59,6 +59,7 @@
 		<commons-jexl>1.1</commons-jexl>
         <net.sf.json-lib.version>2.4</net.sf.json-lib.version>
         <com.google.code.gson.version>2.7</com.google.code.gson.version>
+        <joda-time.version>2.3</joda-time.version>
 	</properties>
 
 	<dependencyManagement>
@@ -437,6 +438,16 @@
                 <artifactId>gson</artifactId>
                 <version>${com.google.code.gson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.letv.common</groupId>
+                <artifactId>letv-common-utils</artifactId>
+                <version>${letv-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -514,6 +525,7 @@
 				<!-- solr配置 -->
 				<profile.solr.server>http://localhost:8080/solr/</profile.solr.server>
 				<profile.solr.home.jobs>jobs/</profile.solr.home.jobs>
+				<profile.sps.attr.addr>E:\review\spsAttr\</profile.sps.attr.addr>
 			</properties>
 		</profile>
 	</profiles>

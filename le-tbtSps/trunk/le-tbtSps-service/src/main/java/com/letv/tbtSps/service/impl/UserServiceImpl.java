@@ -773,5 +773,9 @@ public class UserServiceImpl implements UserService {
         LOG.info("outputPar:UserServiceImpl#searchUserByCodes.letvResponse=" + JsonHelper.toJson(letvResponse));
         return letvResponse;
     }
+
+    public List<User> queryUserByRoleCodeNoPage(UserQuery queryBean) {
+        return userManager.queryUserByRoleCodeNoPage(queryBean);
+    }
 }
 

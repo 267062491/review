@@ -27,7 +27,7 @@
     <!-- 创建信息 -->
     <insert id="insert" parameterType="Country" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_country(<include refid="countryUsedColumns"/>) 
-        VALUES (#{countryCode},#{countryContent},#{simpleName},#{fullName},#{enName},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        VALUES (#{countryCode},#{countryContent},#{simpleName},#{fullName},#{enName},#{createTime},#{updateTime},#{createUser},#{updateUser},1)
 	</insert>
 	
     <!-- 修改信息 -->
@@ -131,9 +131,6 @@
         </if>
         <if test="updateUser != null and updateUser != ''">
         	and update_user = #{updateUser,jdbcType=VARCHAR}
-        </if>
-        <if test="yn != null and yn != ''">
-        	and yn = #{yn,jdbcType=DECIMAL}
         </if>
     </sql>
 </mapper>

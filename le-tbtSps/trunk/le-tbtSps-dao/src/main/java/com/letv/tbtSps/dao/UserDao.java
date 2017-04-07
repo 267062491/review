@@ -102,6 +102,13 @@ public interface UserDao {
      * @return
      */
     public List<User> queryUserByRoleCode(UserQuery queryBean);
+    /**
+     * 根据角色编码联合查询用户，不翻页
+     *
+     * @param queryBean
+     * @return
+     */
+    public List<User> queryUserByRoleCodeNoPage(UserQuery queryBean);
 
     /**
      * 启用、禁用用户

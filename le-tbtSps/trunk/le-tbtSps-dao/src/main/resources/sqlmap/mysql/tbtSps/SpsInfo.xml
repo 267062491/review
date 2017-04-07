@@ -23,10 +23,10 @@
 		<result column="par_sps_code" property="parSpsCode" jdbcType="VARCHAR" />
 		<result column="error_reason" property="errorReason" jdbcType="VARCHAR" />
 		<result column="state" property="state" jdbcType="VARCHAR" />
-		<result column="back_1" property="back1" jdbcType="VARCHAR" />
-		<result column="back_2" property="back2" jdbcType="VARCHAR" />
-		<result column="back_3" property="back3" jdbcType="VARCHAR" />
-		<result column="back_4" property="back4" jdbcType="VARCHAR" />
+		<result column="levels" property="levels" jdbcType="VARCHAR" />
+		<result column="expertsEndDate" property="expertsEndDate" jdbcType="TIMESTAMP" />
+		<result column="sendDate" property="sendDate" jdbcType="TIMESTAMP" />
+		<result column="oraState" property="oraState" jdbcType="VARCHAR" />
 		<result column="versions" property="versions" jdbcType="VARCHAR" />
 		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
@@ -36,17 +36,17 @@
     </resultMap>
     
     <sql id="spsInfoColumns">
-    	id,sps_code,country_code,publish_date,sps_org,cover_product,file_title,content_des,standard_yn,ora_link,file_code,affect_country,expect_approval_date,expect_effective_date,expect_publish_date,feedback_end_date,file_get_org,par_sps_code,error_reason,state,back_1,back_2,back_3,back_4,versions,create_time,update_time,create_user,update_user,yn
+    	id,sps_code,country_code,publish_date,sps_org,cover_product,file_title,content_des,standard_yn,ora_link,file_code,affect_country,expect_approval_date,expect_effective_date,expect_publish_date,feedback_end_date,file_get_org,par_sps_code,error_reason,state,levels,expertsEndDate,sendDate,oraState,versions,create_time,update_time,create_user,update_user,yn
     </sql>
     
      <sql id="spsInfoUsedColumns">
-    	sps_code,country_code,publish_date,sps_org,cover_product,file_title,content_des,standard_yn,ora_link,file_code,affect_country,expect_approval_date,expect_effective_date,expect_publish_date,feedback_end_date,file_get_org,par_sps_code,error_reason,state,back_1,back_2,back_3,back_4,versions,create_time,update_time,create_user,update_user,yn
+    	sps_code,country_code,publish_date,sps_org,cover_product,file_title,content_des,standard_yn,ora_link,file_code,affect_country,expect_approval_date,expect_effective_date,expect_publish_date,feedback_end_date,file_get_org,par_sps_code,error_reason,state,levels,expertsEndDate,sendDate,oraState,versions,create_time,update_time,create_user,update_user,yn
     </sql>
 
     <!-- 创建信息 -->
     <insert id="insert" parameterType="SpsInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_sps_info(<include refid="spsInfoUsedColumns"/>) 
-        VALUES (#{spsCode},#{countryCode},#{publishDate},#{spsOrg},#{coverProduct},#{fileTitle},#{contentDes},#{standardYn},#{oraLink},#{fileCode},#{affectCountry},#{expectApprovalDate},#{expectEffectiveDate},#{expectPublishDate},#{feedbackEndDate},#{fileGetOrg},#{parSpsCode},#{errorReason},#{state},#{back1},#{back2},#{back3},#{back4},#{versions},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        VALUES (#{spsCode},#{countryCode},#{publishDate},#{spsOrg},#{coverProduct},#{fileTitle},#{contentDes},#{standardYn},#{oraLink},#{fileCode},#{affectCountry},#{expectApprovalDate},#{expectEffectiveDate},#{expectPublishDate},#{feedbackEndDate},#{fileGetOrg},#{parSpsCode},#{errorReason},#{state},#{levels},#{expertsEndDate},#{sendDate},#{oraState},#{versions},#{createTime},#{updateTime},#{createUser},#{updateUser},1)
 	</insert>
 	
     <!-- 修改信息 -->
@@ -111,17 +111,17 @@
 		        <if test="state != null and state != ''">
                 	state = #{state,jdbcType=VARCHAR},
 		        </if>
-		        <if test="back1 != null and back1 != ''">
-                	back_1 = #{back1,jdbcType=VARCHAR},
+		        <if test="levels != null and levels != ''">
+                	levels = #{levels,jdbcType=VARCHAR},
 		        </if>
-		        <if test="back2 != null and back2 != ''">
-                	back_2 = #{back2,jdbcType=VARCHAR},
+		        <if test="expertsEndDate != null and expertsEndDate != ''">
+                	expertsEndDate = #{expertsEndDate,jdbcType=TIMESTAMP},
 		        </if>
-		        <if test="back3 != null and back3 != ''">
-                	back_3 = #{back3,jdbcType=VARCHAR},
+		        <if test="sendDate != null and sendDate != ''">
+                	sendDate = #{sendDate,jdbcType=TIMESTAMP},
 		        </if>
-		        <if test="back4 != null and back4 != ''">
-                	back_4 = #{back4,jdbcType=VARCHAR},
+		        <if test="oraState != null and oraState != ''">
+                	oraState = #{oraState,jdbcType=VARCHAR},
 		        </if>
 		        <if test="versions != null and versions != ''">
                 	versions = #{versions,jdbcType=VARCHAR},
@@ -173,6 +173,24 @@
 		update t_sps_info 
 		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id}
+    </update>
+
+    <!-- 根据通报成员分组查询通报成员拥有的年份 -->
+    <select id="queryCountryDateByCountry" resultMap="SpsInfoMap"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoQuery">
+       select substring(publish_date,1,4) as versions from t_sps_info
+       where country_code = #{countryCode,jdbcType=VARCHAR} group by substring(publish_date,1,4) order by substring(publish_date,1,4)
+    </select>
+
+
+    <!-- 更新sps信息 -->
+    <update id="updateSpsInfoBySpsCode" parameterType="SpsInfo">
+		update t_sps_info
+		set
+		update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR} , state = #{state,jdbcType=VARCHAR}
+		,sendDate = #{sendDate,jdbcType=TIMESTAMP}, levels = #{levels,jdbcType=VARCHAR},expertsEndDate = #{expertsEndDate,jdbcType=TIMESTAMP}
+		where
+        versions = #{versions,jdbcType=VARCHAR} and sps_code = #{spsCode,jdbcType=VARCHAR} and oraState = #{oraState,jdbcType=VARCHAR}
     </update>
 
     <!-- 常用的查询Where条件 -->
@@ -238,17 +256,17 @@
         <if test="state != null and state != ''">
         	and state = #{state,jdbcType=VARCHAR}
         </if>
-        <if test="back1 != null and back1 != ''">
-        	and back_1 = #{back1,jdbcType=VARCHAR}
+        <if test="levels != null and levels != ''">
+        	and levels = #{levels,jdbcType=VARCHAR}
         </if>
-        <if test="back2 != null and back2 != ''">
-        	and back_2 = #{back2,jdbcType=VARCHAR}
+        <if test="expertsEndDate != null and expertsEndDate != ''">
+        	and expertsEndDate = #{expertsEndDate,jdbcType=TIMESTAMP}
         </if>
-        <if test="back3 != null and back3 != ''">
-        	and back_3 = #{back3,jdbcType=VARCHAR}
+        <if test="sendDate != null and sendDate != ''">
+        	and sendDate = #{sendDate,jdbcType=TIMESTAMP}
         </if>
-        <if test="back4 != null and back4 != ''">
-        	and back_4 = #{back4,jdbcType=VARCHAR}
+        <if test="oraState != null and oraState != ''">
+        	and oraState = #{oraState,jdbcType=VARCHAR}
         </if>
         <if test="versions != null and versions != ''">
         	and versions = #{versions,jdbcType=VARCHAR}
@@ -264,9 +282,6 @@
         </if>
         <if test="updateUser != null and updateUser != ''">
         	and update_user = #{updateUser,jdbcType=VARCHAR}
-        </if>
-        <if test="yn != null and yn != ''">
-        	and yn = #{yn,jdbcType=DECIMAL}
         </if>
     </sql>
 </mapper>

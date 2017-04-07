@@ -42,5 +42,9 @@
             <artifactId>json-lib</artifactId>
             <classifier>jdk15</classifier>
         </dependency>
+        <dependency>
+            <groupId>com.letv.common</groupId>
+            <artifactId>letv-common-utils</artifactId>
+        </dependency>
 	</dependencies>
 </project>

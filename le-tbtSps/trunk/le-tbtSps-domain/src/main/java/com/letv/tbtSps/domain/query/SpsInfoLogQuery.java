@@ -29,13 +29,13 @@ public class SpsInfoLogQuery extends Query implements java.io.Serializable  {
     /** 和附件关联字段 */
 	private String logAttrRelation; 
     /** 操作顺序，用来记录操作的先后顺序 */
-	private Integer opertOrder; 
-    /** 预留字段 */
-	private String back1; 
-    /** 预留字段2 */
-	private String back2; 
-    /** 预留字段3 */
-	private String back3; 
+	private Integer opertOrder;
+    /** 是否可以编辑(激活之后，原来评论的内容则不可以编辑，1可以编辑；0不可以) */
+    private String canEdit;
+    /** 评议专家 */
+	private String exports;
+    /** 是否为终评 1 是 0否 */
+	private String overReview;
     /** 预留字段4 */
 	private String back4; 
     /** 创建时间 */
@@ -108,31 +108,31 @@ public class SpsInfoLogQuery extends Query implements java.io.Serializable  {
     public void setOpertOrder(Integer opertOrder) {
 		this.opertOrder = opertOrder;
 	}
-	
-    public String getBack1(){
-		return back1;
-	}
-	    
-    public void setBack1(String back1) {
-		this.back1 = back1;
-	}
-	
-    public String getBack2(){
-		return back2;
-	}
-	    
-    public void setBack2(String back2) {
-		this.back2 = back2;
-	}
-	
-    public String getBack3(){
-		return back3;
-	}
-	    
-    public void setBack3(String back3) {
-		this.back3 = back3;
-	}
-	
+
+    public String getCanEdit() {
+        return canEdit;
+    }
+
+    public void setCanEdit(String canEdit) {
+        this.canEdit = canEdit;
+    }
+
+    public String getExports() {
+        return exports;
+    }
+
+    public void setExports(String exports) {
+        this.exports = exports;
+    }
+
+    public String getOverReview() {
+        return overReview;
+    }
+
+    public void setOverReview(String overReview) {
+        this.overReview = overReview;
+    }
+
     public String getBack4(){
 		return back4;
 	}

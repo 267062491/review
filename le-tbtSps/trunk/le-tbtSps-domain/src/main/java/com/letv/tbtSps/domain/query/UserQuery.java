@@ -58,6 +58,8 @@ public class UserQuery extends Query implements java.io.Serializable  {
     /** 结束时间 */
     private Date endTime;
 
+    private List<String> list_roleCode ;
+
 
     /**
      * 原始密码
@@ -268,5 +270,13 @@ public class UserQuery extends Query implements java.io.Serializable  {
 
     public void setUserCodes(List<String> userCodes) {
         this.userCodes = userCodes;
+    }
+
+    public List<String> getList_roleCode() {
+        return list_roleCode;
+    }
+
+    public void setList_roleCode(List<String> list_roleCode) {
+        this.list_roleCode = list_roleCode;
     }
 }

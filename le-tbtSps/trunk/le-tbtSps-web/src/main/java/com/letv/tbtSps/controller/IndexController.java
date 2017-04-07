@@ -14,7 +14,7 @@ import com.letv.tbtSps.domain.query.UserQuery;
 import com.letv.tbtSps.service.IndexService;
 import com.letv.tbtSps.service.ResourceService;
 import com.letv.tbtSps.service.RoleResourceService;
-import com.letv.tbtSps.utils.JsonUtilHelp;
+import com.letv.tbtSps.utils.JsonHelperImpl;
 import com.letv.tbtSps.utils.PortalWeb;
 import com.letv.tbtSps.utils.constant.PortalSystemTipCodeEnum;
 import com.letv.tbtSps.utils.constant.ResourcePlant;
@@ -225,9 +225,9 @@ public class IndexController extends ReviewBaseController {
             roleResourceQuery.setPlatForm(ResourcePlant.PC);
             LetvResponse<List<TreeDomain>> listLetvResponse = indexService.getLoginUserResource(roleResourceQuery) ;
             if(listLetvResponse.getCode()==PortalSystemTipCodeEnum.SCUESS.getValue()){
-                return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, JsonUtilHelp.listToJsonArray(listLetvResponse.getResult()));
+                return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, JsonHelperImpl.listToJsonArray(listLetvResponse.getResult()));
             }else{
-                return WrapMapper.wrap(listLetvResponse.getCode(), listLetvResponse.getMessage(), JsonUtilHelp.listToJsonArray(listLetvResponse.getResult()));
+                return WrapMapper.wrap(listLetvResponse.getCode(), listLetvResponse.getMessage(), JsonHelperImpl.listToJsonArray(listLetvResponse.getResult()));
             }
         }catch (Exception e){
             return WrapMapper.error();

@@ -179,6 +179,11 @@ public class UserManagerImpl extends BaseManager implements UserManager {
         }
         return new ArrayList<User>();
     }
+
+    public List<User> queryUserByRoleCodeNoPage(UserQuery queryBean) {
+        return userDao.queryUserByRoleCodeNoPage(queryBean);  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     /**
      * 启用、禁用用户
      * @param user

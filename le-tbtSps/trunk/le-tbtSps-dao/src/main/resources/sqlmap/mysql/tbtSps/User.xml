@@ -184,9 +184,6 @@
         <if test="updateUser != null and updateUser != ''">
             and update_user = #{updateUser,jdbcType=VARCHAR}
         </if>
-        <if test="yn != null and yn != ''">
-            and yn = #{yn,jdbcType=DECIMAL}
-        </if>
     </sql>
 
 
@@ -250,6 +247,33 @@
         GROUP BY u.user_name
         order by u.create_time desc
         limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 根据角色编码联合查询用户，不翻页 -->
+    <select id="queryUserByRoleCodeNoPage" resultMap="UserMap"
+            parameterType="com.letv.tbtSps.domain.query.UserQuery">
+        select <include refid="u_userColumns"/> from t_user u LEFT JOIN t_user_role ur ON u.user_code = ur.user_code
+        where u.yn = 1
+        <if test="userName != null and userName != ''">
+            and u.user_name = #{userName,jdbcType=VARCHAR}
+        </if>
+        <if test="showName != null and showName != ''">
+            and u.show_name = #{showName,jdbcType=VARCHAR}
+        </if>
+        <if test="phoneno != null and phoneno != ''">
+            and u.phoneNo = #{phoneno,jdbcType=VARCHAR}
+        </if>
+        <if test="list_roleCode != null ">
+            and
+            <foreach collection="list_roleCode" item="item" index="index" open="(" separator="or" close=")">
+                ur.role_code = #{item,jdbcType=VARCHAR}
+            </foreach>
+        </if>
+        <if test="userType != 3 ">
+            and u.user_type = #{userType,jdbcType=DECIMAL}
+        </if>
+        GROUP BY u.user_name
+        order by u.create_time desc
     </select>
 
     <!-- 启用、禁用用户 -->

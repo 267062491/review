@@ -20,13 +20,5 @@ public class SystemConstant {
 
     public static int NO = 0 ;
 
-    /**
-     * 是虚拟仓
-     */
-    public static int virtualWarehouseFlag_Y = 1 ;
-    /**
-     * 不是虚拟仓
-     */
-    public static int virtualWarehouseFlag_N = 0 ;
 
 }

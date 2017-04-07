@@ -13,6 +13,20 @@ public class SpsLogAttr implements java.io.Serializable  {
 
     /** 序列化标识 */
 	private static final long serialVersionUID = 1L;
+
+    public SpsLogAttr(){}
+
+    public SpsLogAttr(String spsCode , String fileName , String filePath , String fileAliasName , String logAttrRelation , String userName){
+        this.spsCode = spsCode ;
+        this.fileName = fileName ;
+        this.filePath = filePath ;
+        this.fileAliasName = fileAliasName ;
+        this.logAttrRelation = logAttrRelation ;
+        this.createUser = userName ;
+        this.createTime = new Date() ;
+        this.updateUser = userName ;
+        this.updateTime = new Date() ;
+    }
 	
     /** id */
     private Long id; 

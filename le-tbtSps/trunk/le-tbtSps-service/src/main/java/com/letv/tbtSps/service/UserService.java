@@ -153,4 +153,6 @@ public interface UserService {
      * @return
      */
     public LetvResponse<List<User>> searchUserByCodes(UserQuery queryBean);
+
+    public List<User> queryUserByRoleCodeNoPage(UserQuery queryBean);
 }
