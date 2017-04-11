@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.letv.tbtSps.domain.SpsInfo;
+import com.letv.tbtSps.domain.SpsInfoLog;
 import com.letv.tbtSps.domain.dto.SpsBtbMulityDto;
 import com.letv.tbtSps.domain.query.SpsInfoQuery;
 import com.letv.common.utils.page.PageUtil;
@@ -112,4 +113,30 @@ public interface SpsInfoService {
      * @param userName
      */
     public String[] sendNotice(String tableContent,String userName);
+    /**
+     * 专家评议
+     * @param spsInfoLog
+     * @param files
+     * @param userName
+     * @return
+     */
+    public String[] doReview(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName);
+
+    /**
+     * 评议汇总保存
+     * @param spsInfoLog
+     * @param files
+     * @param userName
+     * @return
+     */
+    public String[] summaryReview(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName);
+
+    /**
+     * 评议汇总提交
+     * @param spsInfoLog
+     * @param files
+     * @param userName
+     * @return
+     */
+    public String[] summaryReviewSubmit(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName);
 }

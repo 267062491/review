@@ -87,93 +87,12 @@
                                     </div>
                                 </div>
                             </form>
-                            <div id="fenPei" style="display: none">
-                                <input id="sendFalg" value="$!sendFalg" type="hidden">
-                                 <!--专家历史意见-->
-                                <div class="widget-header">
-                                    <h5 class="lighter">
-                                        <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
-                                    </h5>
-                                    <div class="widget-toolbar"></div>
-                                </div>
-                                <div>&nbsp;</div>
-                                <form class="form-horizontal" role="form" id="updateForm">
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.spsOrg')</label>
-                                    <div class="col-sm-3">
-                                        <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsOrg}" readonly="true"/>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
-                                    <div class="col-sm-11">
-                                        <textarea  class="form-control" rows="3" readonly="true"></textarea>
-                                    </div>
-                                </div>
-                            </form>
-                                <!--专家评议-->
-                                <div class="widget-header">
-                                    <h5 class="lighter">
-                                        <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
-                                    </h5>
-                                    <div class="widget-toolbar"></div>
-                                </div>
-                                <div>&nbsp;</div>
-                                <form class="form-horizontal" role="form" id="updateForm">
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
-                                    <div class="col-sm-11">
-                                        <textarea  class="form-control" rows="3"></textarea>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.spsOrg')</label>
-                                    <div class="col-sm-11">
-                                        #springMessage('constan.yes')<input type="radio" name="standardYn" value="1" checked="true" id="displayDiv">
-                                        &nbsp;&nbsp;
-                                        #springMessage('constan.no')<input type="radio" name="standardYn" value="0" id="showDiv">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
-                                    <div class="col-sm-11">
-                                        <table border="1px #ooo" id="attr_table" cellpadding="0"
-                                               cellspacing="0" width="30%" class='table table-striped table-bordered table-condensed table-hover'>
-                                            <tr align="center">
-                                                <td width="5%">复选框</td>
-                                                <td width="20%">文件</td>
-                                            </tr>
-                                        </table>
-                                        <input type="button" onclick="addTr3('attr_table', -1)" value="添加">
-                                        <input type="button" onclick="delTr3()" value="删除">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="hidden" name="id" id="id" value="$!spsInfo.id" />
-                                    <div class="col-sm-8 col-sm-offset-4">
-                                        <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
-                                        &nbsp; &nbsp; &nbsp;
-                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-                                        &nbsp; &nbsp; &nbsp;
-                                        <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
-                                    </div>
-                                </div>
-                            </form>
-
-                            </div>
                         </div>
                     </div>
                 </div>
             </div> 
         </div>
     <script>
-        if($("#sendFalg").val()=="10"){
-            $("#fenPei").hide();
-        } else{
-            $("#fenPei").show();
-        }
-
-
         // ****************表格添加，删除行 开始********************************
         /**
          * 为table指定行添加一行

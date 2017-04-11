@@ -522,6 +522,8 @@
 
 				<!-- 常量配置 -->
 				<profile.language.default.locale>zh_CN</profile.language.default.locale>
+				<!-- 附件地址配置 -->
+				<profile.sps.attr.addr>E:\review\spsAttr\</profile.sps.attr.addr>
 				<!-- solr配置 -->
 				<profile.solr.server>http://localhost:8080/solr/</profile.solr.server>
 				<profile.solr.home.jobs>jobs/</profile.solr.home.jobs>

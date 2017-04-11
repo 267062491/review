@@ -93,5 +93,10 @@ public interface SpsInfoDao {
      */
     public boolean updateSpsInfoBySpsCode(SpsInfo spsInfo);
 
-
+    /**
+     * 修改sps状态
+     * @param spsInfo
+     * @return
+     */
+    public boolean updateSpsStateBySpsCode(SpsInfo spsInfo);
 }

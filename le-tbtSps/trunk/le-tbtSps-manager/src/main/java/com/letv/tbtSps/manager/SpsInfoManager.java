@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.letv.tbtSps.domain.SpsInfo;
 import com.letv.tbtSps.domain.SpsInfoLog;
+import com.letv.tbtSps.domain.SpsLogAttr;
 import com.letv.tbtSps.domain.query.SpsInfoQuery;
 import com.letv.common.utils.page.PageUtil;
 /**
@@ -129,4 +130,29 @@ public interface SpsInfoManager {
      * @return
      */
     public boolean updateSpsInfoSend(SpsInfo spsInfo, List<SpsInfoLog> list_spsInfoLog);
+
+    /**
+     * 专家评议
+     * @param spsInfoLog
+     * @param list_spsAttr
+     * @return
+     */
+    public boolean insertDoReivew(SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr);
+
+    /**
+     * 评议汇总保存
+     * @param spsInfoLog
+     * @param list_spsAttr
+     * @return
+     */
+    public boolean insertSummaryReview(SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr);
+
+    /**
+     * 评议汇总提交
+     * @param spsInfo
+     * @param spsInfoLog
+     * @param list_spsAttr
+     * @return
+     */
+    public boolean insertSummaryReviewSubmit(SpsInfo spsInfo ,SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr);
 }

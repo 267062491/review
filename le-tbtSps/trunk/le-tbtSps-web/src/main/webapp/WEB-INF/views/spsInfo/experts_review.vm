@@ -1,148 +1,237 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
     <head>
-        #parse("/layout/head.vm")
-	</head>
-    <body>
-        <div class="row">
+		#parse("/layout/head.vm")
+    </head>
+	<body>
+		<div class="row">
             <div class="col-xs-12 col-sm-12">
                 <div class="widget-box">
                     <div class="widget-header">
                         <h5 class="lighter">
-                            <i class="icon-search green"></i>#springMessage('tbtSps.spsInfo')#springMessage('view.lable.search')
+                            <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
                         </h5>
-                        <div class="widget-toolbar">
-                            <a href="#" data-action="collapse">
-                                <i class="1 icon-chevron-up bigger-100"></i>
-                            </a>
-                        </div>
+                        <div class="widget-toolbar"></div>
                     </div>
                     <div class="widget-body">
-                        <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsAttr.spsCode')</label>
-                                <div class="col-sm-3">
-
+                        <div class="widget-main" style="background-color: #fff;padding:5px; height: 1500px">
+                                <form class="form-horizontal" role="form" >
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsAttr.spsCode')</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsCode}" readonly="true"/>
+                                        </div>
+                                        <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.publishDate')</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
+                                        </div>
+                                        <label class="col-sm-1 control-label no-padding-right" for="publishDateIn">#springMessage('tbtSps.spsInfo.countryCode')</label>
+                                        <div class="col-sm-3">
+                                            <input type="text"  class="col-xs-12 col-sm-12" value="$!spsInfo.countryCode" readonly="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.spsOrg')</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsOrg}" readonly="true"/>
+                                        </div>
+                                        <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.language')</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
+                                        <div class="col-sm-11">
+                                            <textarea class="form-control" rows="3" readonly="true"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
+                                        <div class="col-sm-11">
+                                            <textarea  class="form-control" rows="3" readonly="true"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
+                                        <div class="col-sm-11">
+                                            <textarea class="form-control" rows="3" readonly="true"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.standardYn')</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsOrg}" readonly="true"/>
+                                        </div>
+                                        <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.tbinfo.targetReason')</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+                                        <div class="col-sm-11">
+                                            <textarea  class="form-control" rows="3" readonly="true"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+                                        <div class="col-sm-11">
+                                            <textarea  class="form-control" rows="3" readonly="true"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
+                                    <div class="col-sm-1">
+                                        <a href="">下载来吧</a>
+                                    </div>
                                 </div>
-                                <div class="col-sm-3">
-                                    #parse("/layout/page.vm")
-                                    <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
-                                    &nbsp; &nbsp; &nbsp;
-                                    <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-                                    &nbsp; &nbsp; &nbsp;
-                                    <button class="btn btn-success btn-sm" type="button" id="btn-send"><i class="icon-plus"></i>#springMessage('view.lable.send')</button>
+                                </form>
+                                <form class="form-horizontal" role="form" >
+                                    <input id="sendFalg" value="$!sendFalg" type="hidden">
+                                     <!--专家历史意见-->
+                                    <div class="widget-header">
+                                        <h5 class="lighter">
+                                            <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
+                                        </h5>
+                                        <div class="widget-toolbar"></div>
+                                    </div>
+                                    <div>&nbsp;</div>
+                                    <form class="form-horizontal" role="form" >
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.experts')</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsOrg}" readonly="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.content')</label>
+                                        <div class="col-sm-11">
+                                            <textarea  class="form-control" rows="3" readonly="true"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                                <!--专家评议-->
+                                <div class="widget-header">
+                                    <h5 class="lighter">
+                                        <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
+                                    </h5>
+                                    <div class="widget-toolbar"></div>
                                 </div>
+                                <div>&nbsp;</div>
+                                <form class="form-horizontal" role="form" id="doReview_form">
+                                    <input type="text" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.content')</label>
+                                        <div class="col-sm-11">
+                                            <textarea  class="form-control" rows="3" name="content"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.Yn.end.review')</label>
+                                        <div class="col-sm-11">
+                                            #springMessage('constan.yes')<input type="radio" name="overReview" value="1" checked="true" id="displayDiv">
+                                            &nbsp;&nbsp;
+                                            #springMessage('constan.no')<input type="radio" name="overReview" value="0" id="showDiv">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
+                                        <div class="col-sm-11">
+                                            <table border="1px #ooo" id="attr_table" cellpadding="0"
+                                                   cellspacing="0" width="30%" class='table table-striped table-bordered table-condensed table-hover'>
+                                                <tr align="center">
+                                                    <td width="5%">复选框</td>
+                                                    <td width="20%">文件</td>
+                                                </tr>
+                                            </table>
+                                            <input type="button" onclick="addTr3('attr_table', -1)" value="添加">
+                                            <input type="button" onclick="delTr3()" value="删除">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" name="id" id="id" value="$!spsInfo.id" />
+                                        <div class="col-sm-8 col-sm-offset-4">
+                                            <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
+                                            &nbsp; &nbsp; &nbsp;
+                                            <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+                                            &nbsp; &nbsp; &nbsp;
+                                            <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-			<div class="col-xs-12 col-sm-12 table-responsive">
-                #parse("/spsInfo/index_review_content_unsend.vm")
-                #if($!page)
-                    #pageBarPost($page.totalRow $page.curPage $page.totalPage)
-                #end
-			</div>
+            </div> 
         </div>
-        <script language="javascript">
-            $(function() {
-                $("#btn-query").click(function() {
-                    pageSubmit(1);
-                });
-                $("#btn-send").click(function() {
-                    var tableJson = TableToJson("review_send_table",1,0);
-                    var params = {} ;
-                    params.tableJson = tableJson;
-                    debugger;
-                    $.ajax({
-                        url: '$basePath/spsInfo/sendNotice' ,
-                        type: 'POST',
-                        data: params,
-                        async: false,
-//                        cache: false,
-//                        contentType: false,
-//                        processData: false,
-                        dataType:"json",
-                        success: function (returndata) {
-                            alert(returndata);
-                        },
-                        error: function (returndata) {
-                            alert(returndata);
-                        }
-                    });
-                });
-            });
-            // Submit Search Form
-            function pageSubmit(pageNoParam) {
-                $("#curPage").val(pageNoParam);
-                $("#queryForm").attr("action", "$basePath/spsInfo/queryByPageReview");
-                $("#queryForm").attr("method", "POST");
-                $("#queryForm").submit();
-            }
-
-            // ****************获取表格数据， 并且转换成json数组 开始********************************
-            var keysArr = new Array("checkbox", "spsCode","fileTitle","country","levels","expertsEndDate","exports");//可以根据表格的列数添加
-            function TableToJson(tableid,fromRow,fromColum) { //tableid是你要转化的表的表名，是一个字符串，如"example"
-                debugger ;
-                var rows = document.getElementById(tableid).rows.length; //获得行数(包括thead)
-                var colums = document.getElementById(tableid).rows[0].cells.length; //获得列数
-                var json = "[";
-                var tdValue;
-                for (var i = fromRow; i < rows; i++) { //每行
-                    debugger ;
-                    tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+0+") input[type='checkbox']:checked").val() ;
-                    if(tdValue!=undefined){
-                        json += "{";
-                        for (var j = fromColum; j < colums; j++) {
-                            var td_type = $("#"+tableid+" tr:eq("+i+") td:eq("+j+")").attr("type") ;// 获得td自定义的属性
-                            tdName = keysArr[j]; //Json数据的键
-                            json += "\""; //加上一个双引号
-                            json += tdName;
-                            json += "\"";
-                            json += ":";
-                            if ("select"==td_type ) {
-                                tdValue = $('#'+tableid+' tr:eq('+i+') td:eq('+j+') select').val() ;
-                            } else if ("text"==td_type ) {
-                                tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+j+") input").val() ;
-                            } else if ("radio"==td_type) {
-                                tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+j+") input[type='radio']:checked").val() ;
-                            }else if ("checkbox"==td_type) {
-                                tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+j+") input[type='checkbox']:checked").val() ;
-                            } else{
-                                tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+j+")").text() ;
-                            }
-                            json += "\"";
-                            json += tdValue;
-                            json += "\"";
-                            json += ",";
-                        }
-                        json = json.substring(0, json.length - 1);
-                        json += "}";
-                        json += ",";
+    <script>
+        $(function() {
+            // 点击提交按钮
+            $("#btn-submit").click(function(){
+                var formData = new FormData($( "#doReview_form" )[0]);
+                $.ajax({
+                    url: '$basePath/spsInfo/doReview' ,
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (returndata) {
+                        alert(returndata);
+                    },
+                    error: function (returndata) {
+                        alert(returndata);
                     }
-                }
-                json = json.substring(0, json.length - 1);
-                json += "]";
-                debugger ;
-                return json;
-            }
-
-            // ****************获取表格数据， 并且转换成json数组 结束********************************
-
-        </script>
-
-        <script type="text/javascript">
-            // 多选下拉框checkbox select
-            $(document).ready(function() {
-                $('.multipleSelect').multiselect();
+                });
             });
-            // 搜索下拉框
-            var config = {
-                '.chosen-select' : {width:"100%", search_contains: true, no_results_text:'没有找到'}
+        });
+
+
+        // ****************表格添加，删除行 开始********************************
+        /**
+         * 为table指定行添加一行
+         * tab 表id
+         * row 行数，如：0->第一行 1->第二行 -2->倒数第二行 -1->最后一行
+         * trHtml 添加行的html代码
+         */
+        function addTr(tab, row, trHtml){
+            //获取table最后一行 $("#tab tr:last")
+            //获取table第一行 $("#tab tr").eq(0)
+            //获取table倒数第二行 $("#tab tr").eq(-2)
+            var $tr=$("#"+tab+" tr").eq(row);
+            if($tr.size()==0){
+                alert("指定的table id或行数不存在！");
+                return;
             }
-            for (var selector in config) {
-                $(selector).chosen(config[selector]);
+                $tr.after(trHtml);
+        }
+
+        function delTr(ckb){
+            //获取选中的复选框，然后循环遍历删除
+            var ckbs=$("input[name="+ckb+"]:checked");
+            if(ckbs.size()==0){
+                alert("要删除指定行，需选中要删除的行！");
+                return;
             }
-        </script>
-    </body>
+            ckbs.each(function(){
+                $(this).parent().parent().remove();
+            });
+        }
+        function delTr3(){
+            delTr('attr_ckb');
+        }
+        function addTr3(tab, row){
+            var trHtml="<tr align='center'>" +
+                    "<td width='5%'><input type='checkbox' name='attr_ckb'/></td>" +
+                    "<td width='10%'><input type='file' name='file'/></td>" +
+                    "</tr>";
+            addTr(tab, row, trHtml);
+        }
+        // ****************表格添加，删除行 结束********************************
+
+    </script>
+	</body>
 </html>

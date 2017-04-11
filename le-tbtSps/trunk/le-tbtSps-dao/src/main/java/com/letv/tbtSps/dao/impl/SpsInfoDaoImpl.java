@@ -93,4 +93,13 @@ public class SpsInfoDaoImpl extends BaseDao implements SpsInfoDao {
     public boolean updateSpsInfoBySpsCode(SpsInfo spsInfo) {
         return update(namespace +".updateSpsInfoBySpsCode", spsInfo);
     }
+
+    /**
+     * 修改sps状态
+     * @param spsInfo
+     * @return
+     */
+    public boolean updateSpsStateBySpsCode(SpsInfo spsInfo) {
+        return update(namespace +".updateSpsStateBySpsCode", spsInfo);
+    }
 }

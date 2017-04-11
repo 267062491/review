@@ -12,7 +12,8 @@ public enum Sps_Tbt_InfoStatus {
 
     UN_FENPEI("10","未分配"),
     HAVE_FENPEI("20","已分配"),
-    HAVE_FENPEI_HUIDA("21","已经评议"),
+        HAVE_FENPEI_HUIDA("21","已经评议"),// log表才有的状态， spsinfo表么有这个状态
+        HAVE_FENPEI_HUIZONG("22","已经评议汇总"),// log表才有的状态， spsinfo表么有这个状态
     HUIZONG_PINGYI("30","汇总评议"),
     HAVE_FANKUI("40","已反馈");
 

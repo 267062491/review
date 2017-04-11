@@ -329,7 +329,7 @@ public class SpsInfoController extends ReviewBaseController {
      */
     @RequestMapping(value = "indexReview")
     public String indexReview(Model model) {
-        List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbStatePart();
+        List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
         model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
         return viewPrefix + "/index_review";
     }
@@ -385,42 +385,6 @@ public class SpsInfoController extends ReviewBaseController {
     }
 
     /**
-     * 进入基础信息页面
-     * @param model
-     * @return
-     */
-    @RequestMapping(value = "detailInfo")
-    public String detailInfo(Model model , String spsCode,HttpServletRequest request,HttpServletResponse response) {
-        try {
-            spsCode = URLDecoder.decode(spsCode, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        SpsInfoQuery spsInfoQuery = new SpsInfoQuery () ;
-        spsInfoQuery.setSpsCode(spsCode);
-        // 查询sps基础信息
-        List<SpsInfo> list_spsInfo = spsInfoService.querySpsInfoList(spsInfoQuery);
-        SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
-        spsInfoLogQuery.setSpsCode(spsCode);
-        // 查询sps的日志信息
-        List<SpsInfoLog> list_spsCodeLog = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery);
-        List<SpsLogAttr> list_attr = new ArrayList<SpsLogAttr>(); // 定义附件list
-        String logAttrRelation = "" ;// sps附件关联字段
-        for(SpsInfoLog spsInfoLog : list_spsCodeLog){
-            if(Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode().equals(spsInfoLog.getState())){    // 未分配
-                logAttrRelation = spsInfoLog.getLogAttrRelation();
-            }
-        }
-        // 查询附件信息
-        SpsLogAttrQuery spsLogAttrQuery = new SpsLogAttrQuery();
-        spsLogAttrQuery.setLogAttrRelation(logAttrRelation);
-        list_attr = spsLogAttrService.querySpsLogAttrList(spsLogAttrQuery) ;
-        model.addAttribute("spsInfo",list_spsInfo.get(0));
-        model.addAttribute("list_attr",list_attr);
-        return viewPrefix+"/detailInfo" ;
-    }
-
-    /**
      * 进入评议页面
      * @param model
      * @param spsCode
@@ -471,7 +435,76 @@ public class SpsInfoController extends ReviewBaseController {
         model.addAttribute("review",review);
         model.addAttribute("list_review",list_review);
         model.addAttribute("list_attr",list_attr);
-        model.addAttribute("sendFalg",sendFalg);
-        return viewPrefix+"/detailInfo" ;
+        if(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode().equals(sendFalg)){
+            return viewPrefix+"/experts_review" ;
+        }else {
+            return viewPrefix+"/detailInfo" ;
+        }
     }
+
+    /**
+     * 专家进行评议
+     * @return
+     */
+    @RequestMapping(value = "/doReview", method = RequestMethod.POST)
+    @ResponseBody
+    public Wrapper<?> doReview(HttpServletRequest request, @RequestParam("file") List<MultipartFile> files , SpsInfoLog spsInfoLog){
+        /**
+         * 1、在日志表里面插入数据， 数据的状态是21 已经评议 ，操作顺序是3
+         * 2、在附件表里面插入附件数据 ， 路径里面加上专家的编码作为一级路径
+         */
+        try{
+            String[] ret = spsInfoService.doReview(spsInfoLog,files,this.getLoginUserName());
+            Wrapper wrapper = new Wrapper<String>().result(ret[1]);
+            wrapper.setCode(Integer.parseInt(ret[0]));
+            wrapper.setMessage(ret[1]);
+            return wrapper;
+        } catch (Exception e){
+            return error();
+        }
+    }
+    /**
+     * 进行评议汇总
+     * @return
+     */
+    @RequestMapping(value = "/summaryReview", method = RequestMethod.POST)
+    @ResponseBody
+    public Wrapper<?> summaryReview(HttpServletRequest request, @RequestParam("file") List<MultipartFile> files , SpsInfoLog spsInfoLog){
+        /**
+         * 1、在日志表里面插入数据， 数据的状态是30 已经汇总 ，操作顺序是4 ， 修改canedit为 0 不可以编辑
+         * 2、在附件表里面插入附件数据 ， 路径里面加上专家的编码作为一级路径
+         */
+        try{
+            String[] ret = spsInfoService.summaryReview(spsInfoLog,files,this.getLoginUserName());
+            Wrapper wrapper = new Wrapper<String>().result(ret[1]);
+            wrapper.setCode(Integer.parseInt(ret[0]));
+            wrapper.setMessage(ret[1]);
+            return wrapper;
+        } catch (Exception e){
+            return error();
+        }
+    }
+    /**
+     * 进行评议汇总提交
+     * @return
+     */
+    @RequestMapping(value = "/summaryReviewSubmit", method = RequestMethod.POST)
+    @ResponseBody
+    public Wrapper<?> summaryReviewSubmit(HttpServletRequest request, @RequestParam("file") List<MultipartFile> files , SpsInfoLog spsInfoLog){
+        /**
+         * 1、修改spsinfo表的状态为30 评议汇总
+         * 2、在日志表里面插入数据， 数据的状态是30 已经汇总 ，操作顺序是4 ， 修改canedit为 0 不可以编辑
+         * 3、在附件表里面插入附件数据 ， 路径里面加上专家的编码作为一级路径
+         */
+        try{
+            String[] ret = spsInfoService.summaryReviewSubmit(spsInfoLog,files,this.getLoginUserName());
+            Wrapper wrapper = new Wrapper<String>().result(ret[1]);
+            wrapper.setCode(Integer.parseInt(ret[0]));
+            wrapper.setMessage(ret[1]);
+            return wrapper;
+        } catch (Exception e){
+            return error();
+        }
+    }
+
 }

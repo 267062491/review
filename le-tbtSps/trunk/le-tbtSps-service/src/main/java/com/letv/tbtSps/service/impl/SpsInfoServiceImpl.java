@@ -356,6 +356,8 @@ public class SpsInfoServiceImpl implements SpsInfoService {
                     spsInfo.setSendDate(new Date());
                     spsInfo.setLevels(sendDto.getLevels());
                     spsInfo.setExpertsEndDate(DateHelper.parseDate(sendDto.getExpertsEndDate()));
+                    spsInfo.setUpdateTime(new Date());
+                    spsInfo.setUpdateUser(userName);
                     /**
                      * 拼装spsInfoLog信息
                      */
@@ -384,6 +386,202 @@ public class SpsInfoServiceImpl implements SpsInfoService {
         return ret ;
     }
 
+    /**
+     * 专家评议
+     * @param spsInfoLog
+     * @param files
+     * @param userName
+     * @return
+     */
+    public String[] doReview(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName){
+        String[] ret = new String[]{SystemCodeEnum.SUCCESS.getCode(),SystemCodeEnum.SUCCESS.getContent()};
 
+        boolean attrFlag = true ;
+        String spsCode =spsInfoLog.getSpsCode() ;
+        String attrRelation =  "SPS-"+spsCode+UUID.randomUUID().toString() ;
+        /**
+         * 保存附件
+         * 拼装附件结构
+         */
+        List<SpsLogAttr> list_spsAttr = new ArrayList<SpsLogAttr>();
+        if(!org.springframework.util.CollectionUtils.isEmpty(files)){
+            String path = PropertiesHelper.newInstance().getValue("sps_attr_addr")+File.separator+spsCode+File.separator+userName+File.separator;
+            SpsLogAttr spsAttr = null ;
+            for(MultipartFile file : files){
+                String fileName = file.getOriginalFilename();
+                File targetFile = new File(path, fileName);
+                if (!targetFile.exists()) {
+                    targetFile.mkdirs();
+                }
+                // 保存 附件
+                try {
+                    file.transferTo(targetFile);
+                    // 组件附件数据结构
+                    spsAttr = new SpsLogAttr(spsCode,fileName,path,fileName,attrRelation,userName);
+                    list_spsAttr.add(spsAttr);
+                } catch (IOException e) {
+                    // 这里出异常了应该把这个文件夹删除，图省事先不删除吧
+                    LOG.error("sps新建，保存附件失败",e);
+                    attrFlag = false ;
+                    break ;
+                }
+            }
+        }
+        if(attrFlag){
+            /**
+             * 拼装sps信息操作日志表
+             */
+            SpsInfoLog spsInfoLog_new = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HAVE_FENPEI_HUIDA.getStatusCode(),Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode(),spsInfoLog.getContent(),
+                    attrRelation,1, SystemConstant.YES+"",userName);
+            spsInfoLog_new.setOverReview(spsInfoLog.getOverReview());
+
+            try{
+                boolean result = spsInfoManager.insertDoReivew(spsInfoLog_new,list_spsAttr);
+            }catch (RuntimeException e){
+                LOG.error("下发sps信息失败",e);
+                ret[0]=SystemCodeEnum.SYSTEM_RUNTIME_EXCEPTION.getCode();
+                ret[1]=e.getMessage();
+            }
+        } else{
+            ret[0]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getCode();
+            ret[1]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getContent();
+            return ret;
+        }
+        return ret ;
+    }
+    /**
+     * 评议汇总保存  通报管理员
+     * @param spsInfoLog
+     * @param files
+     * @param userName
+     * @return
+     */
+    public String[] summaryReview(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName){
+        String[] ret = new String[]{SystemCodeEnum.SUCCESS.getCode(),SystemCodeEnum.SUCCESS.getContent()};
+
+        boolean attrFlag = true ;
+        String spsCode =spsInfoLog.getSpsCode() ;
+        String attrRelation =  "SPS-"+spsCode+UUID.randomUUID().toString() ;
+        /**
+         * 保存附件
+         * 拼装附件结构
+         */
+        List<SpsLogAttr> list_spsAttr = new ArrayList<SpsLogAttr>();
+        if(!org.springframework.util.CollectionUtils.isEmpty(files)){
+            String path = PropertiesHelper.newInstance().getValue("sps_attr_addr")+File.separator+spsCode+File.separator+Sps_Tbt_InfoStatus.HAVE_FENPEI_HUIZONG.getStatusCode()+File.separator;
+            SpsLogAttr spsAttr = null ;
+            for(MultipartFile file : files){
+                String fileName = file.getOriginalFilename();
+                File targetFile = new File(path, fileName);
+                if (!targetFile.exists()) {
+                    targetFile.mkdirs();
+                }
+                // 保存 附件
+                try {
+                    file.transferTo(targetFile);
+                    // 组件附件数据结构
+                    spsAttr = new SpsLogAttr(spsCode,fileName,path,fileName,attrRelation,userName);
+                    list_spsAttr.add(spsAttr);
+                } catch (IOException e) {
+                    // 这里出异常了应该把这个文件夹删除，图省事先不删除吧
+                    LOG.error("sps新建，保存附件失败",e);
+                    attrFlag = false ;
+                    break ;
+                }
+            }
+        }
+        if(attrFlag){
+            /**
+             * 拼装sps信息操作日志表
+             */
+            SpsInfoLog spsInfoLog_new = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HAVE_FENPEI_HUIZONG.getStatusCode(),Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode(),spsInfoLog.getContent(),
+                    attrRelation,1, SystemConstant.YES+"",userName);
+            spsInfoLog_new.setOverReview(spsInfoLog.getOverReview());
+
+            try{
+                boolean result = spsInfoManager.insertSummaryReview( spsInfoLog_new, list_spsAttr);
+            }catch (RuntimeException e){
+                LOG.error("评议汇总保存失败",e);
+                ret[0]=SystemCodeEnum.SYSTEM_RUNTIME_EXCEPTION.getCode();
+                ret[1]=e.getMessage();
+            }
+        } else{
+            ret[0]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getCode();
+            ret[1]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getContent();
+            return ret;
+        }
+        return ret ;
+    }
+    /**
+     * 评议汇总提交  通报管理员
+     * @param spsInfoLog
+     * @param files
+     * @param userName
+     * @return
+     */
+    public String[] summaryReviewSubmit(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName){
+        String[] ret = new String[]{SystemCodeEnum.SUCCESS.getCode(),SystemCodeEnum.SUCCESS.getContent()};
+
+        boolean attrFlag = true ;
+        String spsCode =spsInfoLog.getSpsCode() ;
+        String attrRelation =  "SPS-"+spsCode+UUID.randomUUID().toString() ;
+        /**
+         * 保存附件
+         * 拼装附件结构
+         */
+        List<SpsLogAttr> list_spsAttr = new ArrayList<SpsLogAttr>();
+        if(!org.springframework.util.CollectionUtils.isEmpty(files)){
+            String path = PropertiesHelper.newInstance().getValue("sps_attr_addr")+File.separator+spsCode+File.separator+Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode()+File.separator;
+            SpsLogAttr spsAttr = null ;
+            for(MultipartFile file : files){
+                String fileName = file.getOriginalFilename();
+                File targetFile = new File(path, fileName);
+                if (!targetFile.exists()) {
+                    targetFile.mkdirs();
+                }
+                // 保存 附件
+                try {
+                    file.transferTo(targetFile);
+                    // 组件附件数据结构
+                    spsAttr = new SpsLogAttr(spsCode,fileName,path,fileName,attrRelation,userName);
+                    list_spsAttr.add(spsAttr);
+                } catch (IOException e) {
+                    // 这里出异常了应该把这个文件夹删除，图省事先不删除吧
+                    LOG.error("sps新建，保存附件失败",e);
+                    attrFlag = false ;
+                    break ;
+                }
+            }
+        }
+        if(attrFlag){
+            /**
+             * 拼装spsInfo信息
+             */
+            SpsInfo spsInfo = new SpsInfo();
+            spsInfo.setOraState(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode());
+            spsInfo.setState(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode());
+            spsInfo.setUpdateTime(new Date());
+            spsInfo.setUpdateUser(userName);
+            /**
+             * 拼装sps信息操作日志表,这的之前状态可能有问题  TODO
+             */
+            SpsInfoLog spsInfoLog_new = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode(),Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode(),spsInfoLog.getContent(),
+                    attrRelation,1, SystemConstant.YES+"",userName);
+            spsInfoLog_new.setOverReview(spsInfoLog.getOverReview());
+
+            try{
+                boolean result = spsInfoManager.insertSummaryReviewSubmit(spsInfo, spsInfoLog_new, list_spsAttr);
+            }catch (RuntimeException e){
+                LOG.error("评议汇总保存失败",e);
+                ret[0]=SystemCodeEnum.SYSTEM_RUNTIME_EXCEPTION.getCode();
+                ret[1]=e.getMessage();
+            }
+        } else{
+            ret[0]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getCode();
+            ret[1]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getContent();
+            return ret;
+        }
+        return ret ;
+    }
 }
 

@@ -190,7 +190,15 @@
 		update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR} , state = #{state,jdbcType=VARCHAR}
 		,sendDate = #{sendDate,jdbcType=TIMESTAMP}, levels = #{levels,jdbcType=VARCHAR},expertsEndDate = #{expertsEndDate,jdbcType=TIMESTAMP}
 		where
-        versions = #{versions,jdbcType=VARCHAR} and sps_code = #{spsCode,jdbcType=VARCHAR} and oraState = #{oraState,jdbcType=VARCHAR}
+        sps_code = #{spsCode,jdbcType=VARCHAR} and oraState = #{oraState,jdbcType=VARCHAR}
+    </update>
+    <!-- 更新sps信息 -->
+    <update id="updateSpsStateBySpsCode" parameterType="SpsInfo">
+		update t_sps_info
+		set
+		update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR} , state = #{state,jdbcType=VARCHAR}
+		where
+        sps_code = #{spsCode,jdbcType=VARCHAR} and oraState = #{oraState,jdbcType=VARCHAR}
     </update>
 
     <!-- 常用的查询Where条件 -->

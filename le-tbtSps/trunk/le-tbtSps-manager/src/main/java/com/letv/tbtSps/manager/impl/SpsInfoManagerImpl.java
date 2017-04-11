@@ -242,4 +242,76 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
         return true ;
     }
 
+    /**
+     * 专家评议 TODO 这里有个漏洞， 没有判断之前的状态是已下发
+     * @param spsInfoLog
+     * @param list_spsAttr
+     * @return
+     */
+    public boolean insertDoReivew(SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr){
+        boolean temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+        boolean temp2 = true ;
+        if(temp1){
+            for(SpsLogAttr spsLogAttr : list_spsAttr){
+                temp2 = spsLogAttrDao.insert(spsLogAttr);
+                if(!temp2){
+                    throw new RuntimeException("添加信息spsInfo附件信息失败") ;
+                }
+            }
+        } else{
+            throw new RuntimeException("添加信息spsInfoLog信息失败") ;
+        }
+        return true ;
+    }
+
+    /**
+     * 评议汇总保存
+     * @param spsInfoLog
+     * @param list_spsAttr
+     * @return
+     */
+    public boolean insertSummaryReview(SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr){
+        boolean temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+        boolean temp2 = true ;
+        if(temp1){
+            for(SpsLogAttr spsLogAttr : list_spsAttr){
+                temp2 = spsLogAttrDao.insert(spsLogAttr);
+                if(!temp2){
+                    throw new RuntimeException("添加信息spsInfo附件信息失败") ;
+                }
+            }
+        } else{
+            throw new RuntimeException("添加信息spsInfoLog信息失败") ;
+        }
+        return true ;
+    }
+    /**
+     * 评议汇总提交  这要在保存的基础上，看看有没有保存的附件， 如果有，把保存的附件和信息拿过来 ； 还要看看是不是有新传入的附件  TODO 这个还得慢慢写
+     * @param spsInfo
+     * @param spsInfoLog
+     * @param list_spsAttr
+     * @return
+     */
+    public boolean insertSummaryReviewSubmit(SpsInfo spsInfo ,SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr){
+        boolean temp = spsInfoDao.updateSpsStateBySpsCode(spsInfo) ;
+        if(temp){
+            boolean temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+            boolean temp2 = true ;
+            if(temp1){
+                for(SpsLogAttr spsLogAttr : list_spsAttr){
+                    temp2 = spsLogAttrDao.insert(spsLogAttr);
+                    if(!temp2){
+                        throw new RuntimeException("添加信息spsInfo附件信息失败") ;
+                    }
+                }
+            } else{
+                throw new RuntimeException("添加信息spsInfoLog信息失败") ;
+            }
+        }else{
+            throw new RuntimeException("修改spsInfo状态失败") ;
+        }
+
+        return true ;
+    }
+
 }

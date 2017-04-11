@@ -138,7 +138,8 @@
             // ****************获取表格数据， 并且转换成json数组 结束********************************
 
             function detailInfo(spsCode){
-                window.location.href=("$basePath/spsInfo/reviewForward?spsCode="+encodeURI(encodeURI(spsCode))+"&sendFalg=20");
+                var sendFalg = $("#state").val();
+                window.location.href=("$basePath/spsInfo/reviewForward?spsCode="+encodeURI(encodeURI(spsCode))+"&sendFalg="+sendFalg);
             }
         </script>
 
