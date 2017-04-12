@@ -120,6 +120,13 @@
 		where id = #{id}
     </update>
 
+    <!-- 通过spsCode修改CanEdit状态 -->
+    <update id="updateCanEditBySpsCode" parameterType="SpsInfoLog">
+		update t_sps_info_log
+		set can_edit = #{canEdit,jdbcType=VARCHAR}, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where sps_code = #{spsCode,jdbcType=VARCHAR}
+    </update>
+
     <!-- 常用的查询Where条件 -->
     <sql id="querySpsInfoLogListWhere">
     	yn = 1

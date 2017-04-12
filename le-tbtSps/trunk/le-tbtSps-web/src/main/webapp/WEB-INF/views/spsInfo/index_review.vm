@@ -27,17 +27,23 @@
                                     <div class="col-sm-3">
                                         <select id="state" name="state" class="chosen-select" >
                                             #foreach( $item_spsBtbState in $list_spsBtbState)
-                                                <option value="$!item_spsBtbState.state">$!item_spsBtbState.content</option>
+                                                <option value="$!item_spsBtbState.state"
+                                                        #if($!item_spsBtbState.state==$!query.state)
+                                                            selected="selected"
+                                                        #end
+                                                        >$!item_spsBtbState.content</option>
                                             #end
                                         </select>
                                     </div>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                         #parse("/layout/page.vm")
                                         <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
                                         &nbsp; &nbsp; &nbsp;
                                         <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
                                         &nbsp; &nbsp; &nbsp;
                                         <button class="btn btn-success btn-sm" type="button" id="btn-send"><i class="icon-plus"></i>#springMessage('view.lable.send')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-success btn-sm" type="button" id="btn-send"><i class="icon-plus"></i>#springMessage('view.lable.jiHuo')</button>
                                     </div>
 								</div>
                             </form>

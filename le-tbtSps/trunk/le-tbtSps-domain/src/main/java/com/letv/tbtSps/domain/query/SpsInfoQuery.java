@@ -79,8 +79,11 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
     /** 开始时间 */
     private Date startTime; 
     /** 结束时间 */
-    private Date endTime; 
-	
+    private Date endTime;
+
+    private String publishDateIn;
+    private String publishDateIn1;
+
     public Long getId(){
 		return id;
 	}
@@ -335,5 +338,21 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
     
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getPublishDateIn() {
+        return publishDateIn;
+    }
+
+    public void setPublishDateIn(String publishDateIn) {
+        this.publishDateIn = publishDateIn;
+    }
+
+    public String getPublishDateIn1() {
+        return publishDateIn1;
+    }
+
+    public void setPublishDateIn1(String publishDateIn1) {
+        this.publishDateIn1 = publishDateIn1;
     }
 }

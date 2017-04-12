@@ -15,78 +15,7 @@
                     </div>
                     <div class="widget-body">
                         <div class="widget-main" style="background-color: #fff;padding:5px; height: 1500px">
-                                <form class="form-horizontal" role="form" >
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsAttr.spsCode')</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsCode}" readonly="true"/>
-                                        </div>
-                                        <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.publishDate')</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
-                                        </div>
-                                        <label class="col-sm-1 control-label no-padding-right" for="publishDateIn">#springMessage('tbtSps.spsInfo.countryCode')</label>
-                                        <div class="col-sm-3">
-                                            <input type="text"  class="col-xs-12 col-sm-12" value="$!spsInfo.countryCode" readonly="true"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.spsOrg')</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsOrg}" readonly="true"/>
-                                        </div>
-                                        <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.language')</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
-                                        <div class="col-sm-11">
-                                            <textarea class="form-control" rows="3" readonly="true"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
-                                        <div class="col-sm-11">
-                                            <textarea  class="form-control" rows="3" readonly="true"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
-                                        <div class="col-sm-11">
-                                            <textarea class="form-control" rows="3" readonly="true"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.standardYn')</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsOrg}" readonly="true"/>
-                                        </div>
-                                        <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.tbinfo.targetReason')</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
-                                        <div class="col-sm-11">
-                                            <textarea  class="form-control" rows="3" readonly="true"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
-                                        <div class="col-sm-11">
-                                            <textarea  class="form-control" rows="3" readonly="true"></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                    <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
-                                    <div class="col-sm-1">
-                                        <a href="">下载来吧</a>
-                                    </div>
-                                </div>
-                                </form>
+                            #parse("/spsInfo/review_common.vm")
                                 <form class="form-horizontal" role="form" >
                                     <input id="sendFalg" value="$!sendFalg" type="hidden">
                                      <!--专家历史意见-->
@@ -122,19 +51,19 @@
                                 <form class="form-horizontal" role="form" id="doReview_form">
                                     <input type="text" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
                                     <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.content')</label>
+                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.huizong.content')</label>
                                         <div class="col-sm-11">
                                             <textarea  class="form-control" rows="3" name="content"></textarea>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.Yn.end.review')</label>
-                                        <div class="col-sm-11">
-                                            #springMessage('constan.yes')<input type="radio" name="overReview" value="1" checked="true" id="displayDiv">
-                                            &nbsp;&nbsp;
-                                            #springMessage('constan.no')<input type="radio" name="overReview" value="0" id="showDiv">
-                                        </div>
-                                    </div>
+##                                    <div class="form-group">
+##                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.Yn.end.review')</label>
+##                                        <div class="col-sm-11">
+##                                            #springMessage('constan.yes')<input type="radio" name="overReview" value="1" checked="true" id="displayDiv">
+##                                            &nbsp;&nbsp;
+##                                            #springMessage('constan.no')<input type="radio" name="overReview" value="0" id="showDiv">
+##                                        </div>
+##                                    </div>
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
                                         <div class="col-sm-11">

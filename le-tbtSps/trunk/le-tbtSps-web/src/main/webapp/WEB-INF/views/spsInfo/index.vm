@@ -26,7 +26,11 @@
                                         <select id="state" name="state" class="chosen-select" >
                                             <option value="">#springMessage('tbtSps.please.choose')</option>
                                             #foreach( $item_spsBtbState in $list_spsBtbState)
-                                                <option value="$!item_spsBtbState.state">$!item_spsBtbState.content</option>
+                                                <option value="$!item_spsBtbState.state"
+                                                        #if($!item_spsBtbState.state==$!query.state)
+                                                            selected="selected"
+                                                        #end
+                                                        >$!item_spsBtbState.content</option>
                                             #end
                                         </select>
                                     </div>
@@ -35,14 +39,30 @@
                                         <select id="countryCode" name="countryCode" class="chosen-select" >
                                             <option value="">#springMessage('tbtSps.please.choose')</option>
                                             #foreach( $item_country in $list_country)
-                                                <option value="$!item_country.countryCode">$!item_country.countryContent</option>
+                                                <option value="$!item_country.countryCode"
+                                                    #if($!item_country.countryCode==$!query.countryCode)
+                                                        selected="selected"
+                                                    #end
+                                                        >$!item_country.countryContent</option>
                                             #end
                                         </select>
                                     </div>
 									<label class="col-sm-1 control-label no-padding-right" for="publishDateIn">#springMessage('tbtSps.spsInfo.publishYear')</label>
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-3" id="div_publishDateIn">
                                         <select id="publishDateIn" name="publishDateIn" class="col-sm-10 col-sm-offset-12" >
                                             <option value="">#springMessage('tbtSps.please.choose')</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3" id="div_publishDateIn_1" style="display: none;">
+                                        <select id="publishDateIn1" name="publishDateIn1" class="col-sm-10 col-sm-offset-12" >
+                                            <option value="">#springMessage('tbtSps.please.choose')</option>
+                                            #foreach( $item_date in $!list_date)
+                                                <option value="$!item_date.versions"
+                                                    #if($!item_date.versions==$!query.publishDateIn)
+                                                        selected="selected"
+                                                    #end
+                                                        >$!item_date.versions</option>
+                                            #end
                                         </select>
                                     </div>
 								</div>
@@ -75,13 +95,25 @@
             }
 
             $(function() {
+                if($("#countryCode").val()!=""){
+                    $("#div_publishDateIn").hide();
+                    $("#div_publishDateIn_1").show();
+                }else{
+                    $("#div_publishDateIn").show();
+                    $("#div_publishDateIn_1").hide();
+                }
+
+
                 $("#btn-query").click(function() {
                     pageSubmit(1);
                 });
                 $("#btn-add").click(function() {
                     window.location.href=("$basePath/spsInfo/addForward");
                 });
-                $("#countryCode").change(function() {  debugger ;
+                $("#countryCode").change(function() {
+                    $("#div_publishDateIn").show();
+                    $("#div_publishDateIn_1").hide();
+                    $("#publishDateIn1").val("");
                     var formData = new FormData($( "#queryForm" )[0]);
                     $.ajax({
                         url: '$basePath/spsInfo/queryCountryDateByCountry' ,

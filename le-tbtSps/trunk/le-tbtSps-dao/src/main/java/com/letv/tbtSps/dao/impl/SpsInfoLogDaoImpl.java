@@ -77,4 +77,12 @@ public class SpsInfoLogDaoImpl extends BaseDao implements SpsInfoLogDao {
         int count = (Integer) queryForObject(namespace +".exist", spsInfoLog);
         return count > 0;
     }
+    /**
+     * 根据spsCode修改canEdit状态
+     * @param spsInfoLog
+     * @return
+     */
+    public boolean updateCanEditBySpsCode(SpsInfoLog spsInfoLog) {
+        return update(namespace +".updateCanEditBySpsCode", spsInfoLog);
+    }
 }

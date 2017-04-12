@@ -79,4 +79,12 @@ public interface SpsInfoLogDao {
      */
     public boolean exist(SpsInfoLog spsInfoLog);
 
+    /**
+     * 根据spsCode修改canEdit状态
+     * @param spsInfoLog
+     * @return
+     */
+    public boolean updateCanEditBySpsCode(SpsInfoLog spsInfoLog);
+
+
 }

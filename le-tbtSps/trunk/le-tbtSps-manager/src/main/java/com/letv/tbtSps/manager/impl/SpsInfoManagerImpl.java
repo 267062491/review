@@ -296,6 +296,7 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
         boolean temp = spsInfoDao.updateSpsStateBySpsCode(spsInfo) ;
         if(temp){
             boolean temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+            spsInfoLogDao.updateCanEditBySpsCode(spsInfoLog);
             boolean temp2 = true ;
             if(temp1){
                 for(SpsLogAttr spsLogAttr : list_spsAttr){

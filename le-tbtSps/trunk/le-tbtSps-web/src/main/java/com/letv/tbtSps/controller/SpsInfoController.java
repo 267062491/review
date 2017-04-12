@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -96,10 +97,20 @@ public class SpsInfoController extends ReviewBaseController {
     @RequestMapping(value = "queryByPage")
     public String queryByPage(Model model, PageUtil page, SpsInfoQuery query) {
         try {
+            if(!StringUtils.isEmpty(query.getPublishDateIn1())){
+                query.setPublishDateIn(query.getPublishDateIn1());
+            }
             List<SpsInfo> dataList = spsInfoService.querySpsInfoListWithPage(query, page);
             model.addAttribute("dataList", dataList);// 通报状态
             model.addAttribute("query", query);// 查询参数
             model.addAttribute("page", page);// 分页
+            if(!StringUtils.isEmpty(query.getCountryCode())){
+                SpsInfoQuery spsInfoQuery = new SpsInfoQuery ();
+                spsInfoQuery.setCountryCode(query.getCountryCode());
+                List<SpsInfo> list_date = spsInfoService.queryCountryDateByCountry(spsInfoQuery);
+                model.addAttribute("list_date", list_date);
+            }
+
 
 
             List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
@@ -311,6 +322,9 @@ public class SpsInfoController extends ReviewBaseController {
     @ResponseBody
     public Wrapper<?> queryCountryDateByCountry(SpsInfoQuery queryBean){
         try{
+            if(!StringUtils.isEmpty(queryBean.getPublishDateIn1())){
+                queryBean.setPublishDateIn(queryBean.getPublishDateIn1());
+            }
             List<SpsInfo> list_spsInfo = spsInfoService.queryCountryDateByCountry(queryBean);
             return new Wrapper<List<SpsInfo>>().result(list_spsInfo);
         } catch (Exception e){
@@ -354,7 +368,7 @@ public class SpsInfoController extends ReviewBaseController {
             queryBean.setList_roleCode(parameterLoad.getList_role_review());
             queryBean.setUserType(1);
             List<User> list_user = userService.queryUserByRoleCodeNoPage(queryBean);
-            List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbStatePart();
+            List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
             List<SpsBtbState> list_leves = parameterLoad.getList_leves();
             model.addAttribute("list_user",list_user); // 重要程度
             model.addAttribute("list_leves",list_leves); // 重要程度
@@ -436,8 +450,10 @@ public class SpsInfoController extends ReviewBaseController {
         model.addAttribute("list_review",list_review);
         model.addAttribute("list_attr",list_attr);
         if(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode().equals(sendFalg)){
-            return viewPrefix+"/experts_review" ;
-        }else {
+            return viewPrefix+"/summary_review" ;
+        }else if(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode().equals(sendFalg)){
+            return viewPrefix+"/feedback_review" ;
+        } else{
             return viewPrefix+"/detailInfo" ;
         }
     }
@@ -467,6 +483,7 @@ public class SpsInfoController extends ReviewBaseController {
      * 进行评议汇总
      * @return
      */
+    @Deprecated
     @RequestMapping(value = "/summaryReview", method = RequestMethod.POST)
     @ResponseBody
     public Wrapper<?> summaryReview(HttpServletRequest request, @RequestParam("file") List<MultipartFile> files , SpsInfoLog spsInfoLog){
