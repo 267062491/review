@@ -1,6 +1,8 @@
 package com.letv.tbtSps.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * SpsInfoLog：sps信息操作日志表实体类
@@ -62,7 +64,17 @@ public class SpsInfoLog implements java.io.Serializable  {
     /** 修改人 */
     private String updateUser; 
     /** yn */
-    private Integer yn; 
+    private Integer yn;
+
+
+    /**
+     * 已经评议
+     */
+    private String haveReview ;
+
+    List<SpsLogAttr> listLogAttr = new ArrayList<SpsLogAttr>();
+
+    private String[] fileNameId ;
     
     public Long getId(){
         return id;
@@ -190,5 +202,29 @@ public class SpsInfoLog implements java.io.Serializable  {
         
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public String getHaveReview() {
+        return haveReview;
+    }
+
+    public void setHaveReview(String haveReview) {
+        this.haveReview = haveReview;
+    }
+
+    public List<SpsLogAttr> getListLogAttr() {
+        return listLogAttr;
+    }
+
+    public void setListLogAttr(List<SpsLogAttr> listLogAttr) {
+        this.listLogAttr = listLogAttr;
+    }
+
+    public String[] getFileNameId() {
+        return fileNameId;
+    }
+
+    public void setFileNameId(String[] fileNameId) {
+        this.fileNameId = fileNameId;
     }
 }

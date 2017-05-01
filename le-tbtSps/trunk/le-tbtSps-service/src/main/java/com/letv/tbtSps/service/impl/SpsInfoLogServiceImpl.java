@@ -96,7 +96,14 @@ public class SpsInfoLogServiceImpl implements SpsInfoLogService {
     /**
      * {@inheritDoc}
      */
-    @Profiled(tag = "SpsInfoLogService.querySpsInfoLogList")
+    public List<SpsInfoLog> queryExperts(SpsInfoLogQuery queryBean) {
+        return spsInfoLogManager.queryExperts(queryBean) ;
+    }
+
+    public List<SpsInfoLog> queryUnReviewLog(SpsInfoLogQuery queryBean) {
+        return spsInfoLogManager.queryUnReviewLog(queryBean) ;
+    }
+
     public List<SpsInfoLog> querySpsInfoLogList(SpsInfoLogQuery queryBean) {
         List<SpsInfoLog> spsInfoLogList = null;
         try {

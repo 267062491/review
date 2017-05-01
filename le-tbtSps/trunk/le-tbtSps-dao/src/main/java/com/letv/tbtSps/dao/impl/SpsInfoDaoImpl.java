@@ -102,4 +102,29 @@ public class SpsInfoDaoImpl extends BaseDao implements SpsInfoDao {
     public boolean updateSpsStateBySpsCode(SpsInfo spsInfo) {
         return update(namespace +".updateSpsStateBySpsCode", spsInfo);
     }
+
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoListExperts(SpsInfoQuery queryBean){
+        return (List<SpsInfo>) queryForList(namespace +".querySpsInfoListExperts", queryBean);
+    }
+    /**
+     * 查询专家未评议和已评议的内容数量
+     * @param queryBean
+     * @return
+     */
+    public int querySpsInfoCountExperts(SpsInfoQuery queryBean){
+        return (Integer) queryForObject(namespace +".querySpsInfoCountExperts", queryBean);
+    }
+
+    public List<SpsInfo> querySpsInfoExpertsAll(SpsInfoQuery queryBean) {
+        return (List<SpsInfo>) queryForList(namespace +".querySpsInfoExpertsAll", queryBean);
+    }
+
+    public int querySpsInfoCountExpertsAll(SpsInfoQuery queryBean) {
+        return (Integer) queryForObject(namespace +".querySpsInfoCountExpertsAll", queryBean);
+    }
 }

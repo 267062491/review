@@ -53,6 +53,8 @@ public interface SpsInfoLogDao {
      * @return
      */
     public List<SpsInfoLog> querySpsInfoLogListWithPage(SpsInfoLogQuery queryBean);
+    public List<SpsInfoLog> queryExperts(SpsInfoLogQuery queryBean);
+    public List<SpsInfoLog> queryUnReviewLog(SpsInfoLogQuery queryBean);
 
     /**
      * 删除记录
@@ -85,6 +87,9 @@ public interface SpsInfoLogDao {
      * @return
      */
     public boolean updateCanEditBySpsCode(SpsInfoLog spsInfoLog);
+
+
+
 
 
 }

@@ -2,8 +2,6 @@
 <html lang="zh-cn">
     <head>
         #parse("/layout/head.vm")
-        <script src="#springUrl('')/static/js/bootstrap-multiselect.js"></script>
-        <link rel="stylesheet" href="#springUrl('')/static/css/bootstrap-multiselect.css" />
 	</head>
     <body>
         <div class="row">
@@ -23,14 +21,26 @@
                         <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
                             <form class="form-horizontal" role="form" id="queryForm">
 								<div class="form-group">
-									<label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.status')</label>
+									<label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.scope')</label>
                                     <div class="col-sm-3">
-                                        <select id="state" name="state" class="chosen-select" >
-                                            #foreach( $item_spsBtbState in $list_spsBtbState)
-                                                <option value="$!item_spsBtbState.state"
-                                                        #if($!item_spsBtbState.state==$!query.state)
+                                        <select id="scope" name="scope" class="chosen-select" >
+                                            #foreach( $item_scope in $!list_scope)
+                                                <option value="$!item_scope.state"
+                                                        #if($!item_scope.state==$!scope)
                                                             selected="selected"
                                                         #end
+                                                        >$!item_scope.content</option>
+                                            #end
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.status')</label>
+                                    <div class="col-sm-3">
+                                        <select id="oraState" name="oraState" class="chosen-select" >
+                                            #foreach( $item_spsBtbState in $list_spsBtbState)
+                                                <option value="$!item_spsBtbState.state"
+                                                    #if($!item_spsBtbState.state==$!query.oraState)
+                                                        selected="selected"
+                                                    #end
                                                         >$!item_spsBtbState.content</option>
                                             #end
                                         </select>
@@ -40,9 +50,6 @@
                                         <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
                                         &nbsp; &nbsp; &nbsp;
                                         <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-                                        &nbsp; &nbsp; &nbsp;
-                                        <button class="btn btn-success btn-sm" type="button" id="btn-send" style="display: none"><i class="icon-plus"></i>#springMessage('view.lable.send')</button>
-                                        <button class="btn btn-success btn-sm" type="button" id="btn-jiHuo" style="display: none"><i class="icon-plus"></i>#springMessage('view.lable.jiHuo')</button>
                                     </div>
 								</div>
                             </form>
@@ -51,12 +58,7 @@
                 </div>
             </div>
 			<div class="col-xs-12 col-sm-12 table-responsive">
-                #if($!query.state=="10")
-                    #parse("/spsInfo/index_review_content_unsend.vm")
-                #elseif($!query.state=="20" || $!query.state=="30")
-                    #parse("/spsInfo/index_review_content_haveFenPei.vm")
-                #end
-
+                #parse("/spsInfo/index_exports_review_content_unreview.vm")
                 #if($!page)
                     #pageBarPost($page.totalRow $page.curPage $page.totalPage)
                 #end
@@ -64,10 +66,15 @@
         </div>
         <script language="javascript">
             $(function() {
-                showOrHiddenButton();
-                $("#state").change(function() {
-                    showOrHiddenButton();
-                });
+
+                var scope = $("#scope").val();
+                if("self"==scope){
+                    $("#expertReviewSelf").show();
+                }else{
+                    $("#expertReviewAll").show();
+                }
+
+
                 $("#btn-query").click(function() {
                     pageSubmit(1);
                 });
@@ -97,25 +104,9 @@
             // Submit Search Form
             function pageSubmit(pageNoParam) {
                 $("#curPage").val(pageNoParam);
-                $("#queryForm").attr("action", "$basePath/spsInfo/queryByPageReview");
+                $("#queryForm").attr("action", "$basePath/spsInfo/queryByPageExpertsReview");
                 $("#queryForm").attr("method", "POST");
                 $("#queryForm").submit();
-            }
-
-            function showOrHiddenButton(){
-                var send = $("#btn-send");
-                var jiHuo = $("#btn-jiHuo");
-                var sendFalg = $("#state").val();
-                if(sendFalg=="10"){
-                    jiHuo.hide();
-                    send.show() ;
-                }else if(sendFalg=="30"){
-                    jiHuo.show() ;
-                    send.hide() ;
-                }else{
-                    jiHuo.hide();
-                    send.hide() ;
-                }
             }
 
             // ****************获取表格数据， 并且转换成json数组 开始********************************
@@ -149,10 +140,6 @@
                             } else{
                                 tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+j+")").text() ;
                             }
-
-                            if(null==tdValue){
-                                tdValue = "" ;
-                            }
                             json += "\"";
                             json += tdValue;
                             json += "\"";
@@ -172,16 +159,11 @@
             // ****************获取表格数据， 并且转换成json数组 结束********************************
 
             function detailInfo(spsCode){
-                var sendFalg = $("#state").val();
-                window.location.href=("$basePath/spsInfo/reviewForward?spsCode="+encodeURI(encodeURI(spsCode))+"&sendFalg="+sendFalg);
+                window.location.href=("$basePath/spsInfo/reviewForward?spsCode="+encodeURI(encodeURI(spsCode))+"&sendFalg=20_00");
             }
         </script>
 
         <script type="text/javascript">
-            // 多选下拉框checkbox select
-            $(document).ready(function() {
-                $('.multipleSelect').multiselect();
-            });
             // 搜索下拉框
             var config = {
                 '.chosen-select' : {width:"100%", search_contains: true, no_results_text:'没有找到'}

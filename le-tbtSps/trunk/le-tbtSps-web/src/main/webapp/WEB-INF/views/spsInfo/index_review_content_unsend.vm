@@ -14,7 +14,7 @@
             #foreach( $item in $dataList)
             <tr>
                 <td type="checkbox"><input type="checkbox" ></td>
-                <td type="kong"><a href="javascript:detailInfo('$!item.spsCode')" >$!item.spsCode</a> </td>
+                <td type="kong"><a href="javascript:detailInfo('$!item.spsCode')">$!item.spsCode</a></td>
                 <td type="kong">$!item.fileTitle</td>
                 <td type="kong">$!item.countryCode</td>
                 <td type="select">
@@ -29,7 +29,7 @@
                     </select>
                 </td>
                 <td type="text"><input type="text" name = "expertsEndDate"></td>
-                <td type="select">
+                <td type="select" class="aaa">
                     <select name="notificationType"  id="notificationType" multiple="multiple" class="multipleSelect">
                         #foreach( $item_user in $list_user)
                             <option value="$!item_user.userCode">$!item_user.showName</option>

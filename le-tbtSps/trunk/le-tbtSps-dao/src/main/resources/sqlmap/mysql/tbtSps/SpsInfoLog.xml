@@ -24,7 +24,10 @@
     <sql id="spsInfoLogColumns">
     	id,sps_code,state,ora_state,content,log_attr_relation,opert_order,can_edit,exports,overReview,back_4,create_time,update_time,create_user,update_user,yn
     </sql>
-    
+    <sql id="silSpsInfoLogColumns">
+    	sil.id,sil.sps_code,sil.state,sil.ora_state,sil.content,sil.log_attr_relation,sil.opert_order,sil.can_edit,sil.exports,sil.overReview,sil.back_4,sil.create_time,sil.update_time,sil.create_user,sil.update_user,sil.yn
+    </sql>
+
      <sql id="spsInfoLogUsedColumns">
     	sps_code,state,ora_state,content,log_attr_relation,opert_order,can_edit,exports,overReview,back_4,create_time,update_time,create_user,update_user,yn
     </sql>
@@ -176,4 +179,18 @@
         	and update_user = #{updateUser,jdbcType=VARCHAR}
         </if>
     </sql>
+
+    <!-- 查询专家 -->
+    <select id="queryExperts" resultMap="SpsInfoLogMap"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoLogQuery">
+        select  <include refid="spsInfoLogColumns"/>  from t_sps_info_log sil where (sil.state = '21' or sil.state = '20')  and sil.content!='已分配' group by exports
+    </select>
+    <!-- 查询评议主表是已分配状态单子的日志 -->
+    <select id="queryUnReviewLog" resultMap="SpsInfoLogMap"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoLogQuery">
+        select  <include refid="silSpsInfoLogColumns"/>  from t_sps_info si , t_sps_info_log sil  where si.sps_code = sil.sps_code and si.state = '20' and  (sil.state = '21' or sil.state = '20')
+        <if test="exports != null and exports != ''">
+            and sil.exports = #{exports,jdbcType=VARCHAR}
+        </if>
+    </select>
 </mapper>

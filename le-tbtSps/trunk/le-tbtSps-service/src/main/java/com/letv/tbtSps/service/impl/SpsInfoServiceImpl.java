@@ -6,6 +6,7 @@ import java.util.*;
 
 import com.letv.common.utils.DateHelper;
 import com.letv.common.utils.config.PropertiesHelper;
+import com.letv.common.utils.wrap.Wrapper;
 import com.letv.tbtSps.domain.*;
 import com.letv.tbtSps.domain.dto.SendDto;
 import com.letv.tbtSps.domain.dto.SpsBtbMulityDto;
@@ -24,9 +25,11 @@ import com.letv.common.utils.exception.ExistedException;
 import com.letv.common.utils.page.PageUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.perf4j.aop.Profiled;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -251,38 +254,52 @@ public class SpsInfoServiceImpl implements SpsInfoService {
              * 拼装原始语言
              */
             List<RelationSpsLanguage> list_relationSpsLanguage = new ArrayList<RelationSpsLanguage>();
-            for(String language : spsBtbMulityDto.getLanguage()){
-                list_relationSpsLanguage.add(new RelationSpsLanguage(spsCode,language,userName));
+            if(null!=spsBtbMulityDto.getLanguage()){
+                for(String language : spsBtbMulityDto.getLanguage()){
+                    list_relationSpsLanguage.add(new RelationSpsLanguage(spsCode,language,userName));
+                }
             }
             /**
              * 拼装通报类型
              */
             List<RelationSpsNotificationType> list_relationSpsNotificationType = new ArrayList<RelationSpsNotificationType>();
-            for(String notificationType : spsBtbMulityDto.getNotificationType()){
-                list_relationSpsNotificationType.add(new RelationSpsNotificationType(spsCode,notificationType,userName));
+            if(null!=spsBtbMulityDto.getNotificationType()){
+                for(String notificationType : spsBtbMulityDto.getNotificationType()){
+                    list_relationSpsNotificationType.add(new RelationSpsNotificationType(spsCode,notificationType,userName));
+                }
             }
             /**
              * 拼装目标理由
              */
             List<RelationSpsTargereason> list_relationSpsTargereason = new ArrayList<RelationSpsTargereason>();
-            for(String relationSpsTargereason : spsBtbMulityDto.getLanguage()){
-                list_relationSpsTargereason.add(new RelationSpsTargereason(spsCode,relationSpsTargereason,userName));
+            if(null!=spsBtbMulityDto.getTargetReason()){
+                for(String relationSpsTargereason : spsBtbMulityDto.getTargetReason()){
+                    list_relationSpsTargereason.add(new RelationSpsTargereason(spsCode,relationSpsTargereason,userName));
+                }
             }
             /**
              * 拼装国际标准
              */
             List<RelationSpsInternationalStandard> list_relationSpsInternationalStandard = new ArrayList<RelationSpsInternationalStandard>();
-            for(String relationSpsInternationalStandard : spsBtbMulityDto.getInternationalStandard()){
-                list_relationSpsInternationalStandard.add(new RelationSpsInternationalStandard(spsCode,relationSpsInternationalStandard,userName));
+            if(null!=spsBtbMulityDto.getInternationalStandard()){
+                for(String relationSpsInternationalStandard : spsBtbMulityDto.getInternationalStandard()){
+                    list_relationSpsInternationalStandard.add(new RelationSpsInternationalStandard(spsCode,relationSpsInternationalStandard,userName));
+                }
             }
             /**
              * 拼装农药相关
              */
-            RelationSpsRelationMedicine relationSpsRelationMedicine = new RelationSpsRelationMedicine(spsCode,spsBtbMulityDto.getRelationMedicine(),userName) ;
+            RelationSpsRelationMedicine relationSpsRelationMedicine = null ;
+            if(!StringUtils.isEmpty(spsBtbMulityDto.getRelationMedicine())){
+                relationSpsRelationMedicine = new RelationSpsRelationMedicine(spsCode,spsBtbMulityDto.getRelationMedicine(),userName) ;
+            }
             /**
              * 拼装农药商品相关
              */
-            RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct = new RelationSpsRelationMedicineProduct(spsCode,spsBtbMulityDto.getRelationMedicineProduct(),userName);
+            RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct = null ;
+            if(!StringUtils.isEmpty(spsBtbMulityDto.getRelationMedicineProduct())){
+                relationSpsRelationMedicineProduct = new RelationSpsRelationMedicineProduct(spsCode,spsBtbMulityDto.getRelationMedicineProduct(),userName);
+            }
 
             /**
              * 把传递给manager层的数据封装到map中，统一传递
@@ -301,15 +318,15 @@ public class SpsInfoServiceImpl implements SpsInfoService {
                 boolean result = spsInfoManager.insertOrderInfo(map);
                 // 保存成功之后， 创建全文检索  TODO
 
-            }catch (MySQLIntegrityConstraintViolationException e){
-                if(e.getMessage().contains("Duplicate")){
-                    ret[0]=SystemCodeEnum.SPS_CODE_HAVE_EXISTS.getCode();
-                    ret[1]=SystemCodeEnum.SPS_CODE_HAVE_EXISTS.getContent();
-                }else{
-
-                }
+            }catch (DuplicateKeyException e){
+                LOG.error("创建sps信息DuplicateKeyException异常：",e);
+                ret[0]=SystemCodeEnum.SPS_CODE_HAVE_EXISTS.getCode();
+                ret[1]=SystemCodeEnum.SPS_CODE_HAVE_EXISTS.getContent();
                 return ret;
             }catch (Exception e){
+                LOG.error("创建sps信息异常：",e);
+                ret[0]= String.valueOf(Wrapper.ERROR_CODE);
+                ret[1]=Wrapper.ERROR_MESSAGE;
                 return ret;
             }
         } else{
@@ -339,6 +356,18 @@ public class SpsInfoServiceImpl implements SpsInfoService {
         String[] ret = new String[]{SystemCodeEnum.SUCCESS.getCode(),SystemCodeEnum.SUCCESS.getContent()};
         List<Object> list_sendDto = JsonHelperImpl.jsonFormatArrayToListBean(SendDto.class,tableContent);
         if(!CollectionUtils.isEmpty(list_sendDto)){
+            /**
+             * 对信息进行验证
+             */
+            for(Object obj :list_sendDto ){
+                SendDto sendDto = (SendDto) obj;
+                if(StringUtils.isEmpty(sendDto.getExports())){
+                    ret[0]=SystemCodeEnum.EXPERTS_CANNOT_NULL.getCode();
+                    ret[1]=SystemCodeEnum.EXPERTS_CANNOT_NULL.getContent();
+                    return  ret ;
+                }
+            }
+
             for(Object obj :list_sendDto ){   // 这里的处理方式是， 每个单子保存一遍 ，如果有一个失败， 则后面的单子不执行
                 SendDto sendDto = (SendDto) obj;
                 String spsCode = sendDto.getSpsCode();
@@ -434,7 +463,8 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             SpsInfoLog spsInfoLog_new = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HAVE_FENPEI_HUIDA.getStatusCode(),Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode(),spsInfoLog.getContent(),
                     attrRelation,1, SystemConstant.YES+"",userName);
             spsInfoLog_new.setOverReview(spsInfoLog.getOverReview());
-
+            spsInfoLog_new.setExports(userName);
+            spsInfoLog_new.setFileNameId(spsInfoLog.getFileNameId());
             try{
                 boolean result = spsInfoManager.insertDoReivew(spsInfoLog_new,list_spsAttr);
             }catch (RuntimeException e){
@@ -554,11 +584,21 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             }
         }
         if(attrFlag){
+            SpsInfoQuery spsInfoQuery = new SpsInfoQuery();
+            spsInfoQuery.setSpsCode(spsCode);
+            SpsInfo spsInfoResult = spsInfoManager.querySpsInfoList(spsInfoQuery).get(0);
+            if(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode().equals(spsInfoResult.getState())
+                    && Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode().equals(spsInfoResult.getState())){
+                ret[0]=SystemCodeEnum.STATUS_ERROR.getCode();
+                ret[1]=SystemCodeEnum.STATUS_ERROR.getContent();
+                return ret;
+            }
             /**
              * 拼装spsInfo信息
              */
             SpsInfo spsInfo = new SpsInfo();
-            spsInfo.setOraState(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode());
+            spsInfo.setSpsCode(spsCode);
+            spsInfo.setOraState(spsInfoResult.getState());
             spsInfo.setState(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode());
             spsInfo.setUpdateTime(new Date());
             spsInfo.setUpdateUser(userName);
@@ -568,7 +608,7 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             SpsInfoLog spsInfoLog_new = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode(),Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode(),spsInfoLog.getContent(),
                     attrRelation,1, SystemConstant.YES+"",userName);
             spsInfoLog_new.setOverReview(spsInfoLog.getOverReview());
-
+            spsInfoLog_new.setFileNameId(spsInfoLog.getFileNameId());
             try{
                 boolean result = spsInfoManager.insertSummaryReviewSubmit(spsInfo, spsInfoLog_new, list_spsAttr);
             }catch (RuntimeException e){
@@ -582,6 +622,92 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             return ret;
         }
         return ret ;
+    }
+    /**
+     * 反馈
+     * @param spsInfoLog
+     * @param files
+     * @param userName
+     * @return
+     */
+    public String[] feedBackSubmit(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName){
+        String[] ret = new String[]{SystemCodeEnum.SUCCESS.getCode(),SystemCodeEnum.SUCCESS.getContent()};
+
+        boolean attrFlag = true ;
+        String spsCode =spsInfoLog.getSpsCode() ;
+        String attrRelation =  "SPS-"+spsCode+UUID.randomUUID().toString() ;
+        /**
+         * 保存附件
+         * 拼装附件结构
+         */
+        List<SpsLogAttr> list_spsAttr = new ArrayList<SpsLogAttr>();
+        if(!org.springframework.util.CollectionUtils.isEmpty(files)){
+            String path = PropertiesHelper.newInstance().getValue("sps_attr_addr")+File.separator+spsCode+File.separator+Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode()+File.separator;
+            SpsLogAttr spsAttr = null ;
+            for(MultipartFile file : files){
+                String fileName = file.getOriginalFilename();
+                File targetFile = new File(path, fileName);
+                if (!targetFile.exists()) {
+                    targetFile.mkdirs();
+                }
+                // 保存 附件
+                try {
+                    file.transferTo(targetFile);
+                    // 组件附件数据结构
+                    spsAttr = new SpsLogAttr(spsCode,fileName,path,fileName,attrRelation,userName);
+                    list_spsAttr.add(spsAttr);
+                } catch (IOException e) {
+                    // 这里出异常了应该把这个文件夹删除，图省事先不删除吧
+                    LOG.error("sps新建，保存附件失败",e);
+                    attrFlag = false ;
+                    break ;
+                }
+            }
+        }
+        if(attrFlag){
+            /**
+             * 拼装spsInfo信息
+             */
+            SpsInfo spsInfo = new SpsInfo();
+            spsInfo.setSpsCode(spsCode);
+            spsInfo.setOraState(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode());
+            spsInfo.setState(Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode());
+            spsInfo.setUpdateTime(new Date());
+            spsInfo.setUpdateUser(userName);
+            SpsInfoLog spsInfoLog_new = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode(),Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode(),spsInfoLog.getContent(),
+                    attrRelation,1, SystemConstant.YES+"",userName);
+            spsInfoLog_new.setOverReview(spsInfoLog.getOverReview());
+
+            try{
+                boolean result = spsInfoManager.insertFeedBackSubmit(spsInfo, spsInfoLog_new, list_spsAttr);
+            }catch (RuntimeException e){
+                LOG.error("反馈保存失败",e);
+                ret[0]=SystemCodeEnum.SYSTEM_RUNTIME_EXCEPTION.getCode();
+                ret[1]=e.getMessage();
+            }
+        } else{
+            ret[0]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getCode();
+            ret[1]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getContent();
+            return ret;
+        }
+        return ret ;
+    }
+
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoListExperts(SpsInfoQuery queryBean ,PageUtil pageUtil){
+        return spsInfoManager.querySpsInfoListExperts(queryBean,pageUtil);
+    }
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoExpertsAll(SpsInfoQuery queryBean ,PageUtil pageUtil){
+        return spsInfoManager.querySpsInfoExpertsAll(queryBean,pageUtil);
     }
 }
 

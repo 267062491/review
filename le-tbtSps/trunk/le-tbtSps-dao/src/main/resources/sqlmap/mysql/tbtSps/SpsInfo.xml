@@ -198,7 +198,7 @@
 		set
 		update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR} , state = #{state,jdbcType=VARCHAR}
 		where
-        sps_code = #{spsCode,jdbcType=VARCHAR} and oraState = #{oraState,jdbcType=VARCHAR}
+        sps_code = #{spsCode,jdbcType=VARCHAR} and state = #{oraState,jdbcType=VARCHAR}
     </update>
 
     <!-- 常用的查询Where条件 -->
@@ -292,4 +292,46 @@
         	and update_user = #{updateUser,jdbcType=VARCHAR}
         </if>
     </sql>
+
+    <!-- 查询专家未评议和已评议内容 -->
+    <select id="querySpsInfoListExperts" resultMap="SpsInfoMap"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoQuery">
+        select <include refid="spsInfoColumns"/> from t_sps_info as si
+        where  yn = 1 and
+        si.state = '20' and si.sps_code in
+        (select sps_code from t_sps_info_log sil where sil.state = #{state,jdbcType=VARCHAR} and sil.exports = #{experts,jdbcType=VARCHAR})
+        order by create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <!-- 查询专家未评议和已评议内容集合总数 -->
+    <select id="querySpsInfoCountExperts" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoQuery">
+        select count(1) from t_sps_info as si
+         where yn = 1 and
+        si.state = '20' and si.sps_code in
+        (select sps_code from t_sps_info_log sil where sil.state = #{state,jdbcType=VARCHAR}   and sil.exports = #{experts,jdbcType=VARCHAR} )
+    </select>
+
+    <select id="querySpsInfoExpertsAll" resultMap="SpsInfoMap"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoQuery">
+        select <include refid="spsInfoColumns"/> from t_sps_info as si
+        where  yn = 1 and
+        si.state = '20'  and
+        <foreach collection="listSpsCode" item="item" open="(" separator="or" close=")">
+            si.sps_code = #{item,jdbcType=VARCHAR}
+        </foreach>
+        order by create_time desc
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="querySpsInfoCountExpertsAll" resultType="java.lang.Integer"
+            parameterType="com.letv.tbtSps.domain.query.SpsInfoQuery">
+        select count(1) from t_sps_info as si
+        where  yn = 1 and
+        si.state = '20'  and
+        <foreach collection="listSpsCode" item="item" open="(" separator="or" close=")">
+            si.sps_code = #{item,jdbcType=VARCHAR}
+        </foreach>
+    </select>
 </mapper>

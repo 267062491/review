@@ -155,4 +155,33 @@ public interface SpsInfoManager {
      * @return
      */
     public boolean insertSummaryReviewSubmit(SpsInfo spsInfo ,SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr);
+
+    /**
+     * 反馈
+     * @param spsInfo
+     * @param spsInfoLog
+     * @param list_spsAttr
+     * @return
+     */
+    public boolean insertFeedBackSubmit(SpsInfo spsInfo ,SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr);
+
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoListExperts(SpsInfoQuery queryBean ,PageUtil pageUtil);
+    /**
+     * 查询专家未评议和已评议的内容数量
+     * @param queryBean
+     * @return
+     */
+    public int querySpsInfoCountExperts(SpsInfoQuery queryBean);
+
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoExpertsAll(SpsInfoQuery queryBean ,PageUtil pageUtil);
 }

@@ -1,0 +1,83 @@
+<form class="form-horizontal" role="form" id="summaryFormId">
+    <!--汇总评议-->
+    <div class="widget-header">
+        <h5 class="lighter">
+            #springMessage('tbtSps.spsInfo.huizong.content')
+        </h5>
+        <div class="widget-toolbar"></div>
+    </div>
+    <div>&nbsp;</div>
+    #foreach($item_summary in $!list_summary)
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.user')</label>
+            <div class="col-sm-3">
+                <input type="text" class="col-xs-12 col-sm-12" value="$!{item_summary.createUser}" readonly="true"/>
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.date')</label>
+            <div class="col-sm-3">
+                <input type="text" class="col-xs-12 col-sm-12" value="$!dateTool.format('yyyy-MM-dd',$!item_summary.createTime)" readonly="true"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.huizong.content')</label>
+            <div class="col-sm-11">
+                <textarea  class="form-control" readonly="true">$!item_summary.content</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
+            <div class="col-sm-11">
+                #foreach( $item_attr in $item_summary.listLogAttr)
+                    <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a>&nbsp;&nbsp;
+                #end
+            </div>
+        </div>
+    #end
+
+    #if($!summary.spsCode!="")
+        <input type="hidden" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.user')</label>
+            <div class="col-sm-3">
+                <input type="text" class="col-xs-12 col-sm-12" value="$!{summary.createUser}" readonly="true"/>
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.date')</label>
+            <div class="col-sm-3">
+                <input type="text" class="col-xs-12 col-sm-12" value="$!dateTool.format('yyyy-MM-dd',$!summary.createTime)" readonly="true"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.content')</label>
+            <div class="col-sm-11">
+                <textarea  class="form-control" rows="3" name="content">$!summary.content</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr.exists')</label>
+            <div class="col-sm-11">
+                #foreach( $item_attr in $summary.listLogAttr)
+                    <input type="hidden" name="fileNameId" value="$!item_attr.id" id="$!item_attr.id">
+                                                <span id="sp$!item_attr.id">
+                                                <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a>&nbsp;
+                                                <input type="button" onclick="delAttr('$!item_attr.id')" value="删除">  &nbsp;&nbsp;
+                                                </span>
+                #end
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
+            <div class="col-sm-11">
+                <table border="1px #ooo" id="attr_table_summary" cellpadding="0"
+                       cellspacing="0" width="30%" class='table table-striped table-bordered table-condensed table-hover'>
+                    <tr align="center">
+                        <td width="5%">复选框</td>
+                        <td width="20%">文件</td>
+                    </tr>
+                </table>
+                <input type="button" onclick="addTr3('attr_table_summary', -1)" value="添加">
+                <input type="button" onclick="delTr3('attr_ckb')" value="删除">
+            </div>
+        </div>
+    #end
+
+</form>

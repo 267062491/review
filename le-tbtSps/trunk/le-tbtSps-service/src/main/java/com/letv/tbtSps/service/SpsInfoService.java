@@ -139,4 +139,26 @@ public interface SpsInfoService {
      * @return
      */
     public String[] summaryReviewSubmit(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName);
+
+    /**
+     * 反馈
+     * @param spsInfoLog
+     * @param files
+     * @param userName
+     * @return
+     */
+    public String[] feedBackSubmit(SpsInfoLog spsInfoLog , List<MultipartFile> files, String userName);
+
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoListExperts(SpsInfoQuery queryBean ,PageUtil pageUtil);
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoExpertsAll(SpsInfoQuery queryBean ,PageUtil pageUtil);
 }

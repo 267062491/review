@@ -46,6 +46,8 @@ public interface SpsInfoLogManager {
      * @return
      */
     public List<SpsInfoLog> querySpsInfoLogList(SpsInfoLogQuery queryBean);
+    public List<SpsInfoLog> queryExperts(SpsInfoLogQuery queryBean);
+    public List<SpsInfoLog> queryUnReviewLog(SpsInfoLogQuery queryBean);
 
     /**
      * 根据查询Bean获取对象集合，带翻页

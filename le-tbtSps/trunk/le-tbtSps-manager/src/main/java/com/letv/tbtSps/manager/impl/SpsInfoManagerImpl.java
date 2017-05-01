@@ -1,5 +1,6 @@
 package com.letv.tbtSps.manager.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +9,16 @@ import com.letv.common.utils.DateHelper;
 import com.letv.common.utils.page.PageUtil;
 import com.letv.tbtSps.dao.*;
 import com.letv.tbtSps.domain.*;
+import com.letv.tbtSps.domain.query.SpsInfoLogQuery;
 import com.letv.tbtSps.domain.query.SpsInfoQuery;
 import com.letv.tbtSps.manager.*;
 
+import com.letv.tbtSps.utils.enums.Sps_Tbt_InfoStatus;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * SpsInfoManager接口的实现类
@@ -199,8 +205,12 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
         for(RelationSpsInternationalStandard relationSpsInternationalStandard : list_relationSpsInternationalStandard){
             relationSpsInternationalStandardDao.insert(relationSpsInternationalStandard);
         }
-        relationSpsRelationMedicineDao.insert(relationSpsRelationMedicine);
-        relationSpsRelationMedicineProductDao.insert(relationSpsRelationMedicineProduct);
+        if(null!=relationSpsRelationMedicine){
+            relationSpsRelationMedicineDao.insert(relationSpsRelationMedicine);
+        }
+        if(null!=relationSpsRelationMedicineProduct){
+            relationSpsRelationMedicineProductDao.insert(relationSpsRelationMedicineProduct);
+        }
         return true;
     }
     /**
@@ -249,7 +259,20 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
      * @return
      */
     public boolean insertDoReivew(SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr){
-        boolean temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+        boolean temp1 = true ;
+        // 先根据spsCode , state , experts 查询 ， 改专家是否已经评议过了，如果已经评议过了， 则不插入新日志， 而是需要原有日志
+        SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
+        spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.HAVE_FENPEI_HUIDA.getStatusCode());
+        spsInfoLogQuery.setSpsCode(spsInfoLog.getSpsCode());
+        spsInfoLogQuery.setExports(spsInfoLog.getExports());
+        List<SpsInfoLog> listSpsInfoLog = spsInfoLogDao.querySpsInfoLogList(spsInfoLogQuery);
+        if(!CollectionUtils.isEmpty(listSpsInfoLog)){
+            SpsInfoLog spsInfoLog1 = listSpsInfoLog.get(listSpsInfoLog.size()-1);
+            spsInfoLog.setId(spsInfoLog1.getId());
+            temp1 = spsInfoLogDao.update(spsInfoLog) ;
+        } else{
+            temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+        }
         boolean temp2 = true ;
         if(temp1){
             for(SpsLogAttr spsLogAttr : list_spsAttr){
@@ -260,6 +283,16 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
             }
         } else{
             throw new RuntimeException("添加信息spsInfoLog信息失败") ;
+        }
+        if(null!=spsInfoLog.getFileNameId() && spsInfoLog.getFileNameId().length>0){
+            for(String f : spsInfoLog.getFileNameId()){
+                if(!StringUtils.isEmpty(f)){
+                    SpsLogAttr spsLogAttr = new SpsLogAttr();
+                    spsLogAttr.setId(Long.parseLong(f));
+                    spsLogAttr.setLogAttrRelation(spsInfoLog.getLogAttrRelation());
+                    spsLogAttrDao.update(spsLogAttr);
+                }
+            }
         }
         return true ;
     }
@@ -295,8 +328,59 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
     public boolean insertSummaryReviewSubmit(SpsInfo spsInfo ,SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr){
         boolean temp = spsInfoDao.updateSpsStateBySpsCode(spsInfo) ;
         if(temp){
+
+            boolean temp1 = true ;
+            // 先根据spsCode , state , experts 查询 ， 改专家是否已经评议过了，如果已经评议过了， 则不插入新日志， 而是需要原有日志
+            SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
+            spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode());
+            spsInfoLogQuery.setSpsCode(spsInfoLog.getSpsCode());
+            spsInfoLogQuery.setCreateUser(spsInfoLog.getCreateUser());
+            List<SpsInfoLog> listSpsInfoLog = spsInfoLogDao.querySpsInfoLogList(spsInfoLogQuery);
+            if(!CollectionUtils.isEmpty(listSpsInfoLog)){
+                SpsInfoLog spsInfoLog1 = listSpsInfoLog.get(listSpsInfoLog.size()-1);
+                spsInfoLog.setId(spsInfoLog1.getId());
+                spsInfoLogDao.update(spsInfoLog) ;
+            }else{
+                temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+            }
+            boolean temp2 = true ;
+            if(temp1){
+                for(SpsLogAttr spsLogAttr : list_spsAttr){
+                    temp2 = spsLogAttrDao.insert(spsLogAttr);
+                    if(!temp2){
+                        throw new RuntimeException("添加信息spsInfo附件信息失败") ;
+                    }
+                }
+            } else{
+                throw new RuntimeException("添加信息spsInfoLog信息失败") ;
+            }
+            if(null!=spsInfoLog.getFileNameId() && spsInfoLog.getFileNameId().length>0){
+                for(String f : spsInfoLog.getFileNameId()){
+                    if(!StringUtils.isEmpty(f)){
+                        SpsLogAttr spsLogAttr = new SpsLogAttr();
+                        spsLogAttr.setId(Long.parseLong(f));
+                        spsLogAttr.setLogAttrRelation(spsInfoLog.getLogAttrRelation());
+                        spsLogAttrDao.update(spsLogAttr);
+                    }
+                }
+            }
+
+        }else{
+            throw new RuntimeException("修改spsInfo状态失败") ;
+        }
+        return true ;
+    }
+    /**
+     * 反馈
+     * @param spsInfo
+     * @param spsInfoLog
+     * @param list_spsAttr
+     * @return
+     */
+    public boolean insertFeedBackSubmit(SpsInfo spsInfo ,SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr){
+        boolean temp = spsInfoDao.updateSpsStateBySpsCode(spsInfo) ;
+        if(temp){
             boolean temp1 = spsInfoLogDao.insert(spsInfoLog) ;
-            spsInfoLogDao.updateCanEditBySpsCode(spsInfoLog);
             boolean temp2 = true ;
             if(temp1){
                 for(SpsLogAttr spsLogAttr : list_spsAttr){
@@ -311,8 +395,68 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
         }else{
             throw new RuntimeException("修改spsInfo状态失败") ;
         }
-
         return true ;
     }
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoListExperts(SpsInfoQuery queryBean ,PageUtil pageUtil) {
+            if (null == queryBean) {
+                queryBean = new SpsInfoQuery();
+            }
 
+            // 查询总数
+            int totalItem = querySpsInfoCountExperts(queryBean);
+
+            if (pageUtil == null) {
+                pageUtil = new PageUtil();
+            }
+            pageUtil.setTotalRow(totalItem);
+            pageUtil.init();
+
+            if (totalItem > 0) {
+                queryBean.setPageIndex(pageUtil.getCurPage());
+                queryBean.setPageSize(pageUtil.getPageSize());
+                // 调用Dao翻页方法
+                return spsInfoDao.querySpsInfoListExperts(queryBean);
+            }
+            return new ArrayList<SpsInfo>();
+    }
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoExpertsAll(SpsInfoQuery queryBean ,PageUtil pageUtil) {
+            if (null == queryBean) {
+                queryBean = new SpsInfoQuery();
+            }
+
+            // 查询总数
+            int totalItem = spsInfoDao.querySpsInfoCountExpertsAll(queryBean);
+
+            if (pageUtil == null) {
+                pageUtil = new PageUtil();
+            }
+            pageUtil.setTotalRow(totalItem);
+            pageUtil.init();
+
+            if (totalItem > 0) {
+                queryBean.setPageIndex(pageUtil.getCurPage());
+                queryBean.setPageSize(pageUtil.getPageSize());
+                // 调用Dao翻页方法
+                return spsInfoDao.querySpsInfoExpertsAll(queryBean);
+            }
+            return new ArrayList<SpsInfo>();
+    }
+    /**
+     * 查询专家未评议和已评议的内容数量
+     * @param queryBean
+     * @return
+     */
+    public int querySpsInfoCountExperts(SpsInfoQuery queryBean){
+        return spsInfoDao.querySpsInfoCountExperts(queryBean) ;
+    }
 }

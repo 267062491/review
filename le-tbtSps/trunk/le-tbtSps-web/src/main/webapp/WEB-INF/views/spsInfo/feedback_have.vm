@@ -12,20 +12,19 @@
                         <div class="widget-main" style="background-color: #fff;padding:5px; height: 1500px">
                             #parse("/spsInfo/review_common.vm")
                             #parse("/spsInfo/review_experts_history.vm")
-                            #parse("/spsInfo/review_experts_history_self.vm")
-
-                                <!--专家评议-->
-                                <div class="widget-header">
-                                    <h5 class="lighter">
-                                        #springMessage('tbtSps.spsInfo.huizong.content')
-                                    </h5>
-                                    <div class="widget-toolbar"></div>
-                                </div>
-                                <div>&nbsp;</div>
-                                <form class="form-horizontal" role="form" id="doReview_form">
-                                    <input type="hidden" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
+                            #parse("/spsInfo/review_summary_history.vm")
+                            <!--反馈-->
+                            <div class="widget-header">
+                                <h5 class="lighter">
+                                    #springMessage('tbtSps.spsInfo.feedback')
+                                </h5>
+                                <div class="widget-toolbar"></div>
+                            </div>
+                            <div>&nbsp;</div>
+                            <form class="form-horizontal" role="form" id="doReview_form">
+                                    <input type="text" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
                                     <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.huizong.content')</label>
+                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.feedback')</label>
                                         <div class="col-sm-11">
                                             <textarea  class="form-control" rows="3" name="content"></textarea>
                                         </div>
@@ -55,11 +54,10 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
                         </div>
-                    </div>
+                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     <script>
         $(function() {
@@ -67,7 +65,7 @@
             $("#btn-submit").click(function(){
                 var formData = new FormData($( "#doReview_form" )[0]);
                 $.ajax({
-                    url: '$basePath/spsInfo/summaryReviewSubmit' ,
+                    url: '$basePath/spsInfo/feedBack' ,
                     type: 'POST',
                     data: formData,
                     async: false,
@@ -126,6 +124,7 @@
             addTr(tab, row, trHtml);
         }
         // ****************表格添加，删除行 结束********************************
+
     </script>
 	</body>
 </html>

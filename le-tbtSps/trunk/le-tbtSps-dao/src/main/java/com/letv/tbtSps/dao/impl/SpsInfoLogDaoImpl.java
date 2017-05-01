@@ -56,6 +56,14 @@ public class SpsInfoLogDaoImpl extends BaseDao implements SpsInfoLogDao {
         return (List<SpsInfoLog>) queryForList(namespace +".querySpsInfoLogListWithPage", queryBean);
     }
 
+    public List<SpsInfoLog> queryExperts(SpsInfoLogQuery queryBean) {
+        return (List<SpsInfoLog>) queryForList(namespace +".queryExperts", queryBean);
+    }
+
+    public List<SpsInfoLog> queryUnReviewLog(SpsInfoLogQuery queryBean) {
+        return (List<SpsInfoLog>) queryForList(namespace +".queryUnReviewLog", queryBean);
+    }
+
     /**
      * {@inheritDoc}
      */

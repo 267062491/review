@@ -13,19 +13,20 @@
                             #parse("/spsInfo/review_common.vm")
                             #parse("/spsInfo/review_experts_history.vm")
                             #parse("/spsInfo/review_experts_history_self.vm")
+                            #parse("/spsInfo/review_summary_history.vm")
 
-                                <!--专家评议-->
-                                <div class="widget-header">
-                                    <h5 class="lighter">
-                                        #springMessage('tbtSps.spsInfo.huizong.content')
-                                    </h5>
-                                    <div class="widget-toolbar"></div>
-                                </div>
-                                <div>&nbsp;</div>
-                                <form class="form-horizontal" role="form" id="doReview_form">
+                            <!--反馈-->
+                            <div class="widget-header">
+                                <h5 class="lighter">
+                                    #springMessage('tbtSps.spsInfo.feedback')
+                                </h5>
+                                <div class="widget-toolbar"></div>
+                            </div>
+                            <div>&nbsp;</div>
+                            <form class="form-horizontal" role="form" id="doReview_form">
                                     <input type="hidden" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
                                     <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.huizong.content')</label>
+                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.feedback')</label>
                                         <div class="col-sm-11">
                                             <textarea  class="form-control" rows="3" name="content"></textarea>
                                         </div>
@@ -40,8 +41,8 @@
                                                     <td width="20%">文件</td>
                                                 </tr>
                                             </table>
-                                            <input type="button" onclick="addTr3('attr_table', -1)" value="添加">
-                                            <input type="button" onclick="delTr3()" value="删除">
+                                            <input type="button" onclick="addTr3('attr_table', -1,'qwe')" value="添加">
+                                            <input type="button" onclick="delTr3('qwe')" value="删除">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -51,21 +52,43 @@
                                             &nbsp; &nbsp; &nbsp;
                                             <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
                                             &nbsp; &nbsp; &nbsp;
-                                            <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                            <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit.feedBack')</button>
+                                            #if($!summary.spsCode!="")
+                                                &nbsp; &nbsp; &nbsp;
+                                                <button class="btn btn-success btn-sm" type="button" id="btn-submit-summary"><i class="icon-ok"></i>#springMessage('view.lable.submit.upadte')</button>
+                                            #end
                                         </div>
                                     </div>
                                 </form>
-                            </div>
                         </div>
-                    </div>
+                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
     <script>
         $(function() {
             // 点击提交按钮
             $("#btn-submit").click(function(){
                 var formData = new FormData($( "#doReview_form" )[0]);
+                $.ajax({
+                    url: '$basePath/spsInfo/feedBack' ,
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (returndata) {
+                        dialog.alert(returndata.message);
+                    },
+                    error: function (returndata) {
+                        dialog.alert("出问题了，联系管理员吧");
+                    }
+                });
+            });
+
+            $("#btn-submit-summary").click(function(){
+                var formData = new FormData($( "#summaryFormId" )[0]);
                 $.ajax({
                     url: '$basePath/spsInfo/summaryReviewSubmit' ,
                     type: 'POST',
@@ -115,17 +138,21 @@
                 $(this).parent().parent().remove();
             });
         }
-        function delTr3(){
-            delTr('attr_ckb');
+        function delTr3(attr_ckb){
+            delTr(attr_ckb);
         }
-        function addTr3(tab, row){
+        function addTr3(tab, row,checkName){
             var trHtml="<tr align='center'>" +
-                    "<td width='5%'><input type='checkbox' name='attr_ckb'/></td>" +
+                    "<td width='5%'><input type='checkbox' name='"+checkName+"'/></td>" +
                     "<td width='10%'><input type='file' name='file'/></td>" +
                     "</tr>";
             addTr(tab, row, trHtml);
         }
         // ****************表格添加，删除行 结束********************************
+        function delAttr(id){
+            $("#"+id).val("");
+            $("#sp"+id).remove();
+        }
     </script>
 	</body>
 </html>

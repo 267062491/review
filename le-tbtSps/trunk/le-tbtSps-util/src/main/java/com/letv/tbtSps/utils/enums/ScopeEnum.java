@@ -7,19 +7,16 @@ package com.letv.tbtSps.utils.enums;
  * Time: 上午9:21
  * To change this template use File | Settings | File Templates.
  */
-public enum RoleEnum {
+public enum ScopeEnum {
 
-    CCPR("CCPR","CCPR"),
-    outExports("outExports","外部专家"),
-    notice_manager("notice_manager","通报管理员"),
-    limit_manager("limit_manager","限量数据管理员"),
-    sys_manager("sys_manager","系统管理员");
+    ALL("","全部"),
+    SELF("self","自己");
 
 
     private String statusCode ;
     private String statusContent ;
 
-    private RoleEnum(String statusCode, String statusContent){
+    private ScopeEnum(String statusCode, String statusContent){
         this.statusCode = statusCode ;
         this.statusContent = statusContent ;
     }

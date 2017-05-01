@@ -1,6 +1,7 @@
 package com.letv.tbtSps.domain.query;
 
 import java.util.Date;
+import java.util.List;
 
 import com.letv.common.utils.page.Query;
 
@@ -75,14 +76,21 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
     /** 修改人 */
 	private String updateUser; 
     /** yn */
-	private Integer yn; 
+	private Integer yn;
+    /** 下发到的专家*/
+    private String experts ;
+
     /** 开始时间 */
     private Date startTime; 
     /** 结束时间 */
     private Date endTime;
 
+    private String expertsReivewFlag ;
+
     private String publishDateIn;
     private String publishDateIn1;
+
+    private List<String> listSpsCode ;
 
     public Long getId(){
 		return id;
@@ -354,5 +362,29 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
 
     public void setPublishDateIn1(String publishDateIn1) {
         this.publishDateIn1 = publishDateIn1;
+    }
+
+    public String getExperts() {
+        return experts;
+    }
+
+    public void setExperts(String experts) {
+        this.experts = experts;
+    }
+
+    public String getExpertsReivewFlag() {
+        return expertsReivewFlag;
+    }
+
+    public void setExpertsReivewFlag(String expertsReivewFlag) {
+        this.expertsReivewFlag = expertsReivewFlag;
+    }
+
+    public List<String> getListSpsCode() {
+        return listSpsCode;
+    }
+
+    public void setListSpsCode(List<String> listSpsCode) {
+        this.listSpsCode = listSpsCode;
     }
 }

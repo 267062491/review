@@ -21,4 +21,7 @@ public class SystemConstant {
     public static int NO = 0 ;
 
 
+    public static String standardY = "符合" ;
+    public static String standardN = "不合符" ;
+
 }

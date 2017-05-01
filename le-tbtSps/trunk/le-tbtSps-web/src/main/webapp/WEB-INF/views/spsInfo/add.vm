@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-cn" >
     <head>
 		#parse("/layout/head.vm")
         <script src="#springUrl('')/static/js/bootstrap-multiselect.js"></script>
@@ -18,7 +18,7 @@
             html, body {
                 /*min-height: 100%;*/
                 /*max-height: 200&;*/
-                height: 150%;    /*改变整个高度;*/
+                height: 100%;    改变整个高度;
             }
 
             body {
@@ -39,9 +39,9 @@
             }
 
             main {
-                min-height: 100%;
+                /*height: 110%;*/
                 min-width: 320px;
-                max-width: 100%;
+                width: 99.5%;
                 padding: 0px;
                 margin: 0 auto;
                 background: #fff;
@@ -50,7 +50,7 @@
             section {
                 display: none;
                 padding: 20px 0 0;
-                border-top: 1px solid #ddd;
+                border-top: 1px solid white;
             }
 
             input {
@@ -125,9 +125,9 @@
 
         </style>
     </head>
-	<body>
-    <form  id="spsInfo_form" class="form-horizontal">
-    <main>
+	<body style="background: white">
+    <form  id="spsInfo_form" class="form-horizontal" >
+    <main >
         <input id="tab1" type="radio" name="tabs" checked style="display: none">
         <label for="tab1">sps信息添加</label>
 
@@ -271,8 +271,13 @@
                 json += "}";
                 json += ",";
             }
-            json = json.substring(0, json.length - 1);
-            json += "]";
+            if(json!="["){
+                json = json.substring(0, json.length - 1);
+                json += "]";
+            }else{
+                json = "" ;
+            }
+
             return json;
         }
 
@@ -293,10 +298,10 @@
                     contentType: false,
                     processData: false,
                     success: function (returndata) {
-                        alert(returndata);
+                        dialog.alert(returndata.message) ;
                     },
                     error: function (returndata) {
-                        alert(returndata);
+                        dialog.alert("出问题了，联系管理员吧");
                     }
                 });
             });

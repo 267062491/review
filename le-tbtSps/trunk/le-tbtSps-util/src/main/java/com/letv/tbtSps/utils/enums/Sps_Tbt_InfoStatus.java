@@ -11,11 +11,16 @@ public enum Sps_Tbt_InfoStatus {
     // 未分配  已分配 汇总评议 已反馈
 
     UN_FENPEI("10","未分配"),
-    HAVE_FENPEI("20","已分配"),
+    HAVE_FENPEI("20","已分配"),// 也叫做待评议（在专家处叫做）
         HAVE_FENPEI_HUIDA("21","已经评议"),// log表才有的状态， spsinfo表么有这个状态
-        HAVE_FENPEI_HUIZONG("22","已经评议汇总"),// log表才有的状态， spsinfo表么有这个状态
+        HAVE_FENPEI_HUIZONG("22","已经评议汇总"),// log表才有的状态， spsinfo表么有这个状态    这个应该是个没有用的的状态
     HUIZONG_PINGYI("30","汇总评议"),
-    HAVE_FANKUI("40","已反馈");
+    HAVE_FANKUI("40","已反馈"),
+
+
+    // 专家对应的状态
+    EXPERTS_UN_REVIEW("20_00","未评议"),
+    EXPERTS_REVIEW("21_01","已评议");
 
 
     private String statusCode ;

@@ -1,0 +1,38 @@
+<form class="form-horizontal" role="form" >
+    <input id="sendFalg" value="$!sendFalg" type="hidden">
+    <!--专家历史意见-->
+    <div class="widget-header">
+        <h5 class="lighter">
+            #springMessage('tbtSps.spsInfo.experts.content')
+        </h5>
+        <div class="widget-toolbar"></div>
+    </div>
+    <div>&nbsp;</div>
+    #foreach($item_review in $!list_review)
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.experts')</label>
+            <div class="col-sm-3">
+                <input type="text" class="col-xs-12 col-sm-12" value="$!{item_review.createUser}" readonly="true"/>
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.reviewDate')</label>
+            <div class="col-sm-3">
+                <input type="text" class="col-xs-12 col-sm-12" value="$!dateTool.format('yyyy-MM-dd',$!item_review.createTime)" readonly="true"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.content')</label>
+            <div class="col-sm-11">
+                <textarea  class="form-control" readonly="true" >$!{item_review.content}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
+            <div class="col-sm-11">
+                #foreach( $item_attr in $item_review.listLogAttr)
+                    <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a>  &nbsp;&nbsp;
+                #end
+            </div>
+        </div>
+    #end
+
+</form>

@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -84,7 +85,14 @@ public class SpsInfo implements java.io.Serializable  {
     /** yn */
     private Integer yn;
 
+    /*****************************/
     private String publishDateIn;
+
+    private String standardYnShow ;
+
+    private List<String> list_experts ;
+
+    private List<SpsInfoLog> list_spsInfoLog ;
 
     public Long getId(){
         return id;
@@ -334,6 +342,30 @@ public class SpsInfo implements java.io.Serializable  {
         this.publishDateIn = publishDateIn;
     }
 
+    public String getStandardYnShow() {
+        return standardYnShow;
+    }
+
+    public void setStandardYnShow(String standardYnShow) {
+        this.standardYnShow = standardYnShow;
+    }
+
+    public List<String> getList_experts() {
+        return list_experts;
+    }
+
+    public void setList_experts(List<String> list_experts) {
+        this.list_experts = list_experts;
+    }
+
+    public List<SpsInfoLog> getList_spsInfoLog() {
+        return list_spsInfoLog;
+    }
+
+    public void setList_spsInfoLog(List<SpsInfoLog> list_spsInfoLog) {
+        this.list_spsInfoLog = list_spsInfoLog;
+    }
+
     public void setSpsInfoCommonValues(SpsInfo spsInfo , String spsCode , String userName,String state,String oraState){
         spsInfo.setSpsCode(spsCode);
         spsInfo.setCreateTime(new Date());
@@ -347,5 +379,6 @@ public class SpsInfo implements java.io.Serializable  {
         }
         spsInfo.setVersions(UUID.randomUUID().toString());
     }
+
 
 }

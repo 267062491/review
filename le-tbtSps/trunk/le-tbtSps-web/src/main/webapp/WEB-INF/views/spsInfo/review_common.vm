@@ -1,3 +1,9 @@
+<div class="widget-header">
+    <h5 class="lighter">
+        #springMessage('tbtSps.baseInfo')
+    </h5>
+</div>
+<div>&nbsp;</div>
 <form class="form-horizontal" role="form" id="updateForm">
     <div class="form-group">
         <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsAttr.spsCode')</label>
@@ -6,7 +12,7 @@
         </div>
         <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.publishDate')</label>
         <div class="col-sm-3">
-            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
+            <input type="text" class="col-xs-12 col-sm-12" value="$!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
         </div>
         <label class="col-sm-1 control-label no-padding-right" for="publishDateIn">#springMessage('tbtSps.spsInfo.countryCode')</label>
         <div class="col-sm-3">
@@ -20,53 +26,55 @@
         </div>
         <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.language')</label>
         <div class="col-sm-7">
-            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
+            <input type="text" class="col-xs-12 col-sm-12" value=" $!languageSb" readonly="true" />
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
         <div class="col-sm-11">
-            <textarea class="form-control" rows="3" readonly="true"></textarea>
+            <textarea class="form-control"  readonly="true" id="textArea_coverProduct_id" >$!spsInfo.coverProduct</textarea>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
         <div class="col-sm-11">
-            <textarea  class="form-control" rows="3" readonly="true"></textarea>
+            <textarea  class="form-control" readonly="true" id="textArea_fileTitle_id" >$!spsInfo.fileTitle</textarea>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
         <div class="col-sm-11">
-            <textarea class="form-control" rows="3" readonly="true"></textarea>
+            <textarea class="form-control" readonly="true" id="textArea_contentDes_id" >$!spsInfo.contentDes</textarea>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.standardYn')</label>
         <div class="col-sm-3">
-            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.spsOrg}" readonly="true"/>
+            <input type="text" class="col-xs-12 col-sm-12" value=" $!{spsInfo.standardYnShow}" readonly="true"/>
         </div>
         <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.tbinfo.targetReason')</label>
         <div class="col-sm-7">
-            <input type="text" class="col-xs-12 col-sm-12" value=" $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)" readonly="true" />
+            <input type="text" class="col-xs-12 col-sm-12" value="$!targetReasonSb" readonly="true" />
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
         <div class="col-sm-11">
-            <textarea  class="form-control" rows="3" readonly="true"></textarea>
+            <textarea  class="form-control" readonly="true"  id="textArea_oraLink_id" >$!spsInfo.oraLink</textarea>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+        <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.result')</label>
         <div class="col-sm-11">
-            <textarea  class="form-control" rows="3" readonly="true"></textarea>
+            <textarea  class="form-control"  readonly="true" id="textArea_result_id" >这个是什么值呢？</textarea>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
-        <div class="col-sm-1">
-            <a href="">下载来吧</a>
+        <div class="col-sm-11">
+            #foreach( $item_attr in $!list_attr)
+                <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a>  &nbsp;&nbsp;
+            #end
         </div>
     </div>
 </form>

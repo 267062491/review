@@ -1,6 +1,7 @@
 package com.letv.tbtSps.domain.query;
 
 import java.util.Date;
+import java.util.List;
 
 import com.letv.common.utils.page.Query;
 
@@ -51,8 +52,11 @@ public class SpsInfoLogQuery extends Query implements java.io.Serializable  {
     /** 开始时间 */
     private Date startTime; 
     /** 结束时间 */
-    private Date endTime; 
-	
+    private Date endTime;
+
+    private List<String> spsCodes ;
+    private List<String> states ;
+
     public Long getId(){
 		return id;
 	}
@@ -195,5 +199,21 @@ public class SpsInfoLogQuery extends Query implements java.io.Serializable  {
     
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public List<String> getSpsCodes() {
+        return spsCodes;
+    }
+
+    public void setSpsCodes(List<String> spsCodes) {
+        this.spsCodes = spsCodes;
+    }
+
+    public List<String> getStates() {
+        return states;
+    }
+
+    public void setStates(List<String> states) {
+        this.states = states;
     }
 }

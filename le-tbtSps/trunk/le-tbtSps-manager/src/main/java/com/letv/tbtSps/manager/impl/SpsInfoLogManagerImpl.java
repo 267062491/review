@@ -62,6 +62,13 @@ public class SpsInfoLogManagerImpl extends BaseManager implements SpsInfoLogMana
     public List<SpsInfoLog> querySpsInfoLogList(SpsInfoLogQuery queryBean) {
         return spsInfoLogDao.querySpsInfoLogList(queryBean);
     }
+    public List<SpsInfoLog> queryExperts(SpsInfoLogQuery queryBean) {
+        return spsInfoLogDao.queryExperts(queryBean);
+    }
+
+    public List<SpsInfoLog> queryUnReviewLog(SpsInfoLogQuery queryBean) {
+        return spsInfoLogDao.queryUnReviewLog(queryBean);
+    }
 
     /**
      * {@inheritDoc}

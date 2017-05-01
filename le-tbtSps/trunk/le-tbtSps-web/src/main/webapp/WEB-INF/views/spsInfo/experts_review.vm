@@ -12,12 +12,10 @@
                         <div class="widget-main" style="background-color: #fff;padding:5px; height: 1500px">
                             #parse("/spsInfo/review_common.vm")
                             #parse("/spsInfo/review_experts_history.vm")
-                            #parse("/spsInfo/review_experts_history_self.vm")
-
                                 <!--专家评议-->
                                 <div class="widget-header">
                                     <h5 class="lighter">
-                                        #springMessage('tbtSps.spsInfo.huizong.content')
+                                        #springMessage('tbtSps.spsInfo.review.content')
                                     </h5>
                                     <div class="widget-toolbar"></div>
                                 </div>
@@ -25,9 +23,21 @@
                                 <form class="form-horizontal" role="form" id="doReview_form">
                                     <input type="hidden" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
                                     <div class="form-group">
-                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.huizong.content')</label>
+                                        <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.content')</label>
                                         <div class="col-sm-11">
-                                            <textarea  class="form-control" rows="3" name="content"></textarea>
+                                            <textarea  class="form-control" rows="3" name="content">$!review.content</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr.exists')</label>
+                                        <div class="col-sm-11">
+                                            #foreach( $item_attr in $review.listLogAttr)
+                                                <input type="hidden" name="fileNameId" value="$!item_attr.id" id="$!item_attr.id">
+                                                <span id="sp$!item_attr.id">
+                                                <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a>&nbsp;
+                                                <input type="button" onclick="delAttr('$!item_attr.id')" value="删除">  &nbsp;&nbsp;
+                                                </span>
+                                            #end
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -67,7 +77,7 @@
             $("#btn-submit").click(function(){
                 var formData = new FormData($( "#doReview_form" )[0]);
                 $.ajax({
-                    url: '$basePath/spsInfo/summaryReviewSubmit' ,
+                    url: '$basePath/spsInfo/doReview' ,
                     type: 'POST',
                     data: formData,
                     async: false,
@@ -126,6 +136,12 @@
             addTr(tab, row, trHtml);
         }
         // ****************表格添加，删除行 结束********************************
+
+
+        function delAttr(id){
+            $("#"+id).val("");
+            $("#sp"+id).remove();
+        }
     </script>
 	</body>
 </html>

@@ -99,4 +99,30 @@ public interface SpsInfoDao {
      * @return
      */
     public boolean updateSpsStateBySpsCode(SpsInfo spsInfo);
+
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoListExperts(SpsInfoQuery queryBean);
+    /**
+     * 查询专家未评议和已评议的内容数量
+     * @param queryBean
+     * @return
+     */
+    public int querySpsInfoCountExperts(SpsInfoQuery queryBean);
+    /**
+     * 查询专家未评议和已评议的内容
+     * @param queryBean
+     * @return
+     */
+    public List<SpsInfo> querySpsInfoExpertsAll(SpsInfoQuery queryBean);
+    /**
+     * 查询专家未评议和已评议的内容数量
+     * @param queryBean
+     * @return
+     */
+    public int querySpsInfoCountExpertsAll(SpsInfoQuery queryBean);
+
 }

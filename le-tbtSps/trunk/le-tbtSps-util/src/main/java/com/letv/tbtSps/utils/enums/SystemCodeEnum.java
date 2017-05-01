@@ -18,7 +18,11 @@ public enum SystemCodeEnum {
 
     SPS_CODE_NOT_EXISTS("303","通报编码不存在"),
 
-    SYSTEM_RUNTIME_EXCEPTION("304","系统运行时异常");
+    SYSTEM_RUNTIME_EXCEPTION("304","系统运行时异常"),
+
+    EXPERTS_CANNOT_NULL("305","请选择评议专家") ,
+
+    STATUS_ERROR("306","单据前置状态不对") ;
 
     private String code ;
 

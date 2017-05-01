@@ -7,12 +7,14 @@ import com.letv.tbtSps.domain.query.*;
 import com.letv.tbtSps.service.*;
 import com.letv.tbtSps.utils.enums.LevelsEnum;
 import com.letv.tbtSps.utils.enums.RoleEnum;
+import com.letv.tbtSps.utils.enums.ScopeEnum;
 import com.letv.tbtSps.utils.enums.Sps_Tbt_InfoStatus;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +84,10 @@ public class ParameterLoad implements InitializingBean {
      */
     private List<SpsBtbState> list_spsBtbStatePart = new ArrayList<SpsBtbState>();
     /**
+     * 专家状态
+     */
+    private List<SpsBtbState> list_spsBtbStateExperts = new ArrayList<SpsBtbState>();
+    /**
      * 重要等级
      */
     private List<SpsBtbState> list_leves = new ArrayList<SpsBtbState>();
@@ -89,6 +95,10 @@ public class ParameterLoad implements InitializingBean {
      * 可以评议角色
      */
     private List<String> list_role_review = new ArrayList<String>();
+    /**
+     * 范围
+     */
+    private List<SpsBtbState> list_scope = new ArrayList<SpsBtbState>();
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -104,8 +114,10 @@ public class ParameterLoad implements InitializingBean {
             list_updateType = this.initUpdateType();
             list_spsBtbState = this.initSpsBtbState();
             list_spsBtbStatePart = this.initSpsBtbStatePart();
+            list_spsBtbStateExperts = this.initSpsBtbStateExperts();
             list_leves = this.initLeves();
             list_role_review = this.reviewRoles();
+            list_scope = this.scope();
         }catch (Exception e){
             LOG.error("初始化后select列表项异常：",e);
         }
@@ -160,6 +172,18 @@ public class ParameterLoad implements InitializingBean {
         list_spsBtbState.add(spsBtbState);
         return list_spsBtbState ;
     }
+    private List<SpsBtbState> initSpsBtbStateExperts(){
+        List<SpsBtbState> list_spsBtbState = new ArrayList<SpsBtbState>();
+        SpsBtbState spsBtbState = new SpsBtbState() ;
+        spsBtbState.setState(Sps_Tbt_InfoStatus.EXPERTS_UN_REVIEW.getStatusCode());
+        spsBtbState.setContent(Sps_Tbt_InfoStatus.EXPERTS_UN_REVIEW.getStatusContent());
+        list_spsBtbState.add(spsBtbState);
+        spsBtbState = new SpsBtbState() ;
+        spsBtbState.setState(Sps_Tbt_InfoStatus.EXPERTS_REVIEW.getStatusCode());
+        spsBtbState.setContent(Sps_Tbt_InfoStatus.EXPERTS_REVIEW.getStatusContent());
+        list_spsBtbState.add(spsBtbState);
+        return list_spsBtbState ;
+    }
     private List<SpsBtbState> initLeves(){
         List<SpsBtbState> list_spsBtbState = new ArrayList<SpsBtbState>();
         SpsBtbState spsBtbState = new SpsBtbState() ;
@@ -184,6 +208,86 @@ public class ParameterLoad implements InitializingBean {
         list_roleReview.add(RoleEnum.limit_manager.getStatusCode());
         list_roleReview.add(RoleEnum.sys_manager.getStatusCode());
         return list_roleReview ;
+    }
+    private List<SpsBtbState> scope(){
+        List<SpsBtbState> list_roleReview = new ArrayList<SpsBtbState>();
+        SpsBtbState spsBtbState = new SpsBtbState();
+        spsBtbState.setState(ScopeEnum.SELF.getStatusCode());
+        spsBtbState.setContent(ScopeEnum.SELF.getStatusContent());
+        list_roleReview.add(spsBtbState);
+        spsBtbState = new SpsBtbState();
+        spsBtbState.setState(ScopeEnum.ALL.getStatusCode());
+        spsBtbState.setContent(ScopeEnum.ALL.getStatusContent());
+        list_roleReview.add(spsBtbState);
+        return list_roleReview ;
+    }
+
+    public String getCountryNameByCode(String code){
+        String ret = "" ;
+        if(StringUtils.isEmpty(code)){
+            return  ret ;
+        }
+        for(Country country : this.getList_country()){
+            if(country.getCountryCode().equals(code)){
+                ret =  country.getCountryContent();
+                break ;
+            }
+        }
+        return ret ;
+    }
+    public String getLanguageNameByCode(String code){
+        String ret = "" ;
+        if(StringUtils.isEmpty(code)){
+            return  ret ;
+        }
+        for(Language language : this.getList_language()){
+            if(language.getLanguageCode().equals(code)){
+                ret =  language.getLanguageContent();
+                break ;
+            }
+        }
+        return ret ;
+    }
+    public String getTargetReasonNameByCode(String code){
+        String ret = "" ;
+        if(StringUtils.isEmpty(code)){
+            return  ret ;
+        }
+        for(Targereason targereason : this.getList_targereason()){
+            if(targereason.getTargetReasonCode().equals(code)){
+                ret =  targereason.getTargetReasonContent();
+                break ;
+            }
+        }
+        return ret ;
+    }
+
+    public String getLevelsNameByCode(String code){
+        String ret = "" ;
+        if(StringUtils.isEmpty(code)){
+            return  ret ;
+        }
+        for(SpsBtbState spsBtbState : this.getList_leves()){
+            if(spsBtbState.getState().equals(code)){
+                ret =  spsBtbState.getContent();
+                break ;
+            }
+        }
+        return ret ;
+    }
+
+    public String getStateNameByCode(String code){
+        String ret = "" ;
+        if(StringUtils.isEmpty(code)){
+            return  ret ;
+        }
+        for(SpsBtbState spsBtbState : this.getList_spsBtbState()){
+            if(spsBtbState.getState().equals(code)){
+                ret =  spsBtbState.getContent();
+                break ;
+            }
+        }
+        return ret ;
     }
 
     public List<RelationMedicineProduct> getList_relationMedicineProduct() {
@@ -280,5 +384,21 @@ public class ParameterLoad implements InitializingBean {
 
     public void setList_role_review(List<String> list_role_review) {
         this.list_role_review = list_role_review;
+    }
+
+    public List<SpsBtbState> getList_spsBtbStateExperts() {
+        return list_spsBtbStateExperts;
+    }
+
+    public void setList_spsBtbStateExperts(List<SpsBtbState> list_spsBtbStateExperts) {
+        this.list_spsBtbStateExperts = list_spsBtbStateExperts;
+    }
+
+    public List<SpsBtbState> getList_scope() {
+        return list_scope;
+    }
+
+    public void setList_scope(List<SpsBtbState> list_scope) {
+        this.list_scope = list_scope;
     }
 }

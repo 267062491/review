@@ -2,17 +2,12 @@
 <html lang="zh-cn">
     <head>
 		#parse("/layout/head.vm")
+        <script src="#springUrl('')/static/js/textAreaShow.js"></script>
     </head>
 	<body>
 		<div class="row">
             <div class="col-xs-12 col-sm-12">
                 <div class="widget-box">
-                    <div class="widget-header">
-                        <h5 class="lighter">
-                            <i class="icon-plus green"></i>#springMessage('tbtSps.spsInfo')&nbsp;&gt;&nbsp;#springMessage('view.lable.update')
-                        </h5>
-                        <div class="widget-toolbar"></div>
-                    </div>
                     <div class="widget-body">
                         <div class="widget-main" style="background-color: #fff;padding:5px; height: 1500px">
                             #parse("/spsInfo/review_common.vm")
@@ -63,7 +58,6 @@
             addTr(tab, row, trHtml);
         }
         // ****************表格添加，删除行 结束********************************
-
     </script>
 	</body>
 </html>
