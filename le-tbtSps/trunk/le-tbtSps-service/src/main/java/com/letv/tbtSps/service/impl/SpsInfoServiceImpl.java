@@ -587,8 +587,8 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             SpsInfoQuery spsInfoQuery = new SpsInfoQuery();
             spsInfoQuery.setSpsCode(spsCode);
             SpsInfo spsInfoResult = spsInfoManager.querySpsInfoList(spsInfoQuery).get(0);
-            if(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode().equals(spsInfoResult.getState())
-                    && Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode().equals(spsInfoResult.getState())){
+            if(!Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode().equals(spsInfoResult.getState())
+                    && !Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode().equals(spsInfoResult.getState())){
                 ret[0]=SystemCodeEnum.STATUS_ERROR.getCode();
                 ret[1]=SystemCodeEnum.STATUS_ERROR.getContent();
                 return ret;
@@ -665,19 +665,32 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             }
         }
         if(attrFlag){
+            SpsInfoQuery spsInfoQuery = new SpsInfoQuery();
+            spsInfoQuery.setSpsCode(spsCode);
+            List<SpsInfo> listSpsInfo = spsInfoManager.querySpsInfoList(spsInfoQuery) ;
+            SpsInfo spsInfoResult = null ;
+            if(!CollectionUtils.isEmpty(listSpsInfo)){
+                spsInfoResult = listSpsInfo.get(0);
+                if(!Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode().equals(spsInfoResult.getState())
+                        && !Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode().equals(spsInfoResult.getState())){
+                    ret[0]=SystemCodeEnum.STATUS_ERROR.getCode();
+                    ret[1]=SystemCodeEnum.STATUS_ERROR.getContent();
+                    return ret;
+                }
+            }
             /**
              * 拼装spsInfo信息
              */
             SpsInfo spsInfo = new SpsInfo();
             spsInfo.setSpsCode(spsCode);
-            spsInfo.setOraState(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode());
+            spsInfo.setOraState(spsInfoResult.getState());
             spsInfo.setState(Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode());
             spsInfo.setUpdateTime(new Date());
             spsInfo.setUpdateUser(userName);
             SpsInfoLog spsInfoLog_new = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode(),Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode(),spsInfoLog.getContent(),
                     attrRelation,1, SystemConstant.YES+"",userName);
             spsInfoLog_new.setOverReview(spsInfoLog.getOverReview());
-
+            spsInfoLog_new.setFileNameId(spsInfoLog.getFileNameId());
             try{
                 boolean result = spsInfoManager.insertFeedBackSubmit(spsInfo, spsInfoLog_new, list_spsAttr);
             }catch (RuntimeException e){

@@ -11,6 +11,6 @@
         <td width="10%" type = "text">截止/撤销日期</td>
     </tr>
 </table>
-<input type="text" id="table_content" name = "tableContent">
+<input type="hidden" id="table_content" name = "tableContent">
 <input type="button" onclick="addTr2('tab', -1)" value="添加">
 <input type="button" onclick="delTr2()" value="删除">

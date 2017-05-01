@@ -34,7 +34,7 @@
         </div>
     #end
 
-    #if($!summary.spsCode!="")
+    #if($!summary.spsCode!="" && $!spsInfo.state=="30")
         <input type="hidden" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.user')</label>
@@ -76,6 +76,33 @@
                 </table>
                 <input type="button" onclick="addTr3('attr_table_summary', -1)" value="添加">
                 <input type="button" onclick="delTr3('attr_ckb')" value="删除">
+            </div>
+        </div>
+    #end
+
+    #if($!summary.spsCode!="" && $!spsInfo.state=="40")
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.user')</label>
+            <div class="col-sm-3">
+                <input type="text" class="col-xs-12 col-sm-12" value="$!{summary.createUser}" readonly="true"/>
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.date')</label>
+            <div class="col-sm-3">
+                <input type="text" class="col-xs-12 col-sm-12" value="$!dateTool.format('yyyy-MM-dd',$!summary.createTime)" readonly="true"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.content')</label>
+            <div class="col-sm-11">
+                <textarea  class="form-control" rows="3" name="content" readonly="readonly">$!summary.content</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
+            <div class="col-sm-11">
+                #foreach( $item_attr in $summary.listLogAttr)
+                    <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a> &nbsp;&nbsp;
+                #end
             </div>
         </div>
     #end

@@ -380,13 +380,36 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
     public boolean insertFeedBackSubmit(SpsInfo spsInfo ,SpsInfoLog spsInfoLog, List<SpsLogAttr> list_spsAttr){
         boolean temp = spsInfoDao.updateSpsStateBySpsCode(spsInfo) ;
         if(temp){
-            boolean temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+            boolean temp1 = true ;
+            // 先根据spsCode , state 查询 ， 改专家是否已经评议过了，如果已经评议过了， 则不插入新日志， 而是需要原有日志
+            SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
+            spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode());
+            spsInfoLogQuery.setSpsCode(spsInfoLog.getSpsCode());
+            spsInfoLogQuery.setCreateUser(spsInfoLog.getCreateUser());
+            List<SpsInfoLog> listSpsInfoLog = spsInfoLogDao.querySpsInfoLogList(spsInfoLogQuery);
+            if(!CollectionUtils.isEmpty(listSpsInfoLog)){
+                SpsInfoLog spsInfoLog1 = listSpsInfoLog.get(listSpsInfoLog.size()-1);
+                spsInfoLog.setId(spsInfoLog1.getId());
+                spsInfoLogDao.update(spsInfoLog) ;
+            }else{
+                temp1 = spsInfoLogDao.insert(spsInfoLog) ;
+            }
             boolean temp2 = true ;
             if(temp1){
                 for(SpsLogAttr spsLogAttr : list_spsAttr){
                     temp2 = spsLogAttrDao.insert(spsLogAttr);
                     if(!temp2){
                         throw new RuntimeException("添加信息spsInfo附件信息失败") ;
+                    }
+                }
+                if(null!=spsInfoLog.getFileNameId() && spsInfoLog.getFileNameId().length>0){
+                    for(String f : spsInfoLog.getFileNameId()){
+                        if(!StringUtils.isEmpty(f)){
+                            SpsLogAttr spsLogAttr = new SpsLogAttr();
+                            spsLogAttr.setId(Long.parseLong(f));
+                            spsLogAttr.setLogAttrRelation(spsInfoLog.getLogAttrRelation());
+                            spsLogAttrDao.update(spsLogAttr);
+                        }
                     }
                 }
             } else{

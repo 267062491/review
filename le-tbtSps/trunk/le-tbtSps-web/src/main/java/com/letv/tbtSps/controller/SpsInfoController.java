@@ -376,7 +376,8 @@ public class SpsInfoController extends ReviewBaseController {
                 model.addAttribute("list_user",list_user); // 重要程度
                 model.addAttribute("list_leves",list_leves); // 重要程度
             }else if(query.getState().equals(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode())
-                    || query.getState().equals(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode())){
+                    || query.getState().equals(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode())
+                    || query.getState().equals(Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode())){
                 for(SpsInfo spsInfo : dataList){
                     spsInfo.setLevels(parameterLoad.getLevelsNameByCode(spsInfo.getLevels()));
 
@@ -486,8 +487,10 @@ public class SpsInfoController extends ReviewBaseController {
         List<SpsLogAttr> list_attr = new ArrayList<SpsLogAttr>(); // 定义附件list
         List<SpsInfoLog> list_review = new ArrayList<SpsInfoLog>(); // 定义专家评议list，不包括自己可以修改的评议内容，包括自己不可以修改的评议内容（激活后原来评议的内容就不可以在进行编辑了，需要在进行新的评议）
         List<SpsInfoLog> list_summary = new ArrayList<SpsInfoLog>(); // 定义汇总评议的list
+        List<SpsInfoLog> list_feedBack = new ArrayList<SpsInfoLog>(); // 定义反馈的list
         SpsInfoLog review = new SpsInfoLog();// 定义自己可以修改的评议
         SpsInfoLog summary = new SpsInfoLog();// 定义自己可以修改的汇总
+        SpsInfoLog feedBack = new SpsInfoLog();// 定义自己可以修改的反馈
         String logAttrRelation = "" ;// sps附件关联字段
         for(SpsInfoLog spsInfoLog : list_spsCodeLog){
             logAttrRelation = spsInfoLog.getLogAttrRelation();
@@ -507,11 +510,17 @@ public class SpsInfoController extends ReviewBaseController {
                 }else{
                     review = spsInfoLog ;// 自己的可以编辑的
                 }
-            }  else if(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode().equals(spsInfoLog.getState())){
+            } else if(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode().equals(spsInfoLog.getState())){
                 if(!this.getLoginUserName().equals(spsInfoLog.getCreateUser())){// 不是自己的都可以看到
                     list_summary.add(spsInfoLog);
                 }else{
                     summary = spsInfoLog ;// 自己的可以编辑的
+                }
+            } else if(Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode().equals(spsInfoLog.getState())){
+                if(!this.getLoginUserName().equals(spsInfoLog.getCreateUser())){// 不是自己的都可以看到
+                    list_feedBack.add(spsInfoLog);
+                }else{
+                    feedBack = spsInfoLog ;// 自己的可以编辑的
                 }
             }
         }
@@ -522,6 +531,8 @@ public class SpsInfoController extends ReviewBaseController {
         model.addAttribute("list_attr",list_attr);
         model.addAttribute("list_summary",list_summary);
         model.addAttribute("summary",summary);
+        model.addAttribute("list_feedBack",list_feedBack);
+        model.addAttribute("feedBack",feedBack);
         try{
             model.addAttribute("languageSb",String.valueOf(languageSb).substring(1,String.valueOf(languageSb).length()));
             model.addAttribute("targetReasonSb",String.valueOf(targetReasonSb).substring(1,String.valueOf(targetReasonSb).length()));

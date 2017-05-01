@@ -53,7 +53,7 @@
 			<div class="col-xs-12 col-sm-12 table-responsive">
                 #if($!query.state=="10")
                     #parse("/spsInfo/index_review_content_unsend.vm")
-                #elseif($!query.state=="20" || $!query.state=="30")
+                #elseif($!query.state=="20" || $!query.state=="30" || $!query.state=="40")
                     #parse("/spsInfo/index_review_content_haveFenPei.vm")
                 #end
 

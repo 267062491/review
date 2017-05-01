@@ -12,6 +12,7 @@
                         <div class="widget-main" style="background-color: #fff;padding:5px; height: 1500px">
                             #parse("/spsInfo/review_common.vm")
                             #parse("/spsInfo/review_experts_history.vm")
+                            #parse("/spsInfo/review_experts_history_self.vm")
                             #parse("/spsInfo/review_summary_history.vm")
                             <!--反馈-->
                             <div class="widget-header">
@@ -22,11 +23,51 @@
                             </div>
                             <div>&nbsp;</div>
                             <form class="form-horizontal" role="form" id="doReview_form">
-                                    <input type="text" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
+                                    <input type="hidden" class="col-xs-12 col-sm-12" name="spsCode" value="$!{spsInfo.spsCode}" readonly="true"/>
+
+                                #foreach($item_feedBack in $!list_feedBack)
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.user')</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="col-xs-12 col-sm-12" value="$!{item_feedBack.createUser}" readonly="true"/>
+                                        </div>
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.huizong.date')</label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="col-xs-12 col-sm-12" value="$!dateTool.format('yyyy-MM-dd',$!item_feedBack.createTime)" readonly="true"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.huizong.content')</label>
+                                        <div class="col-sm-11">
+                                            <textarea  class="form-control" readonly="true">$!item_feedBack.content</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
+                                        <div class="col-sm-11">
+                                            #foreach( $item_attr in $item_feedBack.listLogAttr)
+                                                <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a>&nbsp;&nbsp;
+                                            #end
+                                        </div>
+                                    </div>
+                                #end
+                                #if($!feedBack.spsCode!="")
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.feedback')</label>
                                         <div class="col-sm-11">
-                                            <textarea  class="form-control" rows="3" name="content"></textarea>
+                                            <textarea  class="form-control" rows="3" name="content">$!feedBack.content</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr.exists')</label>
+                                        <div class="col-sm-11">
+                                            #foreach( $item_attr in $feedBack.listLogAttr)
+                                                <input type="hidden" name="fileNameId" value="$!item_attr.id" id="$!item_attr.id">
+                                                <span id="sp$!item_attr.id">
+                                                <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a>&nbsp;
+                                                <input type="button" onclick="delAttr('$!item_attr.id')" value="删除">  &nbsp;&nbsp;
+                                                </span>
+                                            #end
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -53,7 +94,9 @@
                                             <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
                                         </div>
                                     </div>
-                                </form>
+                                #end
+
+                            </form>
                         </div>
                      </div>
                 </div>
