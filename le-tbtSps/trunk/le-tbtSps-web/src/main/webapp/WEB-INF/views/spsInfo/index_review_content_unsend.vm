@@ -28,8 +28,8 @@
                         #end
                     </select>
                 </td>
-                <td type="text"><input type="text" name = "expertsEndDate"></td>
-                <td type="select" class="aaa">
+                <td type="text"><input type="text" name = "expertsEndDate" data-beatpicker="true" data-beatpicker-position="['*','*']"></td>
+                <td type="select">
                     <select name="notificationType"  id="notificationType" multiple="multiple" class="multipleSelect">
                         #foreach( $item_user in $list_user)
                             <option value="$!item_user.userCode">$!item_user.showName</option>

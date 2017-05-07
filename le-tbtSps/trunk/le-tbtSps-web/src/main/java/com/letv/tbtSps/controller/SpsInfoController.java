@@ -61,7 +61,15 @@ public class SpsInfoController extends ReviewBaseController {
     @Autowired
     private RelationSpsLanguageService relationSpsLanguageService;
     @Autowired
+    private RelationSpsNotificationTypeService relationSpsNotificationTypeService;
+    @Autowired
     private RelationSpsTargereasonService relationSpsTargereasonService;
+    @Autowired
+    private RelationSpsInternationalStandardService relationSpsInternationalStandardService;
+    @Autowired
+    private RelationSpsRelationMedicineService relationSpsRelationMedicineService;
+    @Autowired
+    private RelationSpsRelationMedicineProductService relationSpsRelationMedicineProductService;
     @Autowired
     private UserService userService;
 
@@ -127,7 +135,44 @@ public class SpsInfoController extends ReviewBaseController {
      * @return
      */
     @RequestMapping(value = "addForward")
-    public String addForward(Model model) {
+    public String addForward(Model model,SpsInfoQuery spsInfoQuery) {
+
+        /**
+         * 组装页面显示的数据
+         */
+        if(null!=spsInfoQuery.getId()){
+            // spsInfo基础信息
+            List<SpsInfo> listSpsInfo = spsInfoService.querySpsInfoList(spsInfoQuery) ;
+            SpsInfo spsInfo = listSpsInfo.get(0);
+            // 原文语种信息
+            RelationSpsLanguageQuery relationSpsLanguageQuery = new RelationSpsLanguageQuery();
+            relationSpsLanguageQuery.setSpsCode(spsInfo.getSpsCode());
+            List<RelationSpsLanguage> listRelationSpsLanguage = relationSpsLanguageService.queryRelationSpsLanguageList(relationSpsLanguageQuery);
+            RelationSpsNotificationTypeQuery relationSpsNotificationTypeQuery = new RelationSpsNotificationTypeQuery();
+            relationSpsNotificationTypeQuery.setSpsCode(spsInfo.getSpsCode());
+            List<RelationSpsNotificationType> listRelationSpsNotificationType = relationSpsNotificationTypeService.queryRelationSpsNotificationTypeList(relationSpsNotificationTypeQuery);
+            RelationSpsTargereasonQuery relationSpsTargereasonQuery = new RelationSpsTargereasonQuery();
+            relationSpsTargereasonQuery.setSpsCode(spsInfo.getSpsCode());
+            List<RelationSpsTargereason> listRelationSpsTargetreason = relationSpsTargereasonService.queryRelationSpsTargereasonList(relationSpsTargereasonQuery);
+            RelationSpsInternationalStandardQuery relationSpsInternationalStandardQuery = new RelationSpsInternationalStandardQuery();
+            relationSpsInternationalStandardQuery.setSpsCode(spsInfo.getSpsCode());
+            List<RelationSpsInternationalStandard> listRelationSpsInternationlStandard = relationSpsInternationalStandardService.queryRelationSpsInternationalStandardList(relationSpsInternationalStandardQuery);
+            RelationSpsRelationMedicineQuery relationSpsRelationMedicineQuery = new RelationSpsRelationMedicineQuery();
+            relationSpsRelationMedicineQuery.setSpsCode(spsInfo.getSpsCode());
+            List<RelationSpsRelationMedicine> listRelationSpsRelationMedicine = relationSpsRelationMedicineService.queryRelationSpsRelationMedicineList(relationSpsRelationMedicineQuery);
+            RelationSpsRelationMedicineProductQuery relationSpsRelationMedicineProductQuery = new RelationSpsRelationMedicineProductQuery();
+            relationSpsRelationMedicineProductQuery.setSpsCode(spsInfo.getSpsCode());
+            List<RelationSpsRelationMedicineProduct> listRelationSpsRelationMedicineProduct = relationSpsRelationMedicineProductService.queryRelationSpsRelationMedicineProductList(relationSpsRelationMedicineProductQuery);
+            model.addAttribute("spsInfo",spsInfo);
+            model.addAttribute("listRelationSpsLanguage",listRelationSpsLanguage);
+            model.addAttribute("listRelationSpsNotificationType",listRelationSpsNotificationType);
+            model.addAttribute("listRelationSpsTargetreason",listRelationSpsTargetreason);
+            model.addAttribute("listRelationSpsInternationlStandard",listRelationSpsInternationlStandard);
+            model.addAttribute("listRelationSpsRelationMedicine",listRelationSpsRelationMedicine);
+            model.addAttribute("listRelationSpsRelationMedicineProduct",listRelationSpsRelationMedicineProduct);
+
+        }
+
         List<Country> list_country = parameterLoad.getList_country();
         List<Language> list_language = parameterLoad.getList_language();
         List<NotificationType> list_notificationType = parameterLoad.getList_notificationType();
@@ -136,6 +181,7 @@ public class SpsInfoController extends ReviewBaseController {
         List<RelationMedicine> list_relationMedicine = parameterLoad.getList_relationMedicine();
         List<RelationMedicineProduct> list_relationMedicineProduct = parameterLoad.getList_relationMedicineProduct();
         List<UpdateType> list_updateType = parameterLoad.getList_updateType();
+        List<String> listDate = parameterLoad.getListDate();
         model.addAttribute("list_country",list_country);
         model.addAttribute("list_language",list_language);
         model.addAttribute("list_notificationType",list_notificationType);
@@ -144,6 +190,7 @@ public class SpsInfoController extends ReviewBaseController {
         model.addAttribute("list_relationMedicine",list_relationMedicine);
         model.addAttribute("list_relationMedicineProduct",list_relationMedicineProduct);
         model.addAttribute("list_updateType",list_updateType);
+        model.addAttribute("listDate",listDate);
         return viewPrefix + "/add";
     }
 

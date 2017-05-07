@@ -6,6 +6,19 @@
         <link rel="stylesheet" href="#springUrl('')/static/css/bootstrap-multiselect.css" />
 ##        <link rel="stylesheet" href="#springUrl('')/static/css/content_tab.css" />
         <script src="#springUrl('')/static/js/prefixfree.min.js"></script>
+
+        <link rel="stylesheet" href="#springUrl('')/static/beatpicker/css/BeatPicker.min.css"/>
+        <script src="#springUrl('')/static/beatpicker/js/BeatPicker.js"></script>
+        <script src="#springUrl('')/static/beatpicker/documents/js/prism.js"></script>
+
+        <script src="#springUrl('')/static/js/textAreaShow.js"></script>
+        <style type="text/css">
+            .multiselect {
+                background: #fff;
+                border: 1px solid #d5d5d5;
+                line-height: 28px;
+            }
+        </style>
         <style>
             @import url("http://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
             @import url("http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css");
@@ -213,11 +226,12 @@
                         "<td width='10%' type='text'><input type='text' name='residuaAmount'/></td>" +
                         "<td width='10%' type='radio'><input type='radio' name='unit"+lineNo+"' value = 'ppm' checked />ppm &nbsp;&nbsp;<input type='radio' name='unit"+lineNo+"' value = 'kg' />mg/kg</td>" +
                         "<td width='10%' type='text'><input type='text' name='safeDay'/></td>" +
-                        "<td width='10%' type='text'><input type='text' name='endDateIn'/></td>" +
+                        "<td width='10%' type='select'><select name = 'endDateIn' id= 'endDateIn' class='chosen-select'> <option value=''>#springMessage('tbtSps.please.choose')</option> #foreach( $item_relationMedicine in $listDate)<option value='$!item_relationMedicine'>$!item_relationMedicine</option>#end</select></td>" +
                         "</tr>";
                 addTr(tab, row, trHtml);
                 addTr2(tab, row);
             }
+
             count = 0 ;
         }
 
@@ -312,18 +326,27 @@
                 $("#hiddenDiv").show();
             });
         });
-
     </script>
 
 
 
     <script type="text/javascript">
+        var initConfigurationSet = {
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            maxHeight: 280,
+            nonSelectedText: '请选择',
+            selectAllText: '全选',
+            filterPlaceholder: '搜索',
+            buttonWidth: '160px',
+            numberDisplayed: 1
+        };
         // 多选下拉框checkbox select
         $(document).ready(function() {  ;
-            $('#notificationType').multiselect();
-            $('#language').multiselect();
-            $('#targetReason').multiselect();
-            $('#internationalStandard').multiselect();
+            $('#notificationType').multiselect(initConfigurationSet);
+            $('#language').multiselect(initConfigurationSet);
+            $('#targetReason').multiselect(initConfigurationSet);
+            $('#internationalStandard').multiselect(initConfigurationSet);
         });
         // 搜索下拉框
         var config = {

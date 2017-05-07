@@ -100,6 +100,11 @@ public class ParameterLoad implements InitializingBean {
      */
     private List<SpsBtbState> list_scope = new ArrayList<SpsBtbState>();
 
+    /**
+     * 日历范围
+     */
+    private List<String> listDate = new ArrayList<String>();
+
     @Override
     public void afterPropertiesSet() throws Exception {
 
@@ -118,6 +123,7 @@ public class ParameterLoad implements InitializingBean {
             list_leves = this.initLeves();
             list_role_review = this.reviewRoles();
             list_scope = this.scope();
+            listDate = this.getDates();
         }catch (Exception e){
             LOG.error("初始化后select列表项异常：",e);
         }
@@ -220,6 +226,15 @@ public class ParameterLoad implements InitializingBean {
         spsBtbState.setContent(ScopeEnum.ALL.getStatusContent());
         list_roleReview.add(spsBtbState);
         return list_roleReview ;
+    }
+    private List<String> getDates(){
+        List<String> listDate = new ArrayList<String>();
+        listDate.add("2017-01-01");
+        listDate.add("2017-01-02");
+        listDate.add("2017-01-03");
+        listDate.add("2017-01-04");
+        listDate.add("2017-01-05");
+        return listDate ;
     }
 
     public String getCountryNameByCode(String code){
@@ -400,5 +415,13 @@ public class ParameterLoad implements InitializingBean {
 
     public void setList_scope(List<SpsBtbState> list_scope) {
         this.list_scope = list_scope;
+    }
+
+    public List<String> getListDate() {
+        return listDate;
+    }
+
+    public void setListDate(List<String> listDate) {
+        this.listDate = listDate;
     }
 }

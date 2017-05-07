@@ -14,9 +14,12 @@ function get_text_rows(text) {   debugger ;
 $(document).ready(function () {
     $(".form-control").each(function(){   debugger ;
         var num =get_text_rows($(this).val());
-        if($(this).attr("readonly")!='readonly' && num>=1){
+        if($(this).attr("readonly")!='readonly' && num<=1){
             num = 5 ;
         }
+//        if($(this).attr("readonly")!='readonly' && num>=1){
+//            num = 5 ;
+//        }
         $(this).attr("rows",num);
     });
 //        $("#textArea_contentDes_id").attr("rows",get_text_rows($('#textArea_contentDes_id').val()));

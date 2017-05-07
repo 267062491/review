@@ -2,8 +2,19 @@
 <html lang="zh-cn">
     <head>
         #parse("/layout/head.vm")
+        <style type="text/css">
+            .multiselect {
+                background: #fff;
+                border: 1px solid #d5d5d5;
+                line-height: 28px;
+            }
+        </style>
         <script src="#springUrl('')/static/js/bootstrap-multiselect.js"></script>
         <link rel="stylesheet" href="#springUrl('')/static/css/bootstrap-multiselect.css" />
+
+        <link rel="stylesheet" href="#springUrl('')/static/beatpicker/css/BeatPicker.min.css"/>
+        <script src="#springUrl('')/static/beatpicker/js/BeatPicker.js"></script>
+        <script src="#springUrl('')/static/beatpicker/documents/js/prism.js"></script>
 	</head>
     <body>
         <div class="row">
@@ -178,9 +189,19 @@
         </script>
 
         <script type="text/javascript">
+            var initConfigurationSet = {
+                enableFiltering: true,
+                includeSelectAllOption: true,
+                maxHeight: 280,
+                nonSelectedText: '请选择',
+                selectAllText: '全选',
+                filterPlaceholder: '搜索',
+                buttonWidth: '160px',
+                numberDisplayed: 1
+            };
             // 多选下拉框checkbox select
             $(document).ready(function() {
-                $('.multipleSelect').multiselect();
+                $('.multipleSelect').multiselect(initConfigurationSet);
             });
             // 搜索下拉框
             var config = {

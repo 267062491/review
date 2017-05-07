@@ -145,8 +145,8 @@
                 $("#queryForm").submit();
             }
 
-            function toUpdate(parameterId){
-                window.location.href=("$basePath/spsInfo/updateForward?id="+parameterId);
+            function toUpdate(spsCode){
+                window.location.href=("$basePath/spsInfo/addForward?id="+spsCode);
             }
 
             function toDelete(parameterId){
