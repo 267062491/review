@@ -8,8 +8,8 @@
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
                 <small>
-                    <img src="#springUrl('')/static/avatars/logo.png" width="33%"  style="margin-top:-6px;"/>
-                    <span class="bold">农药</span>
+##                    <img src="#springUrl('')/static/avatars/logo.png" width="33%"  style="margin-top:-6px;"/>
+                    <span class="bold">瞎写</span>
                 </small>
             </a><!-- /.brand -->
         </div><!-- /.navbar-header -->
@@ -51,6 +51,7 @@
 <div class="navbar navbar-default" id="tab" style="min-height:33px">
     <div id="tab-header">
         <ul>
+            <!--
             <li class="selected"><a href="javascript:void(0)" onclick="link('200','首页','user','20','首页')">首页</a></li>
             <li><a href="javascript:void(0)" onclick="link('200','参数','user','20','参数')">用户</a></li>
             <li><a href="javascript:void(0)" onclick="link('210','角色管理','role','20','参数')">角色</a></li>
@@ -60,11 +61,12 @@
             <li><a href="javascript:void(0)" onclick="link('240','目标理由','targereason','20','目标理由')">目标理由</a></li>
             <li><a href="javascript:void(0)" onclick="link('240','国际标准','internationalStandard','20','国际标准')">国际标准</a></li>
             <li><a href="javascript:void(0)" onclick="link('240','相关农药','relationMedicine','20','相关农药')">相关农药</a></li>
-            <li><a href="javascript:void(0)" onclick="link('240','sps通报/tbt通报','spsInfo','20','sps通报/tbt通报')">sps通报/tbt通报</a></li>
-            <li><a href="javascript:void(0)" onclick="link('240','在线评议管理','spsInfo/indexReview','20','在线评议管理')">在线评议管理</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','sps通报/tbt通报','spsInfo','20','sps通报/tbt通报')">sps通报/tbt通报</a></li>  -->
+            <li><a href="javascript:void(0)" onclick="link('240','测试','spsInfo/indexReview','20','测试')">测试</a></li>
+            <!--
             <li><a href="javascript:void(0)" onclick="link('240','专家评议','spsInfo/indexExpertsReview','20','专家评议')">专家评议</a></li>
             <li><a href="javascript:void(0)" onclick="link('240','全文检索','relationMedicine','20','全文检索')">全文检索</a></li>
-            <li><a href="javascript:void(0)" onclick="link('240','统计','relationMedicine','20','统计')">统计</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','统计','relationMedicine','20','统计')">统计</a></li>    -->
 ##            <li><a href="javascript:void(0)" onclick="link('320','参数','systemPar','20','参数')">参数</a></li>
         </ul>
     </div>

@@ -57,6 +57,8 @@ public class SpsInfoController extends ReviewBaseController {
     @Autowired
     private SpsLogAttrService spsLogAttrService;
     @Autowired
+    private SpsResidualInfoService spsResidualInfoService;
+    @Autowired
     private ParameterLoad parameterLoad;
     @Autowired
     private RelationSpsLanguageService relationSpsLanguageService;
@@ -138,30 +140,33 @@ public class SpsInfoController extends ReviewBaseController {
     public String addForward(Model model,SpsInfoQuery spsInfoQuery) {
 
         /**
-         * 组装页面显示的数据
+         * 组装页面显示的数据  ,当修改的时候走if逻辑
          */
         if(null!=spsInfoQuery.getId()){
-            // spsInfo基础信息
+            /**
+             * spsInfo基础信息
+              */
             List<SpsInfo> listSpsInfo = spsInfoService.querySpsInfoList(spsInfoQuery) ;
             SpsInfo spsInfo = listSpsInfo.get(0);
+            String spsCode = spsInfo.getSpsCode();
             // 原文语种信息
             RelationSpsLanguageQuery relationSpsLanguageQuery = new RelationSpsLanguageQuery();
-            relationSpsLanguageQuery.setSpsCode(spsInfo.getSpsCode());
+            relationSpsLanguageQuery.setSpsCode(spsCode);
             List<RelationSpsLanguage> listRelationSpsLanguage = relationSpsLanguageService.queryRelationSpsLanguageList(relationSpsLanguageQuery);
             RelationSpsNotificationTypeQuery relationSpsNotificationTypeQuery = new RelationSpsNotificationTypeQuery();
-            relationSpsNotificationTypeQuery.setSpsCode(spsInfo.getSpsCode());
+            relationSpsNotificationTypeQuery.setSpsCode(spsCode);
             List<RelationSpsNotificationType> listRelationSpsNotificationType = relationSpsNotificationTypeService.queryRelationSpsNotificationTypeList(relationSpsNotificationTypeQuery);
             RelationSpsTargereasonQuery relationSpsTargereasonQuery = new RelationSpsTargereasonQuery();
-            relationSpsTargereasonQuery.setSpsCode(spsInfo.getSpsCode());
+            relationSpsTargereasonQuery.setSpsCode(spsCode);
             List<RelationSpsTargereason> listRelationSpsTargetreason = relationSpsTargereasonService.queryRelationSpsTargereasonList(relationSpsTargereasonQuery);
             RelationSpsInternationalStandardQuery relationSpsInternationalStandardQuery = new RelationSpsInternationalStandardQuery();
-            relationSpsInternationalStandardQuery.setSpsCode(spsInfo.getSpsCode());
+            relationSpsInternationalStandardQuery.setSpsCode(spsCode);
             List<RelationSpsInternationalStandard> listRelationSpsInternationlStandard = relationSpsInternationalStandardService.queryRelationSpsInternationalStandardList(relationSpsInternationalStandardQuery);
             RelationSpsRelationMedicineQuery relationSpsRelationMedicineQuery = new RelationSpsRelationMedicineQuery();
-            relationSpsRelationMedicineQuery.setSpsCode(spsInfo.getSpsCode());
+            relationSpsRelationMedicineQuery.setSpsCode(spsCode);
             List<RelationSpsRelationMedicine> listRelationSpsRelationMedicine = relationSpsRelationMedicineService.queryRelationSpsRelationMedicineList(relationSpsRelationMedicineQuery);
             RelationSpsRelationMedicineProductQuery relationSpsRelationMedicineProductQuery = new RelationSpsRelationMedicineProductQuery();
-            relationSpsRelationMedicineProductQuery.setSpsCode(spsInfo.getSpsCode());
+            relationSpsRelationMedicineProductQuery.setSpsCode(spsCode);
             List<RelationSpsRelationMedicineProduct> listRelationSpsRelationMedicineProduct = relationSpsRelationMedicineProductService.queryRelationSpsRelationMedicineProductList(relationSpsRelationMedicineProductQuery);
             model.addAttribute("spsInfo",spsInfo);
             model.addAttribute("listRelationSpsLanguage",listRelationSpsLanguage);
@@ -171,6 +176,28 @@ public class SpsInfoController extends ReviewBaseController {
             model.addAttribute("listRelationSpsRelationMedicine",listRelationSpsRelationMedicine);
             model.addAttribute("listRelationSpsRelationMedicineProduct",listRelationSpsRelationMedicineProduct);
 
+            /**
+             * spsInfo 附件信息
+             */
+            SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
+            spsInfoLogQuery.setSpsCode(spsCode);
+            spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode());
+            List<SpsInfoLog> listSpsInfoLog = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery)  ;
+            if(!CollectionUtils.isEmpty(listSpsInfoLog)){
+                SpsInfoLog spsInfoLog = listSpsInfoLog.get(0);
+                SpsLogAttrQuery spsLogAttrQuery = new SpsLogAttrQuery();
+                spsLogAttrQuery.setSpsCode(spsCode);
+                spsLogAttrQuery.setLogAttrRelation(spsInfoLog.getLogAttrRelation());
+                List<SpsLogAttr> listSpsLogAttr = spsLogAttrService.querySpsLogAttrList(spsLogAttrQuery) ;
+                model.addAttribute("listSpsLogAttr",listSpsLogAttr);
+            }
+            /**
+             * spsInfo 农药农产品信息
+             */
+            SpsResidualInfoQuery spsResidualInfoQuery = new SpsResidualInfoQuery();
+
+            List<SpsResidualInfo> listSpsResidualInfo = spsResidualInfoService.querySpsResidualInfoList(spsResidualInfoQuery) ;
+            model.addAttribute("listSpsResidualInfo",listSpsResidualInfo);
         }
 
         List<Country> list_country = parameterLoad.getList_country();
@@ -344,7 +371,13 @@ public class SpsInfoController extends ReviewBaseController {
             , SpsInfo spsInfo,String tableContent , SpsBtbMulityDto spsBtbMulityDto) {
         LOG.info("进入创建sps方法，传入user="+getLoginUserName()+" , spsInfo="+ JsonHelperImpl.toJson(spsInfo)+" , tableContent="+tableContent+",spsBtbMulityDto="+JsonHelperImpl.toJson(spsBtbMulityDto));
         try{
-            String[] ret = spsInfoService.createOrderInfo(spsInfo,files,tableContent,getLoginUserName(),spsBtbMulityDto);
+            String[] ret = null ;
+            if(null == spsInfo.getId()){
+                ret = spsInfoService.createOrderInfo(spsInfo,files,tableContent,getLoginUserName(),spsBtbMulityDto);
+            } else{
+                ret = spsInfoService.createOrderInfo(spsInfo,files,tableContent,getLoginUserName(),spsBtbMulityDto);
+            }
+
             if(ret[0].equals(SystemCodeEnum.SUCCESS.getCode())){
                 Wrapper wrapper = new Wrapper<SpsInfo>().result(spsInfo);
                 wrapper.setMessage("操作成功");

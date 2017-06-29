@@ -32,7 +32,7 @@
     <!-- 创建信息 -->
     <insert id="insert" parameterType="SpsResidualInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_sps_residual_info(<include refid="spsResidualInfoUsedColumns"/>) 
-        VALUES (#{spsCode},#{medicineCode},#{medicineProductCode},#{updateType},#{residuaAmount},#{unit},#{safeDay},#{endDate},#{back1},#{back2},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        VALUES (#{spsCode},#{medicineCode},#{medicineProductCode},#{updateType},#{residuaAmount},#{unit},#{safeDay},#{endDate},#{back1},#{back2},#{createTime},#{updateTime},#{createUser},#{updateUser},1)
 	</insert>
 	
     <!-- 修改信息 -->

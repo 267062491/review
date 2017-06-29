@@ -245,6 +245,168 @@ public class SpsInfoServiceImpl implements SpsInfoService {
              * 拼装残留量信息
              */
             List<Object> list_spsResidualInfo = JsonHelperImpl.jsonFormatArrayToListBean(SpsResidualInfo.class , contents);
+            for(Object obj : list_spsResidualInfo){
+                SpsResidualInfo spsResidualInfo = (SpsResidualInfo) obj;
+                spsResidualInfo.setCreateUser(userName);
+                spsResidualInfo.setCreateTime(new Date());
+                spsResidualInfo.setUpdateTime(new Date());
+                spsResidualInfo.setUpdateUser(userName);
+                spsResidualInfo.setSpsCode(spsCode);
+            }
+            /**
+             * 拼装sps信息操作日志表
+             */
+            SpsInfoLog spsInfoLog = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode(),Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode(),Sps_Tbt_InfoStatus.UN_FENPEI.getStatusContent(),
+                    attrRelation,1, SystemConstant.YES+"",userName);
+            /**
+             * 拼装原始语言
+             */
+            List<RelationSpsLanguage> list_relationSpsLanguage = new ArrayList<RelationSpsLanguage>();
+            if(null!=spsBtbMulityDto.getLanguage()){
+                for(String language : spsBtbMulityDto.getLanguage()){
+                    list_relationSpsLanguage.add(new RelationSpsLanguage(spsCode,language,userName));
+                }
+            }
+            /**
+             * 拼装通报类型
+             */
+            List<RelationSpsNotificationType> list_relationSpsNotificationType = new ArrayList<RelationSpsNotificationType>();
+            if(null!=spsBtbMulityDto.getNotificationType()){
+                for(String notificationType : spsBtbMulityDto.getNotificationType()){
+                    list_relationSpsNotificationType.add(new RelationSpsNotificationType(spsCode,notificationType,userName));
+                }
+            }
+            /**
+             * 拼装目标理由
+             */
+            List<RelationSpsTargereason> list_relationSpsTargereason = new ArrayList<RelationSpsTargereason>();
+            if(null!=spsBtbMulityDto.getTargetReason()){
+                for(String relationSpsTargereason : spsBtbMulityDto.getTargetReason()){
+                    list_relationSpsTargereason.add(new RelationSpsTargereason(spsCode,relationSpsTargereason,userName));
+                }
+            }
+            /**
+             * 拼装国际标准
+             */
+            List<RelationSpsInternationalStandard> list_relationSpsInternationalStandard = new ArrayList<RelationSpsInternationalStandard>();
+            if(null!=spsBtbMulityDto.getInternationalStandard()){
+                for(String relationSpsInternationalStandard : spsBtbMulityDto.getInternationalStandard()){
+                    list_relationSpsInternationalStandard.add(new RelationSpsInternationalStandard(spsCode,relationSpsInternationalStandard,userName));
+                }
+            }
+            /**
+             * 拼装农药相关
+             */
+            RelationSpsRelationMedicine relationSpsRelationMedicine = null ;
+            if(!StringUtils.isEmpty(spsBtbMulityDto.getRelationMedicine())){
+                relationSpsRelationMedicine = new RelationSpsRelationMedicine(spsCode,spsBtbMulityDto.getRelationMedicine(),userName) ;
+            }
+            /**
+             * 拼装农药商品相关
+             */
+            RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct = null ;
+            if(!StringUtils.isEmpty(spsBtbMulityDto.getRelationMedicineProduct())){
+                relationSpsRelationMedicineProduct = new RelationSpsRelationMedicineProduct(spsCode,spsBtbMulityDto.getRelationMedicineProduct(),userName);
+            }
+
+            /**
+             * 把传递给manager层的数据封装到map中，统一传递
+             */
+            map.put("list_spsAttr",list_spsAttr);
+            map.put("spsInfo",spsInfo);
+            map.put("list_spsResidualInfo",list_spsResidualInfo);
+            map.put("spsInfoLog",spsInfoLog);
+            map.put("list_relationSpsLanguage",list_relationSpsLanguage);
+            map.put("list_relationSpsNotificationType",list_relationSpsNotificationType);
+            map.put("list_relationSpsTargereason",list_relationSpsTargereason);
+            map.put("list_relationSpsInternationalStandard",list_relationSpsInternationalStandard);
+            map.put("relationSpsRelationMedicine",relationSpsRelationMedicine);
+            map.put("relationSpsRelationMedicineProduct",relationSpsRelationMedicineProduct);
+            try{
+                boolean result = spsInfoManager.insertOrderInfo(map);
+                // 保存成功之后， 创建全文检索  TODO
+
+            }catch (DuplicateKeyException e){
+                LOG.error("创建sps信息DuplicateKeyException异常：",e);
+                ret[0]=SystemCodeEnum.SPS_CODE_HAVE_EXISTS.getCode();
+                ret[1]=SystemCodeEnum.SPS_CODE_HAVE_EXISTS.getContent();
+                return ret;
+            }catch (Exception e){
+                LOG.error("创建sps信息异常：",e);
+                ret[0]= String.valueOf(Wrapper.ERROR_CODE);
+                ret[1]=Wrapper.ERROR_MESSAGE;
+                return ret;
+            }
+        } else{
+            ret[0]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getCode();
+            ret[1]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getContent();
+            return ret;
+        }
+
+        return ret ;
+    }
+    /**
+     * 修改sps、btb数据
+     * @param spsInfo
+     * @param files
+     * @param contents
+     * @param userName
+     * @param spsBtbMulityDto
+     * @return
+     */
+    public String[] updateOrderInfo(SpsInfo spsInfo , List<MultipartFile> files ,String contents , String userName,SpsBtbMulityDto spsBtbMulityDto){
+        String[] ret = new String[]{SystemCodeEnum.SUCCESS.getCode(),SystemCodeEnum.SUCCESS.getContent()};
+        Map<String,Object> map = new HashMap<String,Object>();
+
+        boolean attrFlag = true ;
+        String spsCode =spsInfo.getSpsCode() ;
+        String attrRelation =  "SPS-"+spsCode+UUID.randomUUID().toString() ;
+        /**
+         * 保存附件
+         * 拼装附件结构
+         */
+        List<SpsLogAttr> list_spsAttr = new ArrayList<SpsLogAttr>();
+        if(!org.springframework.util.CollectionUtils.isEmpty(files)){
+            String path = PropertiesHelper.newInstance().getValue("sps_attr_addr")+File.separator+spsCode+File.separator;
+            SpsLogAttr spsAttr = null ;
+            for(MultipartFile file : files){
+                String fileName = file.getOriginalFilename();
+                File targetFile = new File(path, fileName);
+                if (!targetFile.exists()) {
+                    targetFile.mkdirs();
+                }
+                // 保存 附件
+                try {
+                    file.transferTo(targetFile);
+                    // 组件附件数据结构
+                    spsAttr = new SpsLogAttr(spsCode,fileName,path,fileName,attrRelation,userName);
+                    list_spsAttr.add(spsAttr);
+                } catch (IOException e) {
+                    // 这里出异常了应该把这个文件夹删除，图省事先不删除吧
+                    LOG.error("sps新建，保存附件失败",e);
+                    attrFlag = false ;
+                    break ;
+                }
+            }
+        }
+
+        if(attrFlag){
+            /**
+             *  拼装sps信息
+             */
+            spsInfo.setSpsInfoCommonValues(spsInfo,spsCode,userName,Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode(),Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode());
+            /**
+             * 拼装残留量信息
+             */
+            List<Object> list_spsResidualInfo = JsonHelperImpl.jsonFormatArrayToListBean(SpsResidualInfo.class , contents);
+            for(Object obj : list_spsResidualInfo){
+                SpsResidualInfo spsResidualInfo = (SpsResidualInfo) obj;
+                spsResidualInfo.setCreateUser(userName);
+                spsResidualInfo.setCreateTime(new Date());
+                spsResidualInfo.setUpdateTime(new Date());
+                spsResidualInfo.setUpdateUser(userName);
+                spsResidualInfo.setSpsCode(spsCode);
+            }
             /**
              * 拼装sps信息操作日志表
              */

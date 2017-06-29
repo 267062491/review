@@ -326,6 +326,15 @@
                 $("#hiddenDiv").show();
             });
         });
+
+        /**
+         * 删除附件
+         * @param id
+         */
+        function delAttr(id){
+            $("#"+id).val("");
+            $("#sp"+id).remove();
+        }
     </script>
 
 

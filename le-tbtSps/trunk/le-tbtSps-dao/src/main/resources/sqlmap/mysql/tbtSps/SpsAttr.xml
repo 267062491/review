@@ -26,7 +26,7 @@
     <!-- 创建信息 -->
     <insert id="insert" parameterType="SpsAttr" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_sps_attr(<include refid="spsAttrUsedColumns"/>) 
-        VALUES (#{spsCode},#{fileName},#{filePath},#{fileAliasName},#{createTime},#{updateTime},#{createUser},#{updateUser},#{yn})
+        VALUES (#{spsCode},#{fileName},#{filePath},#{fileAliasName},#{createTime},#{updateTime},#{createUser},#{updateUser},1)
 	</insert>
 	
     <!-- 修改信息 -->

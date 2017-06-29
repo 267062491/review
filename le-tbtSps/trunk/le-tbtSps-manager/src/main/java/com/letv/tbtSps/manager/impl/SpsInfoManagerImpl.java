@@ -330,7 +330,7 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
         if(temp){
 
             boolean temp1 = true ;
-            // 先根据spsCode , state , experts 查询 ， 改专家是否已经评议过了，如果已经评议过了， 则不插入新日志， 而是需要原有日志
+            // 先根据spsCode , state , experts 查询 ， 改专家是否已经评议过了，如果已经评议过了， 则不插入新日志， 而是修改原有日志
             SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
             spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode());
             spsInfoLogQuery.setSpsCode(spsInfoLog.getSpsCode());
@@ -482,4 +482,8 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
     public int querySpsInfoCountExperts(SpsInfoQuery queryBean){
         return spsInfoDao.querySpsInfoCountExperts(queryBean) ;
     }
+
+
+
+
 }

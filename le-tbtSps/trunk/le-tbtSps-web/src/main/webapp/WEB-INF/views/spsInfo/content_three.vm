@@ -10,6 +10,80 @@
         <td width="10%" type = "text">安全期</td>
         <td width="10%" type = "text">截止/撤销日期</td>
     </tr>
+    #foreach($!item in $!listSpsResidualInfo)
+        <tr align='center'>
+            <td width='5%' type='checkbox'><input type='checkbox' name='ckb'/></td>
+            <td width='10%' type='select'>
+                <select name = 'medicineCode' id= 'medicineCode' class='chosen-select'>
+                    <option value=''>#springMessage('tbtSps.please.choose')</option>
+                    #foreach( $item_relationMedicine in $list_relationMedicine)
+                        <option value='$!item_relationMedicine.relationMedicineCode'
+                                #if($!item.medicineCode==$!item_relationMedicine.relationMedicineCode)
+                                    selected="selected"
+                                #end
+                                >
+                            $!item_relationMedicine.relationMedicineZh
+                        </option>
+                    #end
+                </select>
+            </td>
+            <td width='10%' type='select'>
+                <select name = 'medicineProductCode' id= 'medicineProductCode' class='chosen-select'>
+                    <option value=''>#springMessage('tbtSps.please.choose')</option>
+                    #foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)
+                        <option value='$!item_relationMedicineProduct.relationMedicineProductCode'
+                            #if($!item.medicineProductCode==$!item_relationMedicineProduct.relationMedicineProductCode)
+                                selected="selected"
+                            #end
+                                >$!item_relationMedicineProduct.relationMedicineProductZh
+                        </option>
+                    #end
+                </select>
+            </td>
+            <td width='10%' type='select'>
+                <select name = 'updateType' id= 'updateType' class='chosen-select'>
+                    <option value=''>#springMessage('tbtSps.please.choose')</option>
+                    #foreach( $item_updateType in $list_updateType)
+                        <option value='$!item_updateType.updateTypeCode'
+                            #if($!item.updateType==$!item_updateType.updateTypeCode)
+                                selected="selected"
+                            #end
+                                >
+                            $!item_updateType.updateTypeContent
+                        </option>
+                    #end
+                </select>
+            </td>
+            <td width='10%' type='text'><input type='text' name='residuaAmount' value="$!item.residuaAmount"/></td>
+            <td width='10%' type='radio'>
+                <input type='radio' name='unitU$!velocityCount' value = 'ppm'
+                        #if($!item.unit=="ppm")
+                            checked="true"
+                        #end
+                        />ppm &nbsp;&nbsp;
+                <input type='radio' name='unitU$!velocityCount' value = 'kg'
+                    #if($!item.unit=="kg")
+                       checked="true"
+                    #end
+                        />mg/kg
+            </td>
+            <td width='10%' type='text'><input type='text' name='safeDay'value="$!item.safeDay"/></td>
+            <td width='10%' type='select'>
+                <select name = 'endDateIn' id= 'endDateIn' class='chosen-select'>
+                    <option value=''>#springMessage('tbtSps.please.choose')</option>
+                    #foreach( $item_relationMedicine in $listDate)
+                        <option value='$!item_relationMedicine'
+                            #if($!item.endDateIn==$!item_relationMedicine)
+                                selected="selected"
+                            #end
+                                >
+                            $!item_relationMedicine
+                        </option>
+                    #end
+                </select>
+            </td>
+        </tr>
+    #end
 </table>
 <input type="hidden" id="table_content" name = "tableContent">
 <input type="button" onclick="addTr2('tab', -1)" value="添加">
