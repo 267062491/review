@@ -8,6 +8,9 @@
                 border: 1px solid #d5d5d5;
                 line-height: 28px;
             }
+            .table-responsive .table tbody tr td {
+                overflow: inherit;
+            }
         </style>
         <script src="#springUrl('')/static/js/bootstrap-multiselect.js"></script>
         <link rel="stylesheet" href="#springUrl('')/static/css/bootstrap-multiselect.css" />
@@ -22,7 +25,7 @@
                 <div class="widget-box">
                     <div class="widget-header">
                         <h5 class="lighter">
-                            <i class="icon-search green"></i>#springMessage('tbtSps.spsInfo')#springMessage('view.lable.search')
+                           <i class="icon-search green"></i>#springMessage('tbtSps.spsInfo')#springMessage('view.lable.search')
                         </h5>
                         <div class="widget-toolbar">
                             <a href="#" data-action="collapse">
