@@ -71,7 +71,7 @@
 
     <!-- 根据查询Bean查询-判断是否存在 -->
     <select id="exist" resultType="java.lang.Integer" parameterType="RelationSpsRelationMedicineProduct">
-        select count(1) from t_relation_sps_relation_medicine_product where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+        select count(1) from t_relation_sps_relation_medicine_product where yn = 1 and relation_medicine_product_code = #{relationMedicineProductCode,jdbcType=VARCHAR}
     </select>
 
     <!-- 根据查询Bean获取集合总数 -->

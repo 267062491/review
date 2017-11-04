@@ -71,7 +71,7 @@
 
     <!-- 根据查询Bean查询-判断是否存在 -->
     <select id="exist" resultType="java.lang.Integer" parameterType="RelationTblanguage">
-        select count(1) from t_relation_tbt_language where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+        select count(1) from t_relation_tbt_language where yn = 1 and language_code = #{languageCode,jdbcType=VARCHAR}
     </select>
 
     <!-- 根据查询Bean获取集合总数 -->

@@ -269,7 +269,7 @@
                 ur.role_code = #{item,jdbcType=VARCHAR}
             </foreach>
         </if>
-        <if test="userType != 3 ">
+        <if test="userType != null ">
             and u.user_type = #{userType,jdbcType=DECIMAL}
         </if>
         GROUP BY u.user_name

@@ -31,14 +31,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SpsInfoController ：sps信息表控制器
@@ -772,7 +770,7 @@ public class SpsInfoController extends ReviewBaseController {
                 }
             }
             // 调用sql 查询 spsinfo 就可以了
-            query.setListSpsCode(listSpsCode);
+            query.setListSpsCode(listSpsCode.size()==0?null:listSpsCode);
             list_spsInfo = spsInfoService.querySpsInfoExpertsAll(query,page);
 
             for(SpsInfo spsInfo : list_spsInfo){

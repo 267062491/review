@@ -499,7 +499,7 @@
 			<properties>
 				<!--数据库配置 -->
 				<profile.db.driver>com.mysql.jdbc.Driver</profile.db.driver>
-				<profile.db.url>jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</profile.db.url>
+				<profile.db.url>jdbc:mysql://localhost:3306/review?characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</profile.db.url>
 				<profile.db.username>root</profile.db.username>
 				<profile.db.password>root</profile.db.password>
                
@@ -523,11 +523,11 @@
 				<!-- 常量配置 -->
 				<profile.language.default.locale>zh_CN</profile.language.default.locale>
 				<!-- 附件地址配置 -->
-				<profile.sps.attr.addr>E:\review</profile.sps.attr.addr>
+				<profile.sps.attr.addr>D:\review</profile.sps.attr.addr>
 				<!-- solr配置 -->
 				<profile.solr.server>http://localhost:8080/solr/</profile.solr.server>
 				<profile.solr.home.jobs>jobs/</profile.solr.home.jobs>
-				<profile.sps.attr.addr>E:\review\spsAttr\</profile.sps.attr.addr>
+				<profile.sps.attr.addr>D:\review\spsAttr\</profile.sps.attr.addr>
 			</properties>
 		</profile>
 	</profiles>

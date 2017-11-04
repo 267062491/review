@@ -38,18 +38,19 @@ public class LoginCookieInterceptor extends AbstractHandlerInterceptorAdapter {
                 String cookieValue = LsCookieUtils.getCookieValueSimple(request, cookieName);
                 LOG.debug("get cookie, cookieValue = " + cookieValue);
                 if (!StringUtils.isEmpty(cookieValue)) {
-                    LetvResponse<String> letvResponse = indexService.getLoginUserInfoFromRedis(cookieValue);
+//                    LetvResponse<String> letvResponse = indexService.getLoginUserInfoFromRedis(cookieValue);
                     LoginUser loginUser = null;
-                    if (LetvResponse.SUCCESS_CODE == letvResponse.getCode()) {
-                        loginUser = JsonUtil.fromJson(letvResponse.getResult(), LoginUser.class);
-                    }
+//                    if (LetvResponse.SUCCESS_CODE == letvResponse.getCode()) {
+//                        loginUser = JsonUtil.fromJson(letvResponse.getResult(), LoginUser.class);
+                        loginUser = JsonUtil.fromJson(cookieValue, LoginUser.class);
+//                    }
                     LOG.debug("LoginCookieInterceptor#preHandle.loginUser = " + JsonHelper.toJson(loginUser));
-                    if (null != loginUser) {
+//                    if (null != loginUser) {
                         UserContext.set(loginUser);
-                        LOG.debug("getCookieValue has user value");
-                    } else {
-                        LOG.debug("getCookieValue has no user value");
-                    }
+//                        LOG.debug("getCookieValue has user value");
+//                    } else {
+//                        LOG.debug("getCookieValue has no user value");
+//                    }
                 }
                 else {
                     LOG.debug("no login cookie");

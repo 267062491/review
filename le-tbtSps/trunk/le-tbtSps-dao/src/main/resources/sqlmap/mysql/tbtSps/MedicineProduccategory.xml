@@ -83,7 +83,7 @@
 
     <!-- 根据查询Bean查询-判断是否存在 -->
     <select id="exist" resultType="java.lang.Integer" parameterType="MedicineProduccategory">
-        select count(1) from t_medicine_product_category where yn = 1 and group_name = #{groupName,jdbcType=VARCHAR}
+        select count(1) from t_medicine_product_category where yn = 1 and ca_code = #{caCode,jdbcType=VARCHAR}
     </select>
 
     <!-- 根据查询Bean获取集合总数 -->

@@ -11,6 +11,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,6 +46,7 @@ public abstract class ReviewBaseController extends WrapController {
      * @return 用户信息
      */
     public LoginUser getLoginUser() {
+
         LoginUser loginUser = UserContext.get().getUser();
         if(null==loginUser){
             loginUser = new LoginUser();

@@ -70,7 +70,8 @@ public class IndexController extends ReviewBaseController {
         LoginUser loginUser = getCurrentUser();
         if (loginUser == null) {
 //            return login(model, request);
-            return login(model, request, VIEW_INDEX);
+//            return login(model, request, VIEW_INDEX);
+            return login(model, request);
         }else{
             /**
              * 查询用户有用的一级菜单
@@ -103,11 +104,10 @@ public class IndexController extends ReviewBaseController {
      * 进入登录页面
      * @param model
      * @param request
-     * @param forwardUrl
      * @return
      */
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    public String login(Model model, HttpServletRequest request, @RequestParam("ReturnUrl") String forwardUrl) {
+    public String login(Model model, HttpServletRequest request) {// , @RequestParam("ReturnUrl") String forwardUrl
         setLocale(model, request);
         return "login";
     }
@@ -134,7 +134,8 @@ public class IndexController extends ReviewBaseController {
 //                return "login";
 //            }
 //            userQuery.setUserState(SystemConstant.YES);
-            userQuery.setPassword(MD5Util.md5Hex(SystemConstant.passwordPre + userQuery.getPassword()));
+//            userQuery.setPassword(MD5Util.md5Hex(SystemConstant.passwordPre + userQuery.getPassword()));
+            userQuery.setPassword(userQuery.getPassword());
             LetvResponse<User> letvResponse_userDto = indexService.login(userQuery) ;
             if(letvResponse_userDto.getCode()== PortalSystemTipCodeEnum.SCUESS.getValue()){
                 /**

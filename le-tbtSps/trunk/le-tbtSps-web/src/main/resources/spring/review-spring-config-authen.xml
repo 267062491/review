@@ -23,24 +23,24 @@
 				<property name="context" ref="authenticatorContext" />
 			</bean>
 		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<bean class="com.letv.tbtSps.common.interceptor.LoginRequiredInterceptor">
-				<property name="context" ref="authenticatorContext" />
-			</bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<bean class="com.letv.tbtSps.common.interceptor.UrlPermissionInterceptor">
-				<property name="context" ref="authenticatorContext" />
-			</bean>
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<bean class="com.letv.tbtSps.common.interceptor.LanguageInterceptor">
-				<property name="context" ref="authenticatorContext" />
-			</bean>
-		</mvc:interceptor>
+		<!--<mvc:interceptor>-->
+			<!--<mvc:mapping path="/**" />-->
+			<!--<bean class="com.letv.tbtSps.common.interceptor.LoginRequiredInterceptor">-->
+				<!--<property name="context" ref="authenticatorContext" />-->
+			<!--</bean>-->
+		<!--</mvc:interceptor>-->
+		<!--<mvc:interceptor>-->
+			<!--<mvc:mapping path="/**" />-->
+			<!--<bean class="com.letv.tbtSps.common.interceptor.UrlPermissionInterceptor">-->
+				<!--<property name="context" ref="authenticatorContext" />-->
+			<!--</bean>-->
+		<!--</mvc:interceptor>-->
+		<!--<mvc:interceptor>-->
+			<!--<mvc:mapping path="/**" />-->
+			<!--<bean class="com.letv.tbtSps.common.interceptor.LanguageInterceptor">-->
+				<!--<property name="context" ref="authenticatorContext" />-->
+			<!--</bean>-->
+		<!--</mvc:interceptor>-->
 	</mvc:interceptors>
 
 </beans>

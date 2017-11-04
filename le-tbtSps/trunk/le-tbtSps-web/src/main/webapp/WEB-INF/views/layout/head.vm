@@ -2,7 +2,7 @@
     window.basePath = "#springUrl('')";
 </script>
 #set($basePath=$request.getContextPath())
-<title>农药</title>
+<title>测试</title>
 <meta charset="utf-8" />
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">

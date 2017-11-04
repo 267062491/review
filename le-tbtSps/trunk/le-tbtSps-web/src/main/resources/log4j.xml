@@ -78,7 +78,7 @@
     </appender>
     
     <category name="org.perf4j.TimingLogger">
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 		<appender-ref ref="CoalescingStatistics" />
 	</category>
 	
@@ -90,7 +90,7 @@
 	
     <!-- mybatis INFO -->
 	<category name="org.apache.ibatis.io" additivity="true">
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
 	</category>
 	
@@ -112,7 +112,7 @@
     </category>
 
     <root>
-        <priority value="${profile.log.root.level}"/>
+        <priority value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE-DEBUG"/>
     </root>
