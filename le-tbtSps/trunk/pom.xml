@@ -514,11 +514,11 @@
 				<profile.log.name.worker>tbtSps-worker</profile.log.name.worker>
 
 				<!-- Portal权限认证配置 -->
-                <profile.portal.authen.flag>review_cn_local</profile.portal.authen.flag>
-                <profile.portal.web.domain>local.review.ygd.com</profile.portal.web.domain>
-                <profile.portal.api.domain>local.review.ygd.com:8083</profile.portal.api.domain>
-                <profile.portal.cookie.names>review_cn_local</profile.portal.cookie.names>
-                <profile.portal.cookie.domains>ygd.com</profile.portal.cookie.domains>
+                <profile.portal.authen.flag>tbtSps</profile.portal.authen.flag>
+                <profile.portal.web.domain>localhost</profile.portal.web.domain>
+                <profile.portal.api.domain>http://localhost:8080/login</profile.portal.api.domain>
+                <profile.portal.cookie.names>tbtSps</profile.portal.cookie.names>
+                <profile.portal.cookie.domains>localhost</profile.portal.cookie.domains>
 
 				<!-- 常量配置 -->
 				<profile.language.default.locale>zh_CN</profile.language.default.locale>

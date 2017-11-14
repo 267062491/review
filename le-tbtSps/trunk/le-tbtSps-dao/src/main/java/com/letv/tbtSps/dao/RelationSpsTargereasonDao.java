@@ -61,6 +61,7 @@ public interface RelationSpsTargereasonDao {
      * @return
      */
     public boolean delete(RelationSpsTargereason relationSpsTargereason);
+    public boolean deleteByCode(RelationSpsTargereason relationSpsTargereason);
 
     /**
      * 根据主键获取对象

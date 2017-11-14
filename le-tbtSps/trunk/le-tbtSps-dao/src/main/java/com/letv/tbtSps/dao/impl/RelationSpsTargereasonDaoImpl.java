@@ -62,6 +62,9 @@ public class RelationSpsTargereasonDaoImpl extends BaseDao implements RelationSp
     public boolean delete(RelationSpsTargereason configuration) {
         return delete(namespace +".delete", configuration);
     }
+    public boolean deleteByCode(RelationSpsTargereason configuration) {
+        return delete(namespace +".deleteByCode", configuration);
+    }
 
     /**
      * {@inheritDoc}

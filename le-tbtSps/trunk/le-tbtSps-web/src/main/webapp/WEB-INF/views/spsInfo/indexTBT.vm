@@ -20,7 +20,7 @@
                     <div class="widget-body">
                         <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
                             <form class="form-horizontal" role="form" id="queryForm">
-                                <input type="hidden" name="type" value="sps">
+                                <input type="hidden" name="type" value="tbt">
 								<div class="form-group">
 									<label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.status')</label>
                                     <div class="col-sm-3">
@@ -109,7 +109,7 @@
                     pageSubmit(1);
                 });
                 $("#btn-add").click(function() {
-                    window.location.href=("$basePath/spsInfo/addForward");
+                    window.location.href=("$basePath/spsInfo/addForward?type=tbt");
                 });
                 $("#countryCode").change(function() {
                     $("#div_publishDateIn").show();

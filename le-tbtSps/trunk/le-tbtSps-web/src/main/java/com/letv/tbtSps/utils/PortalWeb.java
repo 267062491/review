@@ -100,16 +100,23 @@ public class PortalWeb implements InitializingBean, Serializable {
      * @param response
      * @param cookieValue
      */
-    public void setCookies(HttpServletResponse response, String cookieValue,String userCode) {
+    public void setCookies(HttpServletRequest request,HttpServletResponse response, String cookieValue,String userCode) {
         for (PortalCookie cookie : this.cookies) {
             /**
              * 1、调用写的 LsCookieUtils 写cookie
              */
-            String cookieValue_md5 = LsCookieUtils.createCookieValue(cookieValue, PropertiesHelper.newInstance().getValue("portal.redis.platform"), PropertiesHelper.newInstance().getValue("portal.redis.environment"))  ;
-            LsCookieUtils.setCookie(response, cookie.getName(), cookieValue_md5, cookie.getDomain(), cookie.getPath());
+//            String cookieValue_md5 = LsCookieUtils.createCookieValue(cookieValue, PropertiesHelper.newInstance().getValue("portal.redis.platform"), PropertiesHelper.newInstance().getValue("portal.redis.environment"))  ;
+            LsCookieUtils.setCookie(request,response, cookie.getName(), cookieValue, cookie.getDomain(), cookie.getPath(),userCode);
             LOG.debug("set cookie, name=" + cookie.getName() + ", domain= " + cookie.getDomain() + ", value= "
                     + cookieValue);
         }
+
+    }
+    public void invalidateCookie(HttpServletResponse response) {
+            /**
+             * 1、调用写的 LsCookieUtils 写cookie
+             */
+            LsCookieUtils.invalidateCookie(response, PropertiesHelper.newInstance().getValue("portal.authen.flag"), PropertiesHelper.newInstance().getValue("portal.web.domain"), "/");
 
     }
 }

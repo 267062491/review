@@ -92,7 +92,7 @@ public class AuthenticatorContext implements InitializingBean {
                 .getRequestURI());
         currentUrlBuilder.put(request.getParameterMap());
 
-        UrlBuilder.Builder loginUrlBuilder = new UrlBuilder(authenticator.getPortalWebDomain() + "/portal/login")
+        UrlBuilder.Builder loginUrlBuilder = new UrlBuilder(authenticator.getPortalWebDomain() + "/tbtSps/login")
                 .forPath(null);
 
         loginUrlBuilder.put("ReturnUrl", currentUrlBuilder.build());

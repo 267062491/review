@@ -62,6 +62,9 @@ public class SpsResidualInfoDaoImpl extends BaseDao implements SpsResidualInfoDa
     public boolean delete(SpsResidualInfo configuration) {
         return delete(namespace +".delete", configuration);
     }
+    public boolean deleteByCode(SpsResidualInfo configuration) {
+        return delete(namespace +".deleteByCode", configuration);
+    }
 
     /**
      * {@inheritDoc}

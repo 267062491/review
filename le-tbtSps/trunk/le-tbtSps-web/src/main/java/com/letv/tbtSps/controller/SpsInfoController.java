@@ -1,9 +1,11 @@
 package com.letv.tbtSps.controller;
 
 
+import com.google.common.collect.Lists;
 import com.letv.common.utils.DateHelper;
 import com.letv.common.utils.exception.ExistedException;
 import com.letv.common.utils.page.PageUtil;
+import com.letv.common.utils.serialize.JsonHelper;
 import com.letv.common.utils.wrap.WrapMapper;
 import com.letv.common.utils.wrap.Wrapper;
 import com.letv.tbtSps.common.controller.ReviewBaseController;
@@ -79,7 +81,7 @@ public class SpsInfoController extends ReviewBaseController {
     private static final Log LOG = LogFactory.getLog(SpsInfoController.class);
 
     /**
-     * 首页
+     * 首页sps
      * 
      * @param model
      * @return
@@ -91,6 +93,20 @@ public class SpsInfoController extends ReviewBaseController {
         model.addAttribute("list_country",list_country); // 通报成员
         model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
         return viewPrefix + "/index";
+    }
+    /**
+     * 首页tbt
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "tbt")
+    public String indexTbt(Model model) {
+        List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
+        List<Country> list_country = parameterLoad.getList_country();
+        model.addAttribute("list_country",list_country); // 通报成员
+        model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
+        return viewPrefix + "/indexTBT";
     }
 
 
@@ -125,6 +141,9 @@ public class SpsInfoController extends ReviewBaseController {
             model.addAttribute("list_country",list_country); // 通报成员
         } catch (Exception e) {
             LOG.error("spsInfo queryByPage has error.", e);
+        }
+        if("tbt".equals(query.getType())){
+            return viewPrefix + "/indexTBT";
         }
         return viewPrefix + "/index";
     }
@@ -193,9 +212,12 @@ public class SpsInfoController extends ReviewBaseController {
              * spsInfo 农药农产品信息
              */
             SpsResidualInfoQuery spsResidualInfoQuery = new SpsResidualInfoQuery();
+            spsResidualInfoQuery.setSpsCode(spsCode);
 
             List<SpsResidualInfo> listSpsResidualInfo = spsResidualInfoService.querySpsResidualInfoList(spsResidualInfoQuery) ;
             model.addAttribute("listSpsResidualInfo",listSpsResidualInfo);
+        }else{
+            model.addAttribute("standardYnFlag","standardYnFlag");
         }
 
         List<Country> list_country = parameterLoad.getList_country();
@@ -216,6 +238,9 @@ public class SpsInfoController extends ReviewBaseController {
         model.addAttribute("list_relationMedicineProduct",list_relationMedicineProduct);
         model.addAttribute("list_updateType",list_updateType);
         model.addAttribute("listDate",listDate);
+        if("tbt".equals(spsInfoQuery.getType())){
+            return viewPrefix + "/addTBT";
+        }
         return viewPrefix + "/add";
     }
 
@@ -366,18 +391,19 @@ public class SpsInfoController extends ReviewBaseController {
     @RequestMapping(value = "/createOrderInfo", method = RequestMethod.POST)
     @ResponseBody
     public Wrapper<?> createOrderInfo(HttpServletRequest request, @RequestParam("file") List<MultipartFile> files
-            , SpsInfo spsInfo,String tableContent , SpsBtbMulityDto spsBtbMulityDto) {
+            , SpsInfo spsInfo,String tableContent , SpsBtbMulityDto spsBtbMulityDto,String fileNameId) {
         LOG.info("进入创建sps方法，传入user="+getLoginUserName()+" , spsInfo="+ JsonHelperImpl.toJson(spsInfo)+" , tableContent="+tableContent+",spsBtbMulityDto="+JsonHelperImpl.toJson(spsBtbMulityDto));
         try{
             String[] ret = null ;
             if(null == spsInfo.getId()){
                 ret = spsInfoService.createOrderInfo(spsInfo,files,tableContent,getLoginUserName(),spsBtbMulityDto);
             } else{
-                ret = spsInfoService.createOrderInfo(spsInfo,files,tableContent,getLoginUserName(),spsBtbMulityDto);
+                ret = spsInfoService.updateOrderInfo(spsInfo,files,tableContent,getLoginUserName(),spsBtbMulityDto,fileNameId);
             }
 
             if(ret[0].equals(SystemCodeEnum.SUCCESS.getCode())){
                 Wrapper wrapper = new Wrapper<SpsInfo>().result(spsInfo);
+                wrapper.setCode(Integer.valueOf(SystemCodeEnum.SUCCESS.getCode()));
                 wrapper.setMessage("操作成功");
                 return wrapper;
             } else{
@@ -447,7 +473,7 @@ public class SpsInfoController extends ReviewBaseController {
             queryBean.setUserType(1);
             List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
             model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
-
+            logger.info("queryByPageReview:"+JsonHelper.toJson(queryBean));
             if(query.getState().equals(Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode())){
                 List<User> list_user = userService.queryUserByRoleCodeNoPage(queryBean);
                 List<SpsBtbState> list_leves = parameterLoad.getList_leves();
@@ -716,7 +742,7 @@ public class SpsInfoController extends ReviewBaseController {
 
 
     /**
-     * 分页 查询数据 通报评审
+     * 分页 查询数据 专家评议
      *
      * @param model
      * @param page
@@ -734,15 +760,15 @@ public class SpsInfoController extends ReviewBaseController {
             /**
              * 查询出已分配的所有单据
              */
-            List<SpsInfo> list_spsInfo = null ;
-            SpsInfoLogQuery spsInfoLogQuery = null ;
+            List<SpsInfo> list_spsInfo = Lists.newArrayList() ;
+            SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
             if(ScopeEnum.SELF.getStatusCode().equals(scope)){// 如果选择的是自己， 那么需要设置自己为查询条件
-                spsInfoLogQuery = new SpsInfoLogQuery();
                 spsInfoLogQuery.setExports(this.getLoginUserCode());
             }
             /**
              * 1、先查询出log，然后看log中同一个spsCode的状态， 如果有一个是已评议21 ， 则是已评议， 如果没有任务一个已评议21 ， 则是未评议
              * 2、用过滤出来的spsCode,传入，在查询sps_info 表 就可以了
+             * 其实这里就是根据log表过滤出来，哪些code是未评议的，哪些是已经评议的
              */
 
             List<String> listSpsCode = new ArrayList<String>();
@@ -770,31 +796,35 @@ public class SpsInfoController extends ReviewBaseController {
                 }
             }
             // 调用sql 查询 spsinfo 就可以了
-            query.setListSpsCode(listSpsCode.size()==0?null:listSpsCode);
-            list_spsInfo = spsInfoService.querySpsInfoExpertsAll(query,page);
+            if(listSpsCode.size()>0){
+                query.setListSpsCode(listSpsCode);
+                list_spsInfo = spsInfoService.querySpsInfoExpertsAll(query,page);
+                for(SpsInfo spsInfo : list_spsInfo){
+                    spsInfo.setLevels(parameterLoad.getLevelsNameByCode(spsInfo.getLevels()));
 
-            for(SpsInfo spsInfo : list_spsInfo){
-                spsInfo.setLevels(parameterLoad.getLevelsNameByCode(spsInfo.getLevels()));
+                    // 查询评议专家 状态=20 and content = "已分配"
+                    spsInfoLogQuery = new SpsInfoLogQuery();
+                    spsInfoLogQuery.setSpsCode(spsInfo.getSpsCode());
+                    spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode());
+                    spsInfoLogQuery.setContent(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusContent());
+                    listSpsInfoLog = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery) ;
 
-                // 查询评议专家 状态=20 and content = "已分配"
-                spsInfoLogQuery = new SpsInfoLogQuery();
-                spsInfoLogQuery.setSpsCode(spsInfo.getSpsCode());
-                spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode());
-                spsInfoLogQuery.setContent(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusContent());
-                listSpsInfoLog = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery) ;
-
-                spsInfoLogQuery = new SpsInfoLogQuery();
-                spsInfoLogQuery.setSpsCode(spsInfo.getSpsCode());
-                spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.HAVE_FENPEI_HUIDA.getStatusCode());
-                List<SpsInfoLog>  listSpsInfoLog21 = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery) ;
-                for(SpsInfoLog spsInfoLog : listSpsInfoLog){
-                    for(SpsInfoLog spsInfoLog21 : listSpsInfoLog21){
-                        if(spsInfoLog.getExports().equals(spsInfoLog21.getCreateUser())){
-                            spsInfoLog.setHaveReview(SystemConstant.YES+"");
+                    spsInfoLogQuery = new SpsInfoLogQuery();
+                    spsInfoLogQuery.setSpsCode(spsInfo.getSpsCode());
+                    spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.HAVE_FENPEI_HUIDA.getStatusCode());
+                    List<SpsInfoLog>  listSpsInfoLog21 = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery) ;
+                    for(SpsInfoLog spsInfoLog : listSpsInfoLog){
+                        for(SpsInfoLog spsInfoLog21 : listSpsInfoLog21){
+                            if(spsInfoLog.getExports().equals(spsInfoLog21.getCreateUser())){
+                                spsInfoLog.setHaveReview(SystemConstant.YES+"");
+                            }
                         }
                     }
+                    spsInfo.setList_spsInfoLog(listSpsInfoLog);
                 }
-                spsInfo.setList_spsInfoLog(listSpsInfoLog);
+            }else{
+                page.setTotalRow(0);
+                page.setTotalPage(0);
             }
 
             model.addAttribute("dataList", list_spsInfo);// 查询的数据
@@ -837,4 +867,22 @@ public class SpsInfoController extends ReviewBaseController {
     }
     /******************专家评议结束***************************/
 
+    /**
+     * 激活
+     * @param tableJson
+     * @return
+     */
+    @RequestMapping(value = "/jiHuo", method = RequestMethod.POST)
+    @ResponseBody
+    public Wrapper<?> jiHuo(String tableJson){
+        try{
+            String[] ret = spsInfoService.jihuo(tableJson,this.getLoginUserName());
+            Wrapper wrapper = new Wrapper<String>().result(ret[1]);
+            wrapper.setCode(Integer.parseInt(ret[0]));
+            wrapper.setMessage(ret[1]);
+            return wrapper;
+        } catch (Exception e){
+            return error();
+        }
+    }
 }

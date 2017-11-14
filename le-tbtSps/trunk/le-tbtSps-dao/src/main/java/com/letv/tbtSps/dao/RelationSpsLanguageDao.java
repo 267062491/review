@@ -61,6 +61,7 @@ public interface RelationSpsLanguageDao {
      * @return
      */
     public boolean delete(RelationSpsLanguage relationSpsLanguage);
+    public boolean deleteByCode(RelationSpsLanguage relationSpsLanguage);
 
     /**
      * 根据主键获取对象

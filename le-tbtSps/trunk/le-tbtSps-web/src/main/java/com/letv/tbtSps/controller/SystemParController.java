@@ -11,6 +11,12 @@ import com.letv.tbtSps.domain.query.SystemParQuery;
 import com.letv.tbtSps.service.SystemParService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrClient;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.XMLResponseParser;
+import org.apache.solr.common.SolrInputDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +89,8 @@ public class SystemParController extends ReviewBaseController {
         }
         return viewPrefix + "/index";
     }
+
+
 
     /**
      * 系统参数表----添加跳转
@@ -269,6 +278,28 @@ public class SystemParController extends ReviewBaseController {
         return new Wrapper<Map<String , Object>>().result(map);
     }
 
+    private HttpSolrClient httpSolrClient;
+    public static void main(String[] args) throws IOException, SolrServerException {
+        HttpSolrServer solr=null;
+        SolrInputDocument document=new SolrInputDocument();
+        String url="http://localhost:8080/SHFW_SEARCH/jobs";
 
+        solr=new HttpSolrServer(url);
+        document.addField("id", "123");
+        document.addField("subject", "shusheng");
+        solr.add(document);
+        solr.commit();
+    }
+
+    public void setUp() throws Exception {
+        // 在url中指定core名称：notice
+        String url = "http://localhost:777/solr/notice/";
+        HttpSolrClient httpSolrClient = new HttpSolrClient(url);
+
+        httpSolrClient.setParser(new XMLResponseParser()); // 设置响应解析器
+        httpSolrClient.setConnectionTimeout(500); // 建立连接的最长时间
+        this.httpSolrClient = httpSolrClient;
+
+    }
 
 }

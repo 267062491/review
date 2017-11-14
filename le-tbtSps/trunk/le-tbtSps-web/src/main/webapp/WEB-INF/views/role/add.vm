@@ -9,14 +9,14 @@
 					errorClass:"red",
 					rules: {
                         roleName: {required: true,maxlength:30},
-						roleCode: {required: true,maxlength:6,enAndNumberRule:true},
+						roleCode: {required: true,maxlength:60,enAndNumberRule:false},
 						note: {required: false,maxlength:200}
 					},
 			
 					messages: {
-						roleName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.roleName')",maxlength:"#springMessage('tbtSps.role.roleName.maxlength')"},
-						roleCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.roleCode')",maxlength:"#springMessage('tbtSps.role.roleCode.maxlength')"},
-						note: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.note')",maxlength:"#springMessage('tbtSps.user.note.maxlength')"}
+						roleName: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.roleName')",maxlength:""},
+						roleCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.roleCode')",maxlength:""},
+						note: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.role.note')",maxlength:""}
 					}
 				});
 				

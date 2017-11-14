@@ -62,6 +62,8 @@ public interface SpsLogAttrDao {
      */
     public boolean delete(SpsLogAttr spsLogAttr);
 
+    public boolean deleteByCode(SpsLogAttr configuration);
+
     /**
      * 根据主键获取对象
      * 

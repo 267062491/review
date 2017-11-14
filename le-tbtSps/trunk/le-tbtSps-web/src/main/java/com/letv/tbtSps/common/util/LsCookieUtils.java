@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 /**
@@ -77,12 +78,20 @@ public class LsCookieUtils {
      * @param path
      *            cookie Path
      */
-    public static void setCookie(HttpServletResponse response, String name, String cookieValue, String domain, String path) {
-        int expiry = 3 * 60 * 60;// 有效期为3小时
-        Cookie cookie = new Cookie(name,cookieValue );
+    public static void setCookie(HttpServletRequest request,HttpServletResponse response, String name
+            , String cookieValue, String domain, String path,String userCode) {
+        /**
+         * 把cookie value写入到session里面， 然后把sessionID 放到cookie里面 就可以了
+         */
+        HttpSession session = request.getSession();
+        session.setAttribute(userCode,cookieValue);
+        String sessionId = session.getId();
+        int expiry = 3 * 60 * 60*10000;// 有效期为3小时
+        Cookie cookie = new Cookie(name,sessionId+"_"+userCode );
         cookie.setDomain(domain);
         cookie.setPath(path);
         cookie.setMaxAge(expiry); // 设置cookie有效期为3小时
+        logger.info("LsCookieUtils.setCookie="+JsonUtil.toJson(cookie));
         response.addCookie(cookie);
     }
 

@@ -213,6 +213,96 @@ public class SpsInfoManagerImpl extends BaseManager implements SpsInfoManager {
         }
         return true;
     }
+
+    /**
+     * 创建sps、tbt
+     * @param map
+     */
+    public boolean updateOrderInfo(Map<String, Object> map) {
+        /**
+         * 解析出需要保存的内容
+         */
+        SpsInfo spsInfo = (SpsInfo) map.get("spsInfo"); // sps 信息
+        List<SpsLogAttr> list_spsAttr = (List<SpsLogAttr>) map.get("list_spsAttr"); // 附件
+        List<Object> list_spsResidualInfo = (List<Object>) map.get("list_spsResidualInfo"); // 农药残留
+        List<RelationSpsLanguage> list_relationSpsLanguage = (List<RelationSpsLanguage>) map.get("list_relationSpsLanguage"); // 原始语言
+        List<RelationSpsNotificationType> list_relationSpsNotificationType = (List<RelationSpsNotificationType>) map.get("list_relationSpsNotificationType");// 通报类型
+        List<RelationSpsTargereason> list_relationSpsTargereason = (List<RelationSpsTargereason>) map.get("list_relationSpsTargereason");// 目标理由
+        List<RelationSpsInternationalStandard> list_relationSpsInternationalStandard = (List<RelationSpsInternationalStandard>) map.get("list_relationSpsInternationalStandard");// 国际标准
+        RelationSpsRelationMedicine relationSpsRelationMedicine = (RelationSpsRelationMedicine) map.get("relationSpsRelationMedicine"); // 农药信息
+        RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct = (RelationSpsRelationMedicineProduct) map.get("relationSpsRelationMedicineProduct");// 农产品信息
+        SpsInfoLog spsInfoLog = (SpsInfoLog) map.get("spsInfoLog"); // 操作日志
+        /**
+         *保存到数据库
+         */
+
+        spsInfoDao.update(spsInfo);
+        /**
+         * 修改的时候，先删除然后在修改，删除是逻辑删除
+         */
+        String spsCode = spsInfo.getSpsCode();
+        SpsLogAttr spsLogAttrDel = new SpsLogAttr();
+        spsLogAttrDel.setSpsCode(spsCode);
+        spsLogAttrDao.deleteByCode(spsLogAttrDel);
+
+        SpsResidualInfo spsResidualInfoDel = new SpsResidualInfo ();
+        spsResidualInfoDel.setSpsCode(spsCode);
+        spsResidualInfoDao.deleteByCode(spsResidualInfoDel);
+
+        RelationSpsLanguage relationSpsLanguageDel = new RelationSpsLanguage ();
+        relationSpsLanguageDel.setSpsCode(spsCode);
+        relationspslanguageDao.deleteByCode(relationSpsLanguageDel);
+
+        RelationSpsNotificationType relationSpsNotificationTypeDel = new RelationSpsNotificationType();
+        relationSpsNotificationTypeDel.setSpsCode(spsCode);
+        relationSpsNotificationTypeDao.deleteByCode(relationSpsNotificationTypeDel);
+
+        RelationSpsTargereason relationSpsTargereasonDel = new RelationSpsTargereason();
+        relationSpsTargereasonDel.setSpsCode(spsCode);
+        relationSpsTargereasonDao.deleteByCode(relationSpsTargereasonDel);
+
+        RelationSpsRelationMedicine relationSpsRelationMedicineDel = new RelationSpsRelationMedicine();
+        relationSpsRelationMedicineDel.setSpsCode(spsCode);
+        relationSpsRelationMedicineDao.deleteByCode(relationSpsRelationMedicineDel);
+
+        RelationSpsRelationMedicineProduct relationSpsRelationMedicineProductDel = new RelationSpsRelationMedicineProduct();
+        relationSpsRelationMedicineProductDel.setSpsCode(spsCode);
+        relationSpsRelationMedicineProductDao.deleteByCode(relationSpsRelationMedicineProductDel);
+
+
+        RelationSpsInternationalStandard relationSpsInternationalStandardDel = new RelationSpsInternationalStandard();
+        relationSpsInternationalStandardDel.setSpsCode(spsCode);
+        relationSpsInternationalStandardDao.deleteByCode(relationSpsInternationalStandardDel);
+
+        for(SpsLogAttr spsLogAttr : list_spsAttr){
+            spsLogAttrDao.insert(spsLogAttr);
+        }
+        for(Object obj : list_spsResidualInfo){
+            SpsResidualInfo spsResidualInfo = (SpsResidualInfo) obj;
+            spsResidualInfo.setEndDate(DateHelper.parseDate(spsResidualInfo.getEndDateIn()));// 这个转换主要是jsonHelper.toBean 方法， 对date类型不支持
+            spsResidualInfoDao.insert(spsResidualInfo);
+        }
+        for(RelationSpsLanguage relationSpsLanguage : list_relationSpsLanguage){
+            relationspslanguageDao.insert(relationSpsLanguage);
+        }
+        for(RelationSpsNotificationType relationSpsNotificationType : list_relationSpsNotificationType){
+            relationSpsNotificationTypeDao.insert(relationSpsNotificationType);
+        }
+        for(RelationSpsTargereason relationSpsTargereason : list_relationSpsTargereason){
+            relationSpsTargereasonDao.insert(relationSpsTargereason);
+        }
+        for(RelationSpsInternationalStandard relationSpsInternationalStandard : list_relationSpsInternationalStandard){
+            relationSpsInternationalStandardDao.insert(relationSpsInternationalStandard);
+        }
+        if(null!=relationSpsRelationMedicine){
+            relationSpsRelationMedicineDao.insert(relationSpsRelationMedicine);
+        }
+        if(null!=relationSpsRelationMedicineProduct){
+            relationSpsRelationMedicineProductDao.insert(relationSpsRelationMedicineProduct);
+        }
+        spsInfoLogDao.update(spsInfoLog);
+        return true;
+    }
     /**
      * 根据通报成员分组查询通报成员拥有的年份
      * @param queryBean

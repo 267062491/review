@@ -1,0 +1,34 @@
+    <table class="table table-striped table-bordered table-condensed table-hover" id="review_send_table_huizong">
+        <thead>
+        <tr>
+            <th class="center" style="width:2%"></th>
+            <th class="center" style="width:10%">#springMessage('tbtSps.spsInfo.spsCode')</th>
+            <th class="center" style="width:30%">#springMessage('tbtSps.spsInfo.fileTitle')</th>
+            <th class="center" style="width:5%">#springMessage('tbtSps.spsInfo.countryCode')</th>
+            <th class="center" style="width:3%">#springMessage('tbtSps.spsInfo.levels')</th>
+            <th class="center" style="width:7%">#springMessage('tbtSps.spsInfo.expertsEndDate')</th>
+            <th class="center" style="width:45%">#springMessage('tbtSps.spsInfo.experts')(<span style="color: red;">红色未评议</span>) </th>
+        </tr>
+        </thead>
+        <tbody>
+            #foreach( $item in $dataList)
+            <tr>
+                <td type="checkbox"><input type="checkbox" ></td>
+                <td type="kong"><a href="javascript:detailInfo('$!item.spsCode')">$!item.spsCode</a></td>
+                <td type="kong">$!item.fileTitle</td>
+                <td type="kong">$!item.countryCode</td>
+                <td type="kong">$!item.levels</td>
+                <td type="kong">$!dateTool.format('yyyy-MM-dd',$!item.expertsEndDate)</td>
+                <td type="kong">
+                    #foreach( $item_spsInfoLog in $item.List_spsInfoLog)
+                        #if($item_spsInfoLog.haveReview == "1")
+                            <span style="color: green;">$!item_spsInfoLog.exports</span>
+                        #else
+                            <span style="color: red;">$!item_spsInfoLog.exports</span>
+                        #end
+                    #end
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>

@@ -62,6 +62,9 @@ public class RelationSpsInternationalStandardDaoImpl extends BaseDao implements 
     public boolean delete(RelationSpsInternationalStandard configuration) {
         return delete(namespace +".delete", configuration);
     }
+    public boolean deleteByCode(RelationSpsInternationalStandard configuration) {
+        return delete(namespace +".deleteByCode", configuration);
+    }
 
     /**
      * {@inheritDoc}

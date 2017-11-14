@@ -86,6 +86,11 @@
 		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id}
     </update>
+    <update id="deleteByCode" parameterType="RelationSpsInternationalStandard">
+		update t_relation_sps_international_standard
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where sps_code = #{spsCode,jdbcType=VARCHAR}
+    </update>
 
     <!-- 常用的查询Where条件 -->
     <sql id="queryRelationSpsInternationalStandardListWhere">

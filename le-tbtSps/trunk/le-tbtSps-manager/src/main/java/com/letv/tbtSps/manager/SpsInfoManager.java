@@ -109,6 +109,7 @@ public interface SpsInfoManager {
      * @param map
      */
     public boolean insertOrderInfo(Map<String,Object> map) throws Exception;
+    public boolean updateOrderInfo(Map<String,Object> map) throws Exception;
 
     /**
      * 根据通报成员分组查询通报成员拥有的年份

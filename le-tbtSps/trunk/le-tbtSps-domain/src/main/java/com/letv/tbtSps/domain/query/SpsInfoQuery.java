@@ -67,6 +67,8 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
 	private String oraState;
     /** 备用字段5 */
 	private String versions;
+    /** 类型，区分是sps 还是tbt */
+	private String type;
     /** 创建时间 */
 	private Date createTime; 
     /** 修改时间 */
@@ -386,5 +388,13 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
 
     public void setListSpsCode(List<String> listSpsCode) {
         this.listSpsCode = listSpsCode;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

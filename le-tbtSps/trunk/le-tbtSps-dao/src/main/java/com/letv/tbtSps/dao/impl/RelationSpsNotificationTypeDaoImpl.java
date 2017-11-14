@@ -62,6 +62,9 @@ public class RelationSpsNotificationTypeDaoImpl extends BaseDao implements Relat
     public boolean delete(RelationSpsNotificationType configuration) {
         return delete(namespace +".delete", configuration);
     }
+    public boolean deleteByCode(RelationSpsNotificationType configuration) {
+        return delete(namespace +".deleteByCode", configuration);
+    }
 
     /**
      * {@inheritDoc}

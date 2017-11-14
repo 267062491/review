@@ -62,6 +62,8 @@ public interface SpsResidualInfoDao {
      */
     public boolean delete(SpsResidualInfo spsResidualInfo);
 
+    public boolean deleteByCode(SpsResidualInfo spsResidualInfo);
+
     /**
      * 根据主键获取对象
      * 

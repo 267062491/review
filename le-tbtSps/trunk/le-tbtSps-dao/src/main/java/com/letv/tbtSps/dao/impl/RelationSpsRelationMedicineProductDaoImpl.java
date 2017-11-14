@@ -62,6 +62,9 @@ public class RelationSpsRelationMedicineProductDaoImpl extends BaseDao implement
     public boolean delete(RelationSpsRelationMedicineProduct configuration) {
         return delete(namespace +".delete", configuration);
     }
+    public boolean deleteByCode(RelationSpsRelationMedicineProduct configuration) {
+        return delete(namespace +".deleteByCode", configuration);
+    }
 
     /**
      * {@inheritDoc}

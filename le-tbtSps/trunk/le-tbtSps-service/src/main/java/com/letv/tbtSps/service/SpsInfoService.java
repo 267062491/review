@@ -101,6 +101,16 @@ public interface SpsInfoService {
     public String[] createOrderInfo(SpsInfo spsInfo , List<MultipartFile> files ,String contents , String userName,SpsBtbMulityDto spsBtbMulityDto);
 
     /**
+     * 修改sps、btb数据
+     * @param spsInfo
+     * @param files
+     * @param contents
+     * @param userName
+     * @param spsBtbMulityDto
+     * @return
+     */
+    public String[] updateOrderInfo(SpsInfo spsInfo , List<MultipartFile> files ,String contents , String userName,SpsBtbMulityDto spsBtbMulityDto,String fileIds);
+    /**
      * 根据通报成员分组查询通报成员拥有的年份
      * @param queryBean
      * @return
@@ -161,4 +171,12 @@ public interface SpsInfoService {
      * @return
      */
     public List<SpsInfo> querySpsInfoExpertsAll(SpsInfoQuery queryBean ,PageUtil pageUtil);
+
+    /**
+     * 激活
+     * @param tableContent
+     * @param userName
+     * @return
+     */
+    public String[] jihuo(String tableContent,String userName);
 }

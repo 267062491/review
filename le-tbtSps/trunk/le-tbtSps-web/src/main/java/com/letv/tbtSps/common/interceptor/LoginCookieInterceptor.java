@@ -7,12 +7,16 @@ import com.letv.tbtSps.common.cotext.LoginUser;
 import com.letv.tbtSps.common.cotext.UserContext;
 import com.letv.tbtSps.common.util.JsonUtil;
 import com.letv.tbtSps.common.util.LsCookieUtils;
+import com.letv.tbtSps.domain.User;
+import com.letv.tbtSps.domain.query.UserQuery;
+import com.letv.tbtSps.manager.UserManager;
 import com.letv.tbtSps.service.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 登录用户上下文的拦截器<br/>
@@ -42,7 +46,9 @@ public class LoginCookieInterceptor extends AbstractHandlerInterceptorAdapter {
                     LoginUser loginUser = null;
 //                    if (LetvResponse.SUCCESS_CODE == letvResponse.getCode()) {
 //                        loginUser = JsonUtil.fromJson(letvResponse.getResult(), LoginUser.class);
-                        loginUser = JsonUtil.fromJson(cookieValue, LoginUser.class);
+                    ;
+                    String userInfo = (String) request.getSession().getAttribute(cookieValue.split("_")[1]);
+                        loginUser = JsonUtil.fromJson(userInfo, LoginUser.class);
 //                    }
                     LOG.debug("LoginCookieInterceptor#preHandle.loginUser = " + JsonHelper.toJson(loginUser));
 //                    if (null != loginUser) {
@@ -53,10 +59,13 @@ public class LoginCookieInterceptor extends AbstractHandlerInterceptorAdapter {
 //                    }
                 }
                 else {
-                    LOG.debug("no login cookie");
+                    response.sendRedirect(PropertiesHelper.newInstance().getValue("portal.api.domain"));
+                    LOG.error("LoginRequiredInterceptor#preHandle.用户未登录");
+                    return false;
                 }
             } catch (Throwable t) {
                 LOG.error("LoginCookieInterceptor#preHandle.error!", t);
+                return false;
             }
         }
         return true;

@@ -118,6 +118,12 @@
 		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
 		where id = #{id}
     </update>
+    <!-- 删除信息-逻辑删除 -->
+    <update id="deleteByCode" parameterType="SpsResidualInfo">
+		update t_sps_residual_info
+		set yn = 0, update_time = now(), update_user = #{updateUser,jdbcType=VARCHAR}
+		where sps_code = #{spsCode,jdbcType=VARCHAR}
+    </update>
 
     <!-- 常用的查询Where条件 -->
     <sql id="querySpsResidualInfoListWhere">

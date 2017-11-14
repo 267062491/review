@@ -8,17 +8,21 @@ import com.letv.common.utils.wrap.Wrapper;
 import com.letv.tbtSps.common.controller.ReviewBaseController;
 import com.letv.tbtSps.common.cotext.LoginUser;
 import com.letv.tbtSps.domain.User;
+import com.letv.tbtSps.domain.UserRole;
 import com.letv.tbtSps.domain.query.RoleResourceQuery;
 import com.letv.tbtSps.domain.query.TreeDomain;
 import com.letv.tbtSps.domain.query.UserQuery;
+import com.letv.tbtSps.domain.query.UserRoleQuery;
 import com.letv.tbtSps.service.IndexService;
 import com.letv.tbtSps.service.ResourceService;
 import com.letv.tbtSps.service.RoleResourceService;
+import com.letv.tbtSps.service.UserRoleService;
 import com.letv.tbtSps.utils.JsonHelperImpl;
 import com.letv.tbtSps.utils.PortalWeb;
 import com.letv.tbtSps.utils.constant.PortalSystemTipCodeEnum;
 import com.letv.tbtSps.utils.constant.ResourcePlant;
 import com.letv.tbtSps.utils.constant.SystemConstant;
+import com.letv.tbtSps.utils.enums.RoleEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,6 +60,8 @@ public class IndexController extends ReviewBaseController {
     private IndexService indexService ;
     @Autowired
     private PortalWeb portalWeb ;
+    @Autowired
+    private UserRoleService userRoleService;
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -144,8 +150,9 @@ public class IndexController extends ReviewBaseController {
                  * 2、跳转到登录首页
                  */
                 User user = letvResponse_userDto.getResult();
-                setCookie(response, user);
+                setCookie(request,response, user);
                 logger.info("outputPar:IndexController#loginSys.userDto="+JsonHelper.toJson(user));
+                this.setUserMenu(model,user.getUserName());
                 return VIEW_INDEX;
 //                return REDIRECT+"index";
             }else{
@@ -176,6 +183,7 @@ public class IndexController extends ReviewBaseController {
     public String quit(HttpServletResponse response, Model model, HttpServletRequest request) {
 //        portalWeb.invalidateCookies(request,response);
         setLocale(model, request);
+        portalWeb.invalidateCookie(response);
         return REDIRECT + VIEW_INDEX;
     }
 
@@ -184,7 +192,7 @@ public class IndexController extends ReviewBaseController {
         model.addAttribute("language", requestContext.getLocale().toString());
     }
 
-    private void setCookie(HttpServletResponse response, User user) {
+    private void setCookie(HttpServletRequest request,HttpServletResponse response, User user) {
         if (null == user) {
             return;
         }
@@ -196,7 +204,7 @@ public class IndexController extends ReviewBaseController {
         loginUser.setLanguage("zh");
         loginUser.setUserType(user.getUserType());
         String cookieValue = loginUser.toString();// 用户信息的json值
-        portalWeb.setCookies(response, cookieValue ,user.getUserCode() );
+        portalWeb.setCookies(request,response, cookieValue ,user.getUserCode() );
     }
 
     /**
@@ -246,4 +254,99 @@ public class IndexController extends ReviewBaseController {
         return "homePage";
     }
 
+
+    /**
+     * 设置用户菜单
+     * @param model
+     * @param userName
+     */
+    private void setUserMenu(Model model,String userName){
+        // 根据用户名称查询对应的角色
+        UserRoleQuery userRoleQuery = new UserRoleQuery();
+        userRoleQuery.setUserCode(userName);
+        List<UserRole>  userRoleList = userRoleService.queryUserRoleList(userRoleQuery);
+        for(UserRole userRole : userRoleList){
+            if(userRole.getRoleCode().equals(RoleEnum.CCPR.getStatusCode())){
+//                    model.addAttribute("user",true);// 用户
+//                    model.addAttribute("role",true);// 角色
+//                    model.addAttribute("notificationType",true);//通报类型管理
+//                    model.addAttribute("country",true);//通报成员管理
+//                    model.addAttribute("language",true);//原文语种
+//                    model.addAttribute("targereason",true);//目标理由
+//                    model.addAttribute("internationalStandard",true);//国际标准
+                model.addAttribute("relationMedicine",true);//相关农药
+                model.addAttribute("spsInfo",true);//sps通报
+                model.addAttribute("tbt",true);//tbt通报
+                model.addAttribute("indexReview",true);//通报评审
+                model.addAttribute("relationMedicineProduct",true);//相关农产品
+                model.addAttribute("indexExpertsReview",true);//专家评议
+                model.addAttribute("relationMedicine",true);//全文检索
+                model.addAttribute("relationMedicine",true);//统计
+            }else if(userRole.getRoleCode().equals(RoleEnum.outExports.getStatusCode())){ // 外部专家
+//                    model.addAttribute("user",true);// 用户
+//                    model.addAttribute("role",true);// 角色
+//                    model.addAttribute("notificationType",true);//通报类型管理
+//                    model.addAttribute("country",true);//通报成员管理
+//                    model.addAttribute("language",true);//原文语种
+//                    model.addAttribute("targereason",true);//目标理由
+//                    model.addAttribute("internationalStandard",true);//国际标准
+//                    model.addAttribute("relationMedicine",true);//相关农药
+//                    model.addAttribute("spsInfo",true);//sps通报
+//                    model.addAttribute("tbt",true);//tbt通报
+                model.addAttribute("indexReview",true);//通报评审
+//                    model.addAttribute("relationMedicineProduct",true);//相关农产品
+                model.addAttribute("indexExpertsReview",true);//专家评议
+                model.addAttribute("relationMedicine",true);//全文检索
+//                    model.addAttribute("relationMedicine",true);//统计
+            }else if(userRole.getRoleCode().equals(RoleEnum.notice_manager.getStatusCode())){// 通报管理员
+//                    model.addAttribute("user",true);// 用户
+//                    model.addAttribute("role",true);// 角色
+//                    model.addAttribute("notificationType",true);//通报类型管理
+//                    model.addAttribute("country",true);//通报成员管理
+//                    model.addAttribute("language",true);//原文语种
+//                    model.addAttribute("targereason",true);//目标理由
+//                    model.addAttribute("internationalStandard",true);//国际标准
+                model.addAttribute("relationMedicine",true);//相关农药
+                model.addAttribute("spsInfo",true);//sps通报
+                model.addAttribute("tbt",true);//tbt通报
+//                    model.addAttribute("indexReview",true);//通报评审
+                model.addAttribute("relationMedicineProduct",true);//相关农产品
+//                    model.addAttribute("indexExpertsReview",true);//专家评议
+                model.addAttribute("relationMedicine",true);//全文检索
+//                    model.addAttribute("relationMedicine",true);//统计
+            }else if(userRole.getRoleCode().equals(RoleEnum.limit_manager.getStatusCode())){ // 限量数据管理员
+//                    model.addAttribute("user",true);// 用户
+//                    model.addAttribute("role",true);// 角色
+//                    model.addAttribute("notificationType",true);//通报类型管理
+//                    model.addAttribute("country",true);//通报成员管理
+//                    model.addAttribute("language",true);//原文语种
+//                    model.addAttribute("targereason",true);//目标理由
+//                    model.addAttribute("internationalStandard",true);//国际标准
+                model.addAttribute("relationMedicine",true);//相关农药
+//                    model.addAttribute("spsInfo",true);//sps通报
+//                    model.addAttribute("tbt",true);//tbt通报
+//                    model.addAttribute("indexReview",true);//通报评审
+                model.addAttribute("relationMedicineProduct",true);//相关农产品
+//                    model.addAttribute("indexExpertsReview",true);//专家评议
+                model.addAttribute("relationMedicine",true);//全文检索
+//                    model.addAttribute("relationMedicine",true);//统计
+            }else if(userRole.getRoleCode().equals(RoleEnum.sys_manager.getStatusCode())){ // 系统管理员
+                model.addAttribute("user",true);// 用户
+                model.addAttribute("role",true);// 角色
+                model.addAttribute("notificationType",true);//通报类型管理
+                model.addAttribute("country",true);//通报成员管理
+                model.addAttribute("language",true);//原文语种
+                model.addAttribute("targereason",true);//目标理由
+                model.addAttribute("internationalStandard",true);//国际标准
+                model.addAttribute("relationMedicine",true);//相关农药
+                model.addAttribute("spsInfo",true);//sps通报
+                model.addAttribute("tbt",true);//tbt通报
+//                    model.addAttribute("indexReview",true);//通报评审
+                model.addAttribute("relationMedicineProduct",true);//相关农产品
+//                    model.addAttribute("indexExpertsReview",true);//专家评议
+                model.addAttribute("relationMedicine",true);//全文检索
+                model.addAttribute("relationMedicine",true);//统计
+            }
+        }
+    }
 }

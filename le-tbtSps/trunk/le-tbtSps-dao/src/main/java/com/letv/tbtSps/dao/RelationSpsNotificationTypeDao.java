@@ -61,6 +61,7 @@ public interface RelationSpsNotificationTypeDao {
      * @return
      */
     public boolean delete(RelationSpsNotificationType relationSpsNotificationType);
+    public boolean deleteByCode(RelationSpsNotificationType relationSpsNotificationType);
 
     /**
      * 根据主键获取对象

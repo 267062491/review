@@ -62,6 +62,9 @@ public class RelationSpsLanguageDaoImpl extends BaseDao implements RelationSpsLa
     public boolean delete(RelationSpsLanguage configuration) {
         return delete(namespace +".delete", configuration);
     }
+    public boolean deleteByCode(RelationSpsLanguage configuration) {
+        return delete(namespace +".deleteByCode", configuration);
+    }
 
     /**
      * {@inheritDoc}

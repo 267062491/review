@@ -72,6 +72,8 @@ public class SpsInfo implements java.io.Serializable  {
     private Date expertsEndDate;
     /** 上次状态 */
     private String oraState;
+    /** 类型，区分是sps还是tbt */
+    private String type;
     /** 备用字段5 */
     private String versions;
     /** 创建时间 */
@@ -366,13 +368,22 @@ public class SpsInfo implements java.io.Serializable  {
         this.list_spsInfoLog = list_spsInfoLog;
     }
 
-    public void setSpsInfoCommonValues(SpsInfo spsInfo , String spsCode , String userName,String state,String oraState){
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setSpsInfoCommonValues(SpsInfo spsInfo , String spsCode , String userName, String state, String oraState){
         spsInfo.setSpsCode(spsCode);
         spsInfo.setCreateTime(new Date());
         spsInfo.setCreateUser(userName);
         spsInfo.setUpdateTime(new Date());
         spsInfo.setUpdateUser(userName);
         spsInfo.setState(state);
+        spsInfo.setType(spsInfo.getType());
         spsInfo.setOraState(oraState);
         if(!StringUtils.isEmpty(spsInfo.getPublishDateIn())){
             spsInfo.setPublishDate(DateHelper.parseDate(spsInfo.getPublishDateIn()));

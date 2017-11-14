@@ -1,4 +1,5 @@
 <div class="row">
+    <input type="hidden" name="id" value="$!spsInfo.id">
     <div class="col-xs-12 col-sm-12">
         <div class="form-group">
             <label class="col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfo.spsCode')</label>
@@ -120,7 +121,7 @@
             <label class="col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.spsInfo.standardYn')</label>
             <div class="col-sm-3">
                 #springMessage('constan.yes')<input type="radio" name="standardYn" value="1"
-                                                    #if($!spsInfo.spsCode)
+                                                    #if($!standardYnFlag!="")
                                                         checked="true"
                                                     #else
                                                         #if($!spsInfo.standardYn==1)

@@ -52,11 +52,11 @@
                             <div class="col-sm-4">
                                 #parse("/layout/page.vm")
                                 <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
-                            ##                                        &nbsp; &nbsp; &nbsp;
-                            ##                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
-                            ##                                        &nbsp; &nbsp; &nbsp;
-                            ##                                        <button class="btn btn-success btn-sm" type="button" id="btn-send" style="display: none"><i class="icon-plus"></i>#springMessage('view.lable.send')</button>
-                            ##                                        <button class="btn btn-success btn-sm" type="button" id="btn-jiHuo" style="display: none"><i class="icon-plus"></i>#springMessage('view.lable.jiHuo')</button>
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+                                &nbsp; &nbsp; &nbsp;
+                                <button class="btn btn-success btn-sm" type="button" id="btn-send" style="display: none"><i class="icon-plus"></i>#springMessage('view.lable.send')</button>
+                                <button class="btn btn-success btn-sm" type="button" id="btn-jiHuo" style="display: none"><i class="icon-plus"></i>#springMessage('view.lable.jiHuo')</button>
                             </div>
                         </div>
                     </form>
@@ -67,8 +67,10 @@
     <div class="col-xs-12 col-sm-12 table-responsive">
         #if($!query.state=="10")
             #parse("/spsInfo/index_review_content_unsend.vm")
-        #elseif($!query.state=="20" || $!query.state=="30" || $!query.state=="40")
+        #elseif($!query.state=="20" || $!query.state=="40")
             #parse("/spsInfo/index_review_content_haveFenPei.vm")
+        #elseif($!query.state=="30")
+            #parse("/spsInfo/index_review_content_huiZong.vm")
         #end
 
                 #if($!page)
@@ -92,6 +94,29 @@
             debugger;
             $.ajax({
                 url: '$basePath/spsInfo/sendNotice' ,
+                type: 'POST',
+                data: params,
+                async: false,
+//                        cache: false,
+//                        contentType: false,
+//                        processData: false,
+                dataType:"json",
+                success: function (returndata) {
+                    dialog.alert(returndata.message) ;
+                },
+                error: function (returndata) {
+                    dialog.alert("出问题了，联系管理员吧");
+                }
+            });
+        });
+
+        $("#btn-jiHuo").click(function() {
+            var tableJson = TableToJson("review_send_table_huizong",1,0);
+            var params = {} ;
+            params.tableJson = tableJson;
+            debugger;
+            $.ajax({
+                url: '$basePath/spsInfo/jiHuo' ,
                 type: 'POST',
                 data: params,
                 async: false,

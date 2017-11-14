@@ -62,6 +62,9 @@ public class SpsLogAttrDaoImpl extends BaseDao implements SpsLogAttrDao {
     public boolean delete(SpsLogAttr configuration) {
         return delete(namespace +".delete", configuration);
     }
+    public boolean deleteByCode(SpsLogAttr configuration) {
+        return delete(namespace +".deleteByCode", configuration);
+    }
 
     /**
      * {@inheritDoc}

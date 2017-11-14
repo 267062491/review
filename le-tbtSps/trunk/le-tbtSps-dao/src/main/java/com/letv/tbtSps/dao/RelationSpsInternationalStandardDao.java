@@ -61,6 +61,7 @@ public interface RelationSpsInternationalStandardDao {
      * @return
      */
     public boolean delete(RelationSpsInternationalStandard relationSpsInternationalStandard);
+    public boolean deleteByCode(RelationSpsInternationalStandard relationSpsInternationalStandard);
 
     /**
      * 根据主键获取对象

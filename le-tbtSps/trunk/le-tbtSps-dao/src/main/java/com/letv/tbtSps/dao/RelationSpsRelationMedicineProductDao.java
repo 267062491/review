@@ -61,6 +61,7 @@ public interface RelationSpsRelationMedicineProductDao {
      * @return
      */
     public boolean delete(RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct);
+    public boolean deleteByCode(RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct);
 
     /**
      * 根据主键获取对象
