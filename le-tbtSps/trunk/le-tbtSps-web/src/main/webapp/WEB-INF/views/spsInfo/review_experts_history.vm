@@ -10,6 +10,15 @@
     <div>&nbsp;</div>
     #foreach($item_review in $!list_review)
         <div class="form-group">
+
+            <label class="col-sm-1 control-label no-padding-right" for="status">是否终评</label>
+            <div class="col-sm-3">
+                #if($!item_review.overReview==1)
+                    是
+                #else
+                    否
+                #end
+            </div>
             <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('tbtSps.spsInfo.experts')</label>
             <div class="col-sm-3">
                 <input type="text" class="col-xs-12 col-sm-12" value="$!{item_review.createUser}" readonly="true"/>

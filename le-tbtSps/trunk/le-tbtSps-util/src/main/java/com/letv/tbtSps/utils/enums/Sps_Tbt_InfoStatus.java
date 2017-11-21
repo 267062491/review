@@ -15,7 +15,7 @@ public enum Sps_Tbt_InfoStatus {
         HAVE_FENPEI_HUIDA("21","已经评议"),// log表才有的状态， spsinfo表么有这个状态
         HAVE_FENPEI_HUIZONG("22","已经评议汇总"),// log表才有的状态， spsinfo表么有这个状态    这个应该是个没有用的的状态
     HUIZONG_PINGYI("30","汇总评议"),
-    HAVE_FANKUI("40","已反馈"),
+    HAVE_FANKUI("40","反馈信息"),
 
 
     // 专家对应的状态

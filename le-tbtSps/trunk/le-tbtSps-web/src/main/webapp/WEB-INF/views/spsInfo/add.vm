@@ -149,7 +149,7 @@
         <label for="tab2">附件信息</label>
 
         <input id="tab3" type="radio" name="tabs" style="display: none">
-        <label for="tab3">农药、农产品</label>
+        <label for="tab3">残留量</label>
         <section id="content1">
             #parse("/spsInfo/content_one.vm")
         </section>
@@ -328,6 +328,9 @@
             });
             $("#showDiv").click(function(){
                 $("#hiddenDiv").show();
+            });
+            $("#btn-back").click(function(){
+                window.history.go(-1);
             });
         });
         /**

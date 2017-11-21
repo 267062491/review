@@ -96,6 +96,10 @@ public class ParameterLoad implements InitializingBean {
      */
     private List<String> list_role_review = new ArrayList<String>();
     /**
+     *
+     */
+    private List<String> list_role_review_ccpr_outExp = new ArrayList<String>();
+    /**
      * 范围
      */
     private List<SpsBtbState> list_scope = new ArrayList<SpsBtbState>();
@@ -104,6 +108,11 @@ public class ParameterLoad implements InitializingBean {
      * 日历范围
      */
     private List<String> listDate = new ArrayList<String>();
+
+    /**
+     * 日历范围年
+     */
+    private List<String> listYear = new ArrayList<String>();
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -122,8 +131,10 @@ public class ParameterLoad implements InitializingBean {
             list_spsBtbStateExperts = this.initSpsBtbStateExperts();
             list_leves = this.initLeves();
             list_role_review = this.reviewRoles();
+            list_role_review_ccpr_outExp = this.reviewRolesCcprOutExp();
             list_scope = this.scope();
             listDate = this.getDates();
+            listYear = this.getYears();
         }catch (Exception e){
             LOG.error("初始化后select列表项异常：",e);
         }
@@ -215,6 +226,12 @@ public class ParameterLoad implements InitializingBean {
         list_roleReview.add(RoleEnum.sys_manager.getStatusCode());
         return list_roleReview ;
     }
+    private List<String> reviewRolesCcprOutExp(){
+        List<String> list_roleReview = new ArrayList<String>();
+        list_roleReview.add(RoleEnum.CCPR.getStatusCode());
+        list_roleReview.add(RoleEnum.outExports.getStatusCode());
+        return list_roleReview ;
+    }
     private List<SpsBtbState> scope(){
         List<SpsBtbState> list_roleReview = new ArrayList<SpsBtbState>();
         SpsBtbState spsBtbState = new SpsBtbState();
@@ -235,6 +252,15 @@ public class ParameterLoad implements InitializingBean {
         listDate.add("2017-01-04");
         listDate.add("2017-01-05");
         return listDate ;
+    }
+    private List<String> getYears(){
+        List<String> listYear = new ArrayList<String>();
+        listYear.add("2017");
+        listYear.add("2018");
+        listYear.add("2019");
+        listYear.add("2020");
+        listYear.add("2021");
+        return listYear ;
     }
 
     public String getCountryNameByCode(String code){
@@ -423,5 +449,77 @@ public class ParameterLoad implements InitializingBean {
 
     public void setListDate(List<String> listDate) {
         this.listDate = listDate;
+    }
+
+    public List<String> getListYear() {
+        return listYear;
+    }
+
+    public void setListYear(List<String> listYear) {
+        this.listYear = listYear;
+    }
+
+    public CountryService getCountryService() {
+        return countryService;
+    }
+
+    public void setCountryService(CountryService countryService) {
+        this.countryService = countryService;
+    }
+
+    public LanguageService getLanguageService() {
+        return languageService;
+    }
+
+    public void setLanguageService(LanguageService languageService) {
+        this.languageService = languageService;
+    }
+
+    public NotificationTypeService getNotificationTypeService() {
+        return notificationTypeService;
+    }
+
+    public void setNotificationTypeService(NotificationTypeService notificationTypeService) {
+        this.notificationTypeService = notificationTypeService;
+    }
+
+    public TargereasonService getTargereasonService() {
+        return targereasonService;
+    }
+
+    public void setTargereasonService(TargereasonService targereasonService) {
+        this.targereasonService = targereasonService;
+    }
+
+    public InternationalStandardService getInternationalStandardService() {
+        return internationalStandardService;
+    }
+
+    public void setInternationalStandardService(InternationalStandardService internationalStandardService) {
+        this.internationalStandardService = internationalStandardService;
+    }
+
+    public RelationMedicineService getRelationMedicineService() {
+        return relationMedicineService;
+    }
+
+    public void setRelationMedicineService(RelationMedicineService relationMedicineService) {
+        this.relationMedicineService = relationMedicineService;
+    }
+
+    public RelationMedicineProductService getRelationMedicineProductService() {
+        return relationMedicineProductService;
+    }
+
+    public void setRelationMedicineProductService(RelationMedicineProductService relationMedicineProductService) {
+        this.relationMedicineProductService = relationMedicineProductService;
+    }
+
+    public List<String> getList_role_review_ccpr_outExp() {
+        return list_role_review_ccpr_outExp;
+    }
+
+    public void setList_role_review_ccpr_outExp(List<String> list_role_review_ccpr_outExp) {
+        this.list_role_review_ccpr_outExp = list_role_review_ccpr_outExp;
     }
 }

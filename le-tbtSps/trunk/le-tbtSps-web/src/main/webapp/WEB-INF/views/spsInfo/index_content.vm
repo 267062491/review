@@ -5,6 +5,7 @@
             <th class="center" style="width:10%">#springMessage('tbtSps.spsInfo.countryCode')</th>
             <th class="center" style="width:6%">#springMessage('tbtSps.spsInfo.publishDate')</th>
             <th class="center" style="width:60%">#springMessage('tbtSps.spsInfo.contentDes')</th>
+##            <th class="center" style="width:20%">#springMessage('tbtSps.notificationType')</th>
             <th class="center" style="width:10%">#springMessage('view.lable.operate')</th>
         </tr>
         </thead>

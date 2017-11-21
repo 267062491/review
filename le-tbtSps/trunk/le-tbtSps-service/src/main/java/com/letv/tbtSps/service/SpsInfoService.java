@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.letv.tbtSps.domain.SpsInfo;
 import com.letv.tbtSps.domain.SpsInfoLog;
+import com.letv.tbtSps.domain.dto.SolrDto;
+import com.letv.tbtSps.domain.dto.SolrDtoQuery;
 import com.letv.tbtSps.domain.dto.SpsBtbMulityDto;
 import com.letv.tbtSps.domain.query.SpsInfoQuery;
 import com.letv.common.utils.page.PageUtil;
@@ -179,4 +181,12 @@ public interface SpsInfoService {
      * @return
      */
     public String[] jihuo(String tableContent,String userName);
+
+    /**
+     * solr查询
+     * @param solrDtoQuery
+     * @param pageUtil
+     * @return
+     */
+    public List<SolrDto> sorlQuery(SolrDtoQuery solrDtoQuery , PageUtil pageUtil) throws Exception;
 }

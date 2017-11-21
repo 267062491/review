@@ -103,6 +103,9 @@
                 dataType:"json",
                 success: function (returndata) {
                     dialog.alert(returndata.message) ;
+                    if(returndata.code==200){
+                        window.location.href="$basePath/spsInfo/queryByPageReview?state=10"
+                    }
                 },
                 error: function (returndata) {
                     dialog.alert("出问题了，联系管理员吧");
@@ -203,8 +206,9 @@
             }
         }
         json = json.substring(0, json.length - 1);
-        json += "]";
-        debugger ;
+        if(json!=""){
+            json += "]";
+        }
         return json;
     }
 

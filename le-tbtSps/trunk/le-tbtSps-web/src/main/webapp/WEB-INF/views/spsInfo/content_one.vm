@@ -2,7 +2,9 @@
     <input type="hidden" name="id" value="$!spsInfo.id">
     <div class="col-xs-12 col-sm-12">
         <div class="form-group">
-            <label class="col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfo.spsCode')</label>
+            <span style="color: red">
+                <label class="col-sm-1 control-label no-padding-right" for="spsCode">*#springMessage('tbtSps.spsInfo.spsCode')</label>
+            </span>
             <div class="col-sm-3">
                 <input type="text" name="spsCode" id="spsCode" class="col-xs-10 col-sm-8" value="$!spsInfo.spsCode"
                          #if($!spsInfo.spsCode)
@@ -10,12 +12,12 @@
                          #end
                         />
             </div>
-            <label class="col-sm-1 control-label no-padding-right" for="publishDate">#springMessage('tbtSps.tbinfo.publishDate')</label>
+            <label class="col-sm-1 control-label no-padding-right" for="publishDate">*#springMessage('tbtSps.tbinfo.publishDate')</label>
             <div class="col-sm-3">
                 <input type="text" id="publishDate"  name = "publishDateIn"  class="col-xs-10 col-sm-8" value="$!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)"
                        data-beatpicker="true" data-beatpicker-position="['*','*']">
             </div>
-            <label class="col-sm-1 control-label no-padding-right" for="language">#springMessage('tbtSps.language')</label>
+            <label class="col-sm-1 control-label no-padding-right" for="language">*#springMessage('tbtSps.language')</label>
             <div class="col-sm-3">
                 <select name="language"  id="language" multiple="multiple" >
                     #foreach( $item_language in $list_language)
@@ -33,7 +35,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-1 control-label no-padding-right" for="countryCode">#springMessage('tbtSps.spsInfo.countryCode')</label>
+            <label class="col-sm-1 control-label no-padding-right" for="countryCode">*#springMessage('tbtSps.spsInfo.countryCode')</label>
             <div class="col-sm-3">
                 <select id="countryCode" name="countryCode" class="chosen-select" >
                     <option value="">#springMessage('tbtSps.please.choose')</option>
@@ -150,8 +152,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-1 control-label"  >#springMessage('relation.nongyao.nongchanpin')</label>
-            <div class="col-sm-3">
+            <label class="col-sm-2 control-label"  >#springMessage('relation.nongyao.nongchanpin')</label>
+            <div class="col-sm-1">
             </div>
             <label class="col-sm-1 control-label no-padding-right" for="internationalStandard">#springMessage('tbtSps.tbresidualInfo.medicineCode.add')</label>
             <div class="col-sm-3">

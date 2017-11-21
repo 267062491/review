@@ -27,7 +27,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label no-padding-right" for="content">#springMessage('tbtSps.spsInfo.huizong.content')</label>
                                         <div class="col-sm-11">
-                                            <textarea  class="form-control" rows="3" name="content"></textarea>
+                                            <textarea  class="form-control" rows="3" name="content">$!{overContent}</textarea>
                                         </div>
                                     </div>
                                     <div class="form-group">

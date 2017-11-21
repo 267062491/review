@@ -41,7 +41,7 @@ public class SpsResidualInfo implements java.io.Serializable  {
     private String medicineCode; 
     /** 农产品 */
     private String medicineProductCode; 
-    /** 修改类型 */
+    /** 修改类型 1:制定残留限量 ; 2:修改残留限量 ;3:删除残留量*/
     private String updateType; 
     /** 残留量 */
     private Double residuaAmount; 

@@ -49,10 +49,23 @@
                                         </select>
                                     </div>
 									<label class="col-sm-1 control-label no-padding-right" for="publishDateIn">#springMessage('tbtSps.spsInfo.publishYear')</label>
+##                                    <div class="col-sm-3" id="div_publishDateIn">
+##                                        <select id="publishDateIn" name="publishDateIn" class="col-sm-10 col-sm-offset-12" >
+##                                            <option value="">#springMessage('tbtSps.please.choose')</option>
+##                                            <option value="2017">2017</option>
+##                                        </select>
+##                                    </div>
                                     <div class="col-sm-3" id="div_publishDateIn">
-                                        <select id="publishDateIn" name="publishDateIn" class="col-sm-10 col-sm-offset-12" >
-                                            <option value="">#springMessage('tbtSps.please.choose')</option>
-                                        </select>
+                                    <select id="publishDateIn" name="publishDateIn" class="col-sm-10 col-sm-offset-12" >
+                                        <option value="">#springMessage('tbtSps.please.choose')</option>
+                                        #foreach( $item_date in $!list_date)
+                                            <option value="$!item_date"
+                                                #if($!item_date==$!query.publishDateIn)
+                                                    selected="selected"
+                                                #end
+                                            >$!item_date</option>
+                                        #end
+                                    </select>
                                     </div>
                                     <div class="col-sm-3" id="div_publishDateIn_1" style="display: none;">
                                         <select id="publishDateIn1" name="publishDateIn1" class="col-sm-10 col-sm-offset-12" >
@@ -147,7 +160,7 @@
             }
 
             function toUpdate(spsCode){
-                window.location.href=("$basePath/spsInfo/addForward?id="+spsCode);
+                window.location.href=("$basePath/spsInfo/addForward?id="+spsCode+"&type=sps");
             }
 
             function toDelete(parameterId){

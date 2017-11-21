@@ -10,14 +10,13 @@ import com.letv.common.utils.wrap.WrapMapper;
 import com.letv.common.utils.wrap.Wrapper;
 import com.letv.tbtSps.common.controller.ReviewBaseController;
 import com.letv.tbtSps.domain.*;
-import com.letv.tbtSps.domain.dto.SpsBtbMulityDto;
-import com.letv.tbtSps.domain.dto.SpsBtbState;
-import com.letv.tbtSps.domain.dto.UpdateType;
+import com.letv.tbtSps.domain.dto.*;
 import com.letv.tbtSps.domain.query.*;
 import com.letv.tbtSps.service.*;
 import com.letv.tbtSps.utils.JsonHelperImpl;
 import com.letv.tbtSps.utils.ParameterLoad;
 import com.letv.tbtSps.utils.constant.SystemConstant;
+import com.letv.tbtSps.utils.enums.RoleEnum;
 import com.letv.tbtSps.utils.enums.ScopeEnum;
 import com.letv.tbtSps.utils.enums.Sps_Tbt_InfoStatus;
 import com.letv.tbtSps.utils.enums.SystemCodeEnum;
@@ -37,7 +36,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,6 +76,8 @@ public class SpsInfoController extends ReviewBaseController {
     private RelationSpsRelationMedicineProductService relationSpsRelationMedicineProductService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRoleService userRoleService ;
 
     /** 视图前缀 */
     private static final String viewPrefix ="spsInfo";
@@ -92,6 +96,7 @@ public class SpsInfoController extends ReviewBaseController {
         List<Country> list_country = parameterLoad.getList_country();
         model.addAttribute("list_country",list_country); // 通报成员
         model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
+        model.addAttribute("list_date",parameterLoad.getListYear()) ;// 年份
         return viewPrefix + "/index";
     }
     /**
@@ -129,16 +134,15 @@ public class SpsInfoController extends ReviewBaseController {
             model.addAttribute("dataList", dataList);// 通报状态
             model.addAttribute("query", query);// 查询参数
             model.addAttribute("page", page);// 分页
-            if(!StringUtils.isEmpty(query.getCountryCode())){
-                SpsInfoQuery spsInfoQuery = new SpsInfoQuery ();
-                spsInfoQuery.setCountryCode(query.getCountryCode());
-                List<SpsInfo> list_date = spsInfoService.queryCountryDateByCountry(spsInfoQuery);
-                model.addAttribute("list_date", list_date);
-            }
-            List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
-            model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
-            List<Country> list_country = parameterLoad.getList_country();
-            model.addAttribute("list_country",list_country); // 通报成员
+//            if(!StringUtils.isEmpty(query.getCountryCode())){
+//                SpsInfoQuery spsInfoQuery = new SpsInfoQuery ();
+//                spsInfoQuery.setCountryCode(query.getCountryCode());
+//                List<SpsInfo> list_date = spsInfoService.queryCountryDateByCountry(spsInfoQuery);
+//                model.addAttribute("list_date", list_date);
+//            }
+            model.addAttribute("list_spsBtbState",parameterLoad.getList_spsBtbState()) ;// 通报状态
+            model.addAttribute("list_country", parameterLoad.getList_country()); // 通报成员
+            model.addAttribute("list_date",parameterLoad.getListYear()) ;// 年份
         } catch (Exception e) {
             LOG.error("spsInfo queryByPage has error.", e);
         }
@@ -215,6 +219,12 @@ public class SpsInfoController extends ReviewBaseController {
             spsResidualInfoQuery.setSpsCode(spsCode);
 
             List<SpsResidualInfo> listSpsResidualInfo = spsResidualInfoService.querySpsResidualInfoList(spsResidualInfoQuery) ;
+            for(SpsResidualInfo spsResidualInfo : listSpsResidualInfo){
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String dateString = formatter.format(spsResidualInfo.getEndDate());
+                spsResidualInfo.setEndDateIn(dateString);
+            }
+
             model.addAttribute("listSpsResidualInfo",listSpsResidualInfo);
         }else{
             model.addAttribute("standardYnFlag","standardYnFlag");
@@ -395,6 +405,31 @@ public class SpsInfoController extends ReviewBaseController {
         LOG.info("进入创建sps方法，传入user="+getLoginUserName()+" , spsInfo="+ JsonHelperImpl.toJson(spsInfo)+" , tableContent="+tableContent+",spsBtbMulityDto="+JsonHelperImpl.toJson(spsBtbMulityDto));
         try{
             String[] ret = null ;
+
+            if(StringUtils.isEmpty(spsInfo.getSpsCode())){
+                Wrapper wrapper = new Wrapper<SpsInfo>();
+                wrapper.setCode(400);
+                wrapper.setMessage("请填写通报编码");
+                return wrapper ;
+            }
+            if(StringUtils.isEmpty(spsInfo.getPublishDateIn())){
+                Wrapper wrapper = new Wrapper<SpsInfo>();
+                wrapper.setCode(400);
+                wrapper.setMessage("请填写分发日期");
+                return wrapper ;
+            }
+            if(null==spsBtbMulityDto.getLanguage() || spsBtbMulityDto.getLanguage().length==0){
+                Wrapper wrapper = new Wrapper<SpsInfo>();
+                wrapper.setCode(400);
+                wrapper.setMessage("请选择原文语种");
+                return wrapper ;
+            }
+            if(StringUtils.isEmpty(spsInfo.getCountryCode())){
+                Wrapper wrapper = new Wrapper<SpsInfo>();
+                wrapper.setCode(400);
+                wrapper.setMessage("请选择通报成员");
+                return wrapper ;
+            }
             if(null == spsInfo.getId()){
                 ret = spsInfoService.createOrderInfo(spsInfo,files,tableContent,getLoginUserName(),spsBtbMulityDto);
             } else{
@@ -469,7 +504,8 @@ public class SpsInfoController extends ReviewBaseController {
             model.addAttribute("query", query);// 查询参数
             model.addAttribute("page", page);// 分页
             UserQuery queryBean = new UserQuery ();
-            queryBean.setList_roleCode(parameterLoad.getList_role_review());
+
+            queryBean.setList_roleCode(parameterLoad.getList_role_review_ccpr_outExp());
             queryBean.setUserType(1);
             List<SpsBtbState> list_spsBtbState = parameterLoad.getList_spsBtbState();
             model.addAttribute("list_spsBtbState",list_spsBtbState) ;// 通报状态
@@ -522,6 +558,12 @@ public class SpsInfoController extends ReviewBaseController {
     @ResponseBody
     public Wrapper<?> sendNotice(String tableJson){
         try{
+            if(StringUtils.isEmpty(tableJson)){
+                Wrapper wrapper = new Wrapper<String>();
+                wrapper.setCode(400);
+                wrapper.setMessage("请选择需要下发的数据");
+                return wrapper;
+            }
             String[] ret = spsInfoService.sendNotice(tableJson,this.getLoginUserName());
             Wrapper wrapper = new Wrapper<String>().result(ret[1]);
             wrapper.setCode(Integer.parseInt(ret[0]));
@@ -644,12 +686,36 @@ public class SpsInfoController extends ReviewBaseController {
             this.logger.info("异常就异常吧，没关系了");
         }
         if(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode().equals(sendFalg)){ // 进入汇总操作页面
+            /**
+             * 把历史评议内容，拼装到一起
+             */
+            StringBuilder strb = new StringBuilder();
+            for(SpsInfoLog spsInfoLog : list_review){
+                strb.append(spsInfoLog.getContent()+"\n");
+            }
+            strb.append(review.getContent());
+            model.addAttribute("overContent",String.valueOf(strb));
             return viewPrefix+"/summary_review" ;
         }else if(Sps_Tbt_InfoStatus.HUIZONG_PINGYI.getStatusCode().equals(sendFalg)){  // 进入反馈操作页面
             return viewPrefix+"/feedback_review" ;
         } else if(Sps_Tbt_InfoStatus.HAVE_FANKUI.getStatusCode().equals(sendFalg)){  // 进入已反馈页面
             return viewPrefix+"/feedback_have" ;
         }else if(Sps_Tbt_InfoStatus.EXPERTS_UN_REVIEW.getStatusCode().equals(sendFalg)){  // 进入反专家评议页面
+            UserRoleQuery userRoleQuery = new UserRoleQuery();
+            userRoleQuery.setUserCode(this.getLoginUserCode());
+            List<UserRole> userRoleList = userRoleService.queryUserRoleList(userRoleQuery);
+            String flag = "" ;
+            for(UserRole userRole : userRoleList){// 如果是ccpr角色，则可以进行选择是否最终评议
+                if(RoleEnum.CCPR.getStatusCode().equals(userRole.getRoleCode())){
+                    model.addAttribute("overReview","1");
+                    flag = "1" ;
+                }
+            }
+            list_spsInfo.get(0).getExpertsEndDate();// 专家评议截止日期
+            int result = compare_date(new Date(),list_spsInfo.get(0).getExpertsEndDate());
+            if(StringUtils.isEmpty(flag) && result==1){// 不是ccpr，并且超过了评审日期，则不能进行评审
+                model.addAttribute("pingShenButton","no");
+            }
             return viewPrefix+"/experts_review" ;
         } else{ // 进入详情页面
             return viewPrefix+"/detailInfo" ;
@@ -876,6 +942,12 @@ public class SpsInfoController extends ReviewBaseController {
     @ResponseBody
     public Wrapper<?> jiHuo(String tableJson){
         try{
+            if(StringUtils.isEmpty(tableJson)){
+                Wrapper wrapper = new Wrapper<String>();
+                wrapper.setCode(400);
+                wrapper.setMessage("请选择需要激活的数据");
+                return wrapper;
+            }
             String[] ret = spsInfoService.jihuo(tableJson,this.getLoginUserName());
             Wrapper wrapper = new Wrapper<String>().result(ret[1]);
             wrapper.setCode(Integer.parseInt(ret[0]));
@@ -884,5 +956,57 @@ public class SpsInfoController extends ReviewBaseController {
         } catch (Exception e){
             return error();
         }
+    }
+
+    public static int compare_date(Date DATE1, Date DATE2) {
+
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+//            Date dt1 = df.parse(DATE1);
+//            Date dt2 = df.parse(DATE2);
+            if (DATE1.getTime() >= DATE2.getTime()) {
+                return 1;
+            } else if (DATE1.getTime() < DATE2.getTime()) {
+                return -1;
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    /**
+     * 首页indexSolr
+     *
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "indexSolr")
+    public String indexSolr(Model model) {
+        List<Country> list_country = parameterLoad.getList_country();
+        List<NotificationType> list_notificationType = parameterLoad.getList_notificationType();
+        List<RelationMedicine> list_relationMedicine = parameterLoad.getList_relationMedicine();
+        List<RelationMedicineProduct> list_relationMedicineProduct = parameterLoad.getList_relationMedicineProduct();
+        model.addAttribute("list_country",list_country); // 通报成员
+        model.addAttribute("list_notificationType",list_notificationType) ;// 通报类型
+        model.addAttribute("list_relationMedicine",list_relationMedicine);
+        model.addAttribute("list_relationMedicineProduct",list_relationMedicineProduct);
+        return viewPrefix + "/indexSolr";
+    }
+
+    @RequestMapping(value = "sorlQuery")
+    public String sorlQuery(SolrDtoQuery query , Model model, PageUtil page){
+        try {
+            List<SolrDto> solrDtoList = solrDtoList = spsInfoService.sorlQuery(query,page);
+            model.addAttribute("dataList",solrDtoList);
+            model.addAttribute("query", query);// 查询参数
+            model.addAttribute("page", page);// 分页
+            return viewPrefix + "/indexSolr" ;
+        } catch (Exception e) {
+            logger.info("spsInfoController.sorlQuery.e:",e);
+        }
+        return viewPrefix + "/indexSolr" ;
     }
 }

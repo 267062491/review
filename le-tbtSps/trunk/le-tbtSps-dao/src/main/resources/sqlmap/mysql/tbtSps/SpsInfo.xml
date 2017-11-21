@@ -218,7 +218,7 @@
         	and country_code = #{countryCode,jdbcType=VARCHAR}
         </if>
         <if test="publishDate != null and publishDate != ''">
-        	and publish_date = #{publishDate,jdbcType=TIMESTAMP}
+        	and year(publish_date) = year(#{publishDate,jdbcType=TIMESTAMP})
         </if>
         <if test="spsOrg != null and spsOrg != ''">
         	and sps_org = #{spsOrg,jdbcType=VARCHAR}

@@ -265,6 +265,7 @@ public class IndexController extends ReviewBaseController {
         UserRoleQuery userRoleQuery = new UserRoleQuery();
         userRoleQuery.setUserCode(userName);
         List<UserRole>  userRoleList = userRoleService.queryUserRoleList(userRoleQuery);
+        model.addAttribute("indexSolr",true);//全文检索
         for(UserRole userRole : userRoleList){
             if(userRole.getRoleCode().equals(RoleEnum.CCPR.getStatusCode())){
 //                    model.addAttribute("user",true);// 用户

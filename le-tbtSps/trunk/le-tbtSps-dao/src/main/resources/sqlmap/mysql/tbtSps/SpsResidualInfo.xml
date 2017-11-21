@@ -22,7 +22,7 @@
     </resultMap>
     
     <sql id="spsResidualInfoColumns">
-    	id,sps_code,medicine_code,medicine_product_code,update_type,residua_amount,unit,safe_day,end_date,back_1,back_2,create_time,update_time,create_user,update_user,yn
+    	id,sps_code,medicine_code,medicine_product_code,update_type,residua_amount,unit,safe_day,end_date ,back_1,back_2,create_time,update_time,create_user,update_user,yn
     </sql>
     
      <sql id="spsResidualInfoUsedColumns">

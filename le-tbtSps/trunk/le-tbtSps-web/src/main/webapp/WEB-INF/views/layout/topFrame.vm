@@ -53,6 +53,9 @@
         <ul>
             <!--
             <li class="selected"><a href="javascript:void(0)" onclick="link('200','首页','user','20','首页')">首页</a></li>-->
+        #if($!indexSolr)
+            <li><a href="javascript:void(0)" onclick="link('240','全文检索','spsInfo/indexSolr','20','全文检索')">全文检索</a></li>
+        #end
         #if($!user)
             <li><a href="javascript:void(0)" onclick="link('200','用户','user','20','用户')">用户$!test</a></li>
         #end
@@ -84,16 +87,13 @@
             <li><a href="javascript:void(0)" onclick="link('240','tbt通报','spsInfo/tbt','20','tbt通报')">tbt通报</a></li>
         #end
         #if($!indexReview)
-            <li><a href="javascript:void(0)" onclick="link('240','通报评审','spsInfo/indexReview','20','通报评审')">通报评审</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','在线评议管理','spsInfo/indexReview','20','在线评议管理')">在线评议管理</a></li>
         #end
         #if($!relationMedicineProduct)
             <li><a href="javascript:void(0)" onclick="link('240','相关农产品','relationMedicineProduct','20','相关农产品')">相关农产品</a></li>
         #end
         #if($!indexExpertsReview)
             <li><a href="javascript:void(0)" onclick="link('240','专家评议','spsInfo/indexExpertsReview','20','专家评议')">专家评议</a></li>
-        #end
-        #if($!relationMedicine)
-            <li><a href="javascript:void(0)" onclick="link('240','全文检索','relationMedicine','20','全文检索')">全文检索</a></li>
         #end
         #if($!relationMedicine)
             <li><a href="javascript:void(0)" onclick="link('240','统计','relationMedicine','20','统计')">统计</a></li>

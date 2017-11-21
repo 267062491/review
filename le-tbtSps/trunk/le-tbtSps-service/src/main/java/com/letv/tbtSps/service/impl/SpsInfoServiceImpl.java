@@ -2,17 +2,23 @@ package com.letv.tbtSps.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.google.common.collect.Lists;
 import com.letv.common.utils.DateHelper;
 import com.letv.common.utils.config.PropertiesHelper;
 import com.letv.common.utils.wrap.Wrapper;
 import com.letv.tbtSps.domain.*;
 import com.letv.tbtSps.domain.dto.SendDto;
+import com.letv.tbtSps.domain.dto.SolrDto;
+import com.letv.tbtSps.domain.dto.SolrDtoQuery;
 import com.letv.tbtSps.domain.dto.SpsBtbMulityDto;
 import com.letv.tbtSps.domain.query.SpsInfoLogQuery;
 import com.letv.tbtSps.manager.SpsInfoLogManager;
 import com.letv.tbtSps.manager.SpsLogAttrManager;
+import com.letv.tbtSps.service.SolrService;
+import com.letv.tbtSps.utils.DateHelperImpl;
 import com.letv.tbtSps.utils.JsonHelperImpl;
 import com.letv.tbtSps.utils.constant.SystemConstant;
 import com.letv.tbtSps.utils.enums.Sps_Tbt_InfoStatus;
@@ -261,6 +267,7 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             /**
              * 拼装残留量信息
              */
+            Integer zhiDingCLL=0 ,  xiuGaiCLL=0 , shanChuCLL=0 ;
             List<Object> list_spsResidualInfo = JsonHelperImpl.jsonFormatArrayToListBean(SpsResidualInfo.class , contents);
             for(Object obj : list_spsResidualInfo){
                 SpsResidualInfo spsResidualInfo = (SpsResidualInfo) obj;
@@ -269,6 +276,13 @@ public class SpsInfoServiceImpl implements SpsInfoService {
                 spsResidualInfo.setUpdateTime(new Date());
                 spsResidualInfo.setUpdateUser(userName);
                 spsResidualInfo.setSpsCode(spsCode);
+                if("1".equals(spsResidualInfo.getUpdateType())){
+                    zhiDingCLL++ ;
+                }else if("2".equals(spsResidualInfo.getUpdateType())){
+                    xiuGaiCLL++ ;
+                }else if("3".equals(spsResidualInfo.getUpdateType())){
+                    shanChuCLL++;
+                }
             }
             /**
              * 拼装sps信息操作日志表
@@ -287,10 +301,14 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             /**
              * 拼装通报类型
              */
+            List<String> notificationTypeCodeList = Lists.newArrayList();
+            List<String> notificationTypeContentList = Lists.newArrayList();
             List<RelationSpsNotificationType> list_relationSpsNotificationType = new ArrayList<RelationSpsNotificationType>();
             if(null!=spsBtbMulityDto.getNotificationType()){
                 for(String notificationType : spsBtbMulityDto.getNotificationType()){
                     list_relationSpsNotificationType.add(new RelationSpsNotificationType(spsCode,notificationType,userName));
+                    notificationTypeCodeList.add(notificationType);
+                    notificationTypeContentList.add(notificationType);
                 }
             }
             /**
@@ -314,14 +332,14 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             /**
              * 拼装农药相关
              */
-            RelationSpsRelationMedicine relationSpsRelationMedicine = null ;
+            RelationSpsRelationMedicine relationSpsRelationMedicine = new RelationSpsRelationMedicine() ;
             if(!StringUtils.isEmpty(spsBtbMulityDto.getRelationMedicine())){
                 relationSpsRelationMedicine = new RelationSpsRelationMedicine(spsCode,spsBtbMulityDto.getRelationMedicine(),userName) ;
             }
             /**
              * 拼装农药商品相关
              */
-            RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct = null ;
+            RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct = new RelationSpsRelationMedicineProduct(); ;
             if(!StringUtils.isEmpty(spsBtbMulityDto.getRelationMedicineProduct())){
                 relationSpsRelationMedicineProduct = new RelationSpsRelationMedicineProduct(spsCode,spsBtbMulityDto.getRelationMedicineProduct(),userName);
             }
@@ -342,7 +360,21 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             try{
                 boolean result = spsInfoManager.insertOrderInfo(map);
                 // 保存成功之后， 创建全文检索  TODO
-
+                try{
+                    // 2.通过bean添加document
+                    List<SolrDto> solrDtoList = new ArrayList<SolrDto>();
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat formatterYear = new SimpleDateFormat("yyyy");
+                    SolrDto solrDto = new SolrDto(spsCode,spsCode, notificationTypeCodeList, notificationTypeContentList, spsInfo.getCountryCode()
+                            , spsInfo.getCountryCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode()
+                            , relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicine.getRelationMedicineCode()
+                            , relationSpsRelationMedicine.getRelationMedicineCode(), relationSpsRelationMedicine.getRelationMedicineCode(), relationSpsRelationMedicine.getRelationMedicineCode(), formatter.format(spsInfo.getPublishDate())
+                            , formatterYear.format(spsInfo.getPublishDate()), spsInfo.getFileTitle(),spsInfo.getContentDes(),zhiDingCLL , xiuGaiCLL , shanChuCLL);
+                    solrDtoList.add(solrDto);
+                    SolrServiceImpl.addDocumentByBean(solrDtoList,SolrServiceImpl.SOLR_CORE);
+                }catch (Exception e){
+                    LOG.error("创建sps/tbt信息，创建索引失败:",e);
+                }
             }catch (DuplicateKeyException e){
                 LOG.error("创建sps信息DuplicateKeyException异常：",e);
                 ret[0]=SystemCodeEnum.SPS_CODE_HAVE_EXISTS.getCode();
@@ -359,7 +391,6 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             ret[1]=SystemCodeEnum.ATTR_UPLOAD_FAIL.getContent();
             return ret;
         }
-
         return ret ;
     }
     /**
@@ -433,11 +464,6 @@ public class SpsInfoServiceImpl implements SpsInfoService {
                 spsResidualInfo.setUpdateUser(userName);
                 spsResidualInfo.setSpsCode(spsCode);
             }
-            /**
-             * 拼装sps信息操作日志表
-             */
-//            SpsInfoLog spsInfoLog = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode(),Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode(),Sps_Tbt_InfoStatus.UN_FENPEI.getStatusContent(),
-//                    attrRelation,1, SystemConstant.YES+"",userName);
             SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
             spsInfoLogQuery.setSpsCode(spsCode);
             spsInfoLogQuery.setOraState(Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode());
@@ -918,72 +944,173 @@ public class SpsInfoServiceImpl implements SpsInfoService {
     }
 
     /**
-     * 下发
+     * 激活
      * @param tableContent
      * @return
      */
     public String[] jihuo(String tableContent,String userName){
-//        String[] ret = new String[]{SystemCodeEnum.SUCCESS.getCode(),SystemCodeEnum.SUCCESS.getContent()};
-//        List<Object> list_sendDto = JsonHelperImpl.jsonFormatArrayToListBean(SendDto.class,tableContent);
-//        if(!CollectionUtils.isEmpty(list_sendDto)){
-//            /**
-//             * 对信息进行验证
-//             */
-//            for(Object obj :list_sendDto ){
-//                SendDto sendDto = (SendDto) obj;
-//                if(StringUtils.isEmpty(sendDto.getExports())){
-//                    ret[0]=SystemCodeEnum.EXPERTS_CANNOT_NULL.getCode();
-//                    ret[1]=SystemCodeEnum.EXPERTS_CANNOT_NULL.getContent();
-//                    return  ret ;
-//                }
-//            }
-//
-//            for(Object obj :list_sendDto ){   // 这里的处理方式是， 每个单子保存一遍 ，如果有一个失败， 则后面的单子不执行
-//                SendDto sendDto = (SendDto) obj;
-//                String spsCode = sendDto.getSpsCode();
-//                // 根据spsCode 查询出来对应的spsInfo信息
-//                SpsInfoQuery queryBean = new SpsInfoQuery () ;
-//                queryBean.setSpsCode(spsCode);
-//                List<SpsInfo> list_spsInfo = spsInfoManager.querySpsInfoList(queryBean) ;
-//                if(!org.springframework.util.CollectionUtils.isEmpty(list_spsInfo) && list_spsInfo.size()==1){
-//                    /**
-//                     * 拼装spsInfo信息
-//                     */
-//                    SpsInfo spsInfo = list_spsInfo.get(0);
-//                    spsInfo.setOraState(Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode());
-//                    spsInfo.setState(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode());
-//                    spsInfo.setSendDate(new Date());
-//                    spsInfo.setLevels(sendDto.getLevels());
-//                    spsInfo.setExpertsEndDate(DateHelper.parseDate(sendDto.getExpertsEndDate()));
-//                    spsInfo.setUpdateTime(new Date());
-//                    spsInfo.setUpdateUser(userName);
-//                    /**
-//                     * 拼装spsInfoLog信息
-//                     */
-//                    List<SpsInfoLog> list_spsInfoLog = new ArrayList<SpsInfoLog>();
-//                    String[] exports = sendDto.getExports().split(",");
-//                    for(String str : exports){
-//                        SpsInfoLog spsInfoLog = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode(),Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode(),Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusContent(),
-//                                "",2, SystemConstant.YES+"",userName);
-//                        spsInfoLog.setExports(str);
-//                        list_spsInfoLog.add(spsInfoLog);
-//                    }
-//                    try{
-//                        boolean result = spsInfoManager.updateSpsInfoSend(spsInfo,list_spsInfoLog);
-//                    }catch (RuntimeException e){
-//                        LOG.error("下发sps信息失败",e);
-//                        ret[0]=SystemCodeEnum.SYSTEM_RUNTIME_EXCEPTION.getCode();
-//                        ret[1]=e.getMessage();
-//                        break ;
-//                    }
-//                } else{
-//                    ret[0]=SystemCodeEnum.SPS_CODE_NOT_EXISTS.getCode();
-//                    ret[1]=SystemCodeEnum.SPS_CODE_NOT_EXISTS.getContent();
-//                }
-//            }
-//        }
-//        return ret ;
-        return null ;
+        String[] ret = new String[]{SystemCodeEnum.SUCCESS.getCode(),SystemCodeEnum.SUCCESS.getContent()};
+        List<Object> list_jiHuoDto = JsonHelperImpl.jsonFormatArrayToListBean(SendDto.class,tableContent);
+        if(!CollectionUtils.isEmpty(list_jiHuoDto)){
+            /**
+             * 对信息进行验证
+             */
+            for(Object obj :list_jiHuoDto ){
+                SendDto sendDto = (SendDto) obj;
+                if(StringUtils.isEmpty(sendDto.getExports())){
+                    ret[0]=SystemCodeEnum.EXPERTS_CANNOT_NULL.getCode();
+                    ret[1]=SystemCodeEnum.EXPERTS_CANNOT_NULL.getContent();
+                    return  ret ;
+                }
+            }
+
+            for(Object obj :list_jiHuoDto ){   // 这里的处理方式是， 每个单子保存一遍 ，如果有一个失败， 则后面的单子不执行
+                SendDto sendDto = (SendDto) obj;
+                String spsCode = sendDto.getSpsCode();
+                // 根据spsCode 查询出来对应的spsInfo信息
+                SpsInfoQuery queryBean = new SpsInfoQuery () ;
+                queryBean.setSpsCode(spsCode);
+                List<SpsInfo> list_spsInfo = spsInfoManager.querySpsInfoList(queryBean) ;
+                if(!org.springframework.util.CollectionUtils.isEmpty(list_spsInfo) && list_spsInfo.size()==1){
+                    /**
+                     * 拼装spsInfo信息
+                     */
+                    SpsInfo spsInfo = list_spsInfo.get(0);
+                    String oraStatus = spsInfo.getState();
+                    // 计算出从下发到评议截止之间的天数
+                    int pingYiDays = DateHelperImpl.subDate(spsInfo.getExpertsEndDate(),spsInfo.getSendDate());
+                    // 计算出激活之后的专家评议截止日期
+                    Date expertsEndDate = DateHelperImpl.addDate(new Date(),pingYiDays);
+                    // 修改状态为已经分配
+                    spsInfo.setState(Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode());
+                    spsInfo.setExpertsEndDate(expertsEndDate);
+                    spsInfo.setUpdateTime(new Date());
+                    spsInfo.setUpdateUser(userName);
+                    /**
+                     * 拼装spsInfoLog信息
+                     */
+                    List<SpsInfoLog> list_spsInfoLog = new ArrayList<SpsInfoLog>();
+                    String[] exports = sendDto.getExports().split(",");
+                    for(String str : exports){
+                        SpsInfoLog spsInfoLog = new SpsInfoLog(spsCode, Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusCode(),oraStatus,Sps_Tbt_InfoStatus.HAVE_FENPEI.getStatusContent(),
+                                "",2, SystemConstant.YES+"",userName);
+                        spsInfoLog.setExports(str);
+                        list_spsInfoLog.add(spsInfoLog);
+                    }
+                    try{
+                        boolean result = spsInfoManager.updateSpsInfoSend(spsInfo,list_spsInfoLog);
+                    }catch (RuntimeException e){
+                        LOG.error("激活sps信息失败",e);
+                        ret[0]=SystemCodeEnum.SYSTEM_RUNTIME_EXCEPTION.getCode();
+                        ret[1]=e.getMessage();
+                        break ;
+                    }
+                } else{
+                    ret[0]=SystemCodeEnum.SPS_CODE_NOT_EXISTS.getCode();
+                    ret[1]=SystemCodeEnum.SPS_CODE_NOT_EXISTS.getContent();
+                }
+            }
+        }
+        return ret ;
+    }
+
+    /**
+     * solr查询
+     * @param solrDtoQuery
+     * @param pageUtil
+     * @return
+     */
+    public List<SolrDto> sorlQuery(SolrDtoQuery solrDtoQuery , PageUtil pageUtil) throws Exception {
+        String qc = "" ;
+        StringBuilder queryCondition = new StringBuilder();
+        if (null == solrDtoQuery) {// 如果没有传递条件，则查询所有
+            qc = String.valueOf(queryCondition.append("*:*"));
+        }else{
+            if(StringUtils.isEmpty(solrDtoQuery.getPublishDateYearBegin()) || StringUtils.isEmpty(solrDtoQuery.getPublishDateYearEnd())){
+                throw new Exception("请输入开始年和结束年");
+            }
+            queryCondition.append("( ");
+            if(!StringUtils.isEmpty(solrDtoQuery.getSpsCode())){// 通报编码
+                queryCondition.append("AND spsCode:");
+                queryCondition.append(solrDtoQuery.getSpsCode());
+            }
+            if(!StringUtils.isEmpty(solrDtoQuery.getNotificationTypeCodeQuery())){// 通报类型
+                queryCondition.append(" AND ( ");
+                String[] strs = solrDtoQuery.getNotificationTypeCodeQuery().split(",");
+                for(int i = 0 ; i< strs.length ; i++){
+                    if(i==0){
+                        queryCondition.append("notificationTypeCode:");
+                        queryCondition.append(strs[i]);
+                    }else{
+                        queryCondition.append(" OR notificationTypeCode:");
+                        queryCondition.append(strs[i]);
+                    }
+                }
+                queryCondition.append(" )");
+            }
+            if(!StringUtils.isEmpty(solrDtoQuery.getCountryCode())){// 通报成员
+                queryCondition.append(" AND ( ");
+                String[] strs = solrDtoQuery.getCountryCode().split(",");
+                for(int i = 0 ; i< strs.length ; i++){
+                    if(i==0){
+                        queryCondition.append("countryCode:");
+                        queryCondition.append(strs[i]);
+                    }else{
+                        queryCondition.append(" OR countryCode:");
+                        queryCondition.append(strs[i]);
+                    }
+                }
+                queryCondition.append(" )");
+            }
+            if(!StringUtils.isEmpty(solrDtoQuery.getRelationMedicineProductCode())){// 农产品
+                queryCondition.append(" AND ( ");
+                String[] strs = solrDtoQuery.getRelationMedicineProductCode().split(",");
+                for(int i = 0 ; i< strs.length ; i++){
+                    if(i==0){
+                        queryCondition.append("relationMedicineProductCode:");
+                        queryCondition.append(strs[i]);
+                    }else{
+                        queryCondition.append(" OR relationMedicineProductCode:");
+                        queryCondition.append(strs[i]);
+                    }
+                }
+                queryCondition.append(" )");
+            }
+            if(!StringUtils.isEmpty(solrDtoQuery.getRelationMedicineCode())){// 农药
+                queryCondition.append(" AND ( ");
+                String[] strs = solrDtoQuery.getRelationMedicineCode().split(",");
+                for(int i = 0 ; i< strs.length ; i++){
+                    if(i==0){
+                        queryCondition.append("relationMedicineCode:");
+                        queryCondition.append(strs[i]);
+                    }else{
+                        queryCondition.append(" OR relationMedicineCode:");
+                        queryCondition.append(strs[i]);
+                    }
+                }
+                queryCondition.append(" )");
+            }
+            queryCondition.append(" )");
+            qc = queryCondition.toString().replaceFirst("AND","");
+        }
+        // 开始年和结束年是必填的
+        String fq = "publishDateYear:["+solrDtoQuery.getPublishDateYearBegin()+" TO "+solrDtoQuery.getPublishDateYearEnd()+"]" ;
+
+        if (pageUtil == null) {
+            pageUtil = new PageUtil();
+        }
+        int totalItem = pageUtil.getTotalRow();
+        int start = 0 ;// 从第几条开始检索
+        int row = 10 ;// 每次检索多少条
+        if(pageUtil.getCurPage()>1){// 说明不是第一页，是翻页查询
+             start = pageUtil.getCurPage()*pageUtil.getPageSize();// 计算从哪条开始检索
+        }
+        Map<String , Object> map = SolrServiceImpl.solrQuery(SolrServiceImpl.SOLR_CORE ,qc,"id", "ASC"
+                , start , row, true, "countryCode",fq);
+        pageUtil.setTotalRow((Integer) map.get("totalItem"));
+        pageUtil.init();
+        List<SolrDto> solrDtoList = (List<SolrDto>) map.get("solrDtoList");
+        return solrDtoList ;
     }
 }
 

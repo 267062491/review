@@ -40,6 +40,25 @@
                                             #end
                                         </div>
                                     </div>
+                                    #if($!overReview!="")
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label no-padding-right" for="content">是否终评</label>
+                                            <div class="col-sm-11">
+                                                #springMessage('constan.yes')<input type="radio" name="overReview" value="1"
+                                                #if($!review.overReview==1 || $!overReview!="")
+                                                                                    checked="true"
+                                                #end
+                                                                                    id="displayDiv">
+                                                &nbsp;&nbsp;
+                                                #springMessage('constan.no')<input type="radio" name="overReview" value="0" id="showDiv"
+                                                #if($!review.overReview==0)
+                                                                                   checked="true"
+                                                #end
+                                            >
+                                            </div>
+                                        </div>
+                                    #end
+
                                     <div class="form-group">
                                         <label class="col-sm-1 control-label no-padding-right" for="status">#springMessage('system.spsAttr')</label>
                                         <div class="col-sm-11">
@@ -55,14 +74,25 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <div class="col-sm-8 col-sm-offset-4">
+                                        #if($!pingShenButton=="no")
+                                            <span style="color: red">
+                                            已经超过评议时间，不可以进行评议了
+                                            </span>
+                                        #end
+                                            <div>
+                                    </div>
+                                    <div class="form-group">
                                         <input type="hidden" name="id" id="id" value="$!spsInfo.id" />
                                         <div class="col-sm-8 col-sm-offset-4">
                                             <button class="btn btn-info btn-sm" type="button" id="btn-back"><i class="icon-arrow-left"></i>#springMessage('view.lable.back')</button>
                                             &nbsp; &nbsp; &nbsp;
                                             <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
                                             &nbsp; &nbsp; &nbsp;
-                                            <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
-                                        </div>
+                                            #if($!pingShenButton!="no")
+                                                <button class="btn btn-success btn-sm" type="button" id="btn-submit"><i class="icon-ok"></i>#springMessage('view.lable.submit')</button>
+                                            #end
+                                            </div>
                                     </div>
                                 </form>
                             </div>

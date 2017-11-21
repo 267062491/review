@@ -1,0 +1,24 @@
+    <table class="table table-striped table-bordered table-condensed table-hover">
+        <tbody>
+            #foreach( $item in $dataList)
+            <tr style="height: 200px">
+                <td>
+                    $!item.spsCode:$!item.fileTitle</br>
+                    $!item.contentDes</br>
+                    通报成员:$!item.countryContent
+                    &nbsp;&nbsp;&nbsp;
+                    发布日期:$!item.publishDate
+                    &nbsp;&nbsp;&nbsp;
+                    制定限量数:$!item.zhiDingCLL
+                    &nbsp;&nbsp;&nbsp;
+                    修改限量数:$!item.xiuGaiCLL
+                    &nbsp;&nbsp;&nbsp;
+                    撤销限量数:$!item.shanChuCLL
+                </td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+    #if($!page)
+        #pageBarPost($page.totalRow $page.curPage $page.totalPage)
+    #end

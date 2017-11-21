@@ -1,7 +1,7 @@
 package com.letv.tbtSps.domain.dto;
 
 import org.apache.solr.client.solrj.beans.Field;
-
+import com.letv.common.utils.page.Query;
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,17 +9,17 @@ import java.util.List;
  * Description 索引对应的bean
  * Created by ygd on 2017/11/13.
  */
-public class SolrDto implements Serializable{
+public class SolrDtoQuery extends Query implements Serializable{
 
-    public SolrDto() {
+    public SolrDtoQuery() {
         super();
     }
 
-    public SolrDto(String id,String spsCode, List<String> notificationTypeCode, List<String> notificationTypeContent, String countryCode
+    public SolrDtoQuery(String id, String spsCode, List<String> notificationTypeCode, List<String> notificationTypeContent, String countryCode
             , String countryContent, String relationMedicineProductCode, String relationMedicineProductEn
             , String relationMedicineProductZhAlias, String relationMedicineProductZh, String relationMedicineCode
             , String relationMedicineZh, String relationMedicineEm, String relationMedicineZhAlias, String publishDate
-            , String publishDateYear, String fileTitle, String contentDes,Integer zhiDingCLL , Integer xiuGaiCLL ,Integer shanChuCLL) {
+            , String publishDateYear, String fileTitle, String contentDes, Integer zhiDingCLL , Integer xiuGaiCLL , Integer shanChuCLL) {
         this.id = id ;
         this.spsCode = spsCode;
         this.notificationTypeCode = notificationTypeCode;
@@ -35,7 +35,7 @@ public class SolrDto implements Serializable{
         this.relationMedicineEm = relationMedicineEm;
         this.relationMedicineZhAlias = relationMedicineZhAlias;
         this.publishDate = publishDate;
-        this.publishDateYear = publishDateYear;
+        this.publishDateYearBegin = publishDateYear;
         this.fileTitle = fileTitle;
         this.contentDes = contentDes;
         this.zhiDingCLL = zhiDingCLL;
@@ -43,7 +43,7 @@ public class SolrDto implements Serializable{
         this.shanChuCLL = shanChuCLL;
     }
 
-    public SolrDto(String spsCode, List<String> notificationTypeCode, List<String> notificationTypeContent) {
+    public SolrDtoQuery(String spsCode, List<String> notificationTypeCode, List<String> notificationTypeContent) {
         this.spsCode = spsCode;
         this.notificationTypeCode = notificationTypeCode;
         this.notificationTypeContent = notificationTypeContent;
@@ -57,6 +57,10 @@ public class SolrDto implements Serializable{
      * 通报编号
      */
     private String spsCode;
+
+    /** 通报类型编码查詢 */
+    private String notificationTypeCodeQuery;
+
     /** 通报类型编码 */
     private List<String> notificationTypeCode;
     /** 通报类型内容 */
@@ -91,9 +95,13 @@ public class SolrDto implements Serializable{
      */
     private String publishDate ;
     /**
-     * 发布年份，发布时间截取年存储
+     * 发布年份，发布时间截取年存储 开始
      */
-    private String publishDateYear ;
+    private String publishDateYearBegin ;
+    /**
+     * 发布年份，发布时间截取年存储 结束
+     */
+    private String publishDateYearEnd ;
 
 
     /** 文件标题 */
@@ -120,7 +128,7 @@ public class SolrDto implements Serializable{
     public String getSpsCode() {
         return spsCode;
     }
-    @Field
+
     public void setSpsCode(String spsCode) {
         this.spsCode = spsCode;
     }
@@ -129,7 +137,7 @@ public class SolrDto implements Serializable{
     public String getId() {
         return id;
     }
-    @Field
+
     public void setId(String id) {
         this.id = id;
     }
@@ -137,7 +145,7 @@ public class SolrDto implements Serializable{
     public List<String> getNotificationTypeCode() {
         return notificationTypeCode;
     }
-    @Field
+
     public void setNotificationTypeCode(List<String> notificationTypeCode) {
         this.notificationTypeCode = notificationTypeCode;
     }
@@ -145,7 +153,7 @@ public class SolrDto implements Serializable{
     public Integer getZhiDingCLL() {
         return zhiDingCLL;
     }
-    @Field
+
     public void setZhiDingCLL(Integer zhiDingCLL) {
         this.zhiDingCLL = zhiDingCLL;
     }
@@ -153,7 +161,7 @@ public class SolrDto implements Serializable{
     public Integer getXiuGaiCLL() {
         return xiuGaiCLL;
     }
-    @Field
+
     public void setXiuGaiCLL(Integer xiuGaiCLL) {
         this.xiuGaiCLL = xiuGaiCLL;
     }
@@ -161,7 +169,7 @@ public class SolrDto implements Serializable{
     public Integer getShanChuCLL() {
         return shanChuCLL;
     }
-    @Field
+
     public void setShanChuCLL(Integer shanChuCLL) {
         this.shanChuCLL = shanChuCLL;
     }
@@ -169,7 +177,7 @@ public class SolrDto implements Serializable{
     public List<String> getNotificationTypeContent() {
         return notificationTypeContent;
     }
-    @Field
+
     public void setNotificationTypeContent(List<String> notificationTypeContent) {
         this.notificationTypeContent = notificationTypeContent;
     }
@@ -177,7 +185,7 @@ public class SolrDto implements Serializable{
     public String getCountryCode() {
         return countryCode;
     }
-    @Field
+
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
     }
@@ -185,7 +193,7 @@ public class SolrDto implements Serializable{
     public String getCountryContent() {
         return countryContent;
     }
-    @Field
+
     public void setCountryContent(String countryContent) {
         this.countryContent = countryContent;
     }
@@ -193,7 +201,7 @@ public class SolrDto implements Serializable{
     public String getRelationMedicineProductCode() {
         return relationMedicineProductCode;
     }
-    @Field
+
     public void setRelationMedicineProductCode(String relationMedicineProductCode) {
         this.relationMedicineProductCode = relationMedicineProductCode;
     }
@@ -201,7 +209,7 @@ public class SolrDto implements Serializable{
     public String getRelationMedicineProductEn() {
         return relationMedicineProductEn;
     }
-    @Field
+
     public void setRelationMedicineProductEn(String relationMedicineProductEn) {
         this.relationMedicineProductEn = relationMedicineProductEn;
     }
@@ -209,7 +217,7 @@ public class SolrDto implements Serializable{
     public String getRelationMedicineProductZhAlias() {
         return relationMedicineProductZhAlias;
     }
-    @Field
+
     public void setRelationMedicineProductZhAlias(String relationMedicineProductZhAlias) {
         this.relationMedicineProductZhAlias = relationMedicineProductZhAlias;
     }
@@ -217,7 +225,7 @@ public class SolrDto implements Serializable{
     public String getRelationMedicineProductZh() {
         return relationMedicineProductZh;
     }
-    @Field
+
     public void setRelationMedicineProductZh(String relationMedicineProductZh) {
         this.relationMedicineProductZh = relationMedicineProductZh;
     }
@@ -225,7 +233,7 @@ public class SolrDto implements Serializable{
     public String getRelationMedicineCode() {
         return relationMedicineCode;
     }
-    @Field
+
     public void setRelationMedicineCode(String relationMedicineCode) {
         this.relationMedicineCode = relationMedicineCode;
     }
@@ -233,7 +241,7 @@ public class SolrDto implements Serializable{
     public String getRelationMedicineZh() {
         return relationMedicineZh;
     }
-    @Field
+
     public void setRelationMedicineZh(String relationMedicineZh) {
         this.relationMedicineZh = relationMedicineZh;
     }
@@ -241,7 +249,7 @@ public class SolrDto implements Serializable{
     public String getRelationMedicineEm() {
         return relationMedicineEm;
     }
-    @Field
+
     public void setRelationMedicineEm(String relationMedicineEm) {
         this.relationMedicineEm = relationMedicineEm;
     }
@@ -249,7 +257,7 @@ public class SolrDto implements Serializable{
     public String getRelationMedicineZhAlias() {
         return relationMedicineZhAlias;
     }
-    @Field
+
     public void setRelationMedicineZhAlias(String relationMedicineZhAlias) {
         this.relationMedicineZhAlias = relationMedicineZhAlias;
     }
@@ -257,23 +265,15 @@ public class SolrDto implements Serializable{
     public String getPublishDate() {
         return publishDate;
     }
-    @Field
+
     public void setPublishDate(String publishDate) {
         this.publishDate = publishDate;
-    }
-
-    public String getPublishDateYear() {
-        return publishDateYear;
-    }
-    @Field
-    public void setPublishDateYear(String publishDateYear) {
-        this.publishDateYear = publishDateYear;
     }
 
     public String getFileTitle() {
         return fileTitle;
     }
-    @Field
+
     public void setFileTitle(String fileTitle) {
         this.fileTitle = fileTitle;
     }
@@ -281,9 +281,34 @@ public class SolrDto implements Serializable{
     public String getContentDes() {
         return contentDes;
     }
-    @Field
+
     public void setContentDes(String contentDes) {
         this.contentDes = contentDes;
+    }
+
+
+    public String getNotificationTypeCodeQuery() {
+        return notificationTypeCodeQuery;
+    }
+
+    public void setNotificationTypeCodeQuery(String notificationTypeCodeQuery) {
+        this.notificationTypeCodeQuery = notificationTypeCodeQuery;
+    }
+
+    public String getPublishDateYearBegin() {
+        return publishDateYearBegin;
+    }
+
+    public void setPublishDateYearBegin(String publishDateYearBegin) {
+        this.publishDateYearBegin = publishDateYearBegin;
+    }
+
+    public String getPublishDateYearEnd() {
+        return publishDateYearEnd;
+    }
+
+    public void setPublishDateYearEnd(String publishDateYearEnd) {
+        this.publishDateYearEnd = publishDateYearEnd;
     }
 
     @Override

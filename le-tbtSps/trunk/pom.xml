@@ -507,7 +507,7 @@
 
 				<!-- 服务器日志配置 -->
 				<profile.log.root.level>DEBUG</profile.log.root.level>
-				<profile.log.root.path>D:/logs</profile.log.root.path>
+				<profile.log.root.path>/usr/local/tomcat/logs</profile.log.root.path>
 				<profile.log.maxfilesize>100MB</profile.log.maxfilesize>
 				<profile.log.name.web>tbtSps</profile.log.name.web>
 				<profile.log.name.webservice>tbtSpsws</profile.log.name.webservice>
@@ -523,11 +523,11 @@
 				<!-- 常量配置 -->
 				<profile.language.default.locale>zh_CN</profile.language.default.locale>
 				<!-- 附件地址配置 -->
-				<profile.sps.attr.addr>D:\review</profile.sps.attr.addr>
+				<profile.sps.attr.addr>/usr/local/attr/review</profile.sps.attr.addr>
 				<!-- solr配置 -->
-				<profile.solr.server>http://localhost:8080/solr/</profile.solr.server>
-				<profile.solr.home.jobs>jobs/</profile.solr.home.jobs>
-				<profile.sps.attr.addr>D:\review\spsAttr\</profile.sps.attr.addr>
+				<profile.solr.server>http://localhost:8080/SHFW_SEARCH</profile.solr.server>
+				<profile.solr.home.jobs>jobs</profile.solr.home.jobs>
+				<profile.sps.attr.addr>/usr/local/attr/review/spsAttr/</profile.sps.attr.addr>
 			</properties>
 		</profile>
 	</profiles>

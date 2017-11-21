@@ -10,6 +10,7 @@
             <th class="center" style="width:7%">#springMessage('tbtSps.send.Date')</th>
             <th class="center" style="width:7%">#springMessage('tbtSps.spsInfo.expertsEndDate')</th>
             <th class="center" style="width:45%">#springMessage('tbtSps.spsInfo.experts')(<span style="color: red;">红色未评议</span>) </th>
+            <th class="center" style="width:3%">#springMessage('tbtSps.operate')</th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +32,7 @@
                         #end
                     #end
                 </td>
+                <td type="kong"><a href="javascript:detailInfo('$!item.spsCode')">#springMessage('tbtSps.spsInfo.review')</a> </td>
             </tr>
             #end
         </tbody>

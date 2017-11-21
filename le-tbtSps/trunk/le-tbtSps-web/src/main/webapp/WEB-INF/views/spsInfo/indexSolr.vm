@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        #parse("/layout/head.vm")
+        <script src="#springUrl('')/static/js/bootstrap-multiselect.js"></script>
+        <link rel="stylesheet" href="#springUrl('')/static/css/bootstrap-multiselect.css" />
+        <style type="text/css">
+            .multiselect {
+                background: #fff;
+                border: 1px solid #d5d5d5;
+                line-height: 28px;
+            }
+        </style>
+	</head>
+    <body>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12">
+                <div class="widget-box">
+                    <div class="widget-body">
+                        <div class="widget-main" style="background-color: #f5f5f5;padding:5px;">
+                            <form class="form-horizontal" role="form" id="queryForm">
+                                <input type="hidden" name="type" value="sps">
+								<div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right" for="status">通报编号</label>
+                                <div class="col-sm-3">
+                                    <input name="spsCode" type="text">
+                                </div>
+                                <label class="col-sm-1 control-label no-padding-right" for="notificationType">#springMessage('tbtSps.notificationType')</label>
+                                <div class="col-sm-3">
+                                    <select name="notificationTypeCodeQuery"  id="notificationTypeCodeQuery" multiple="multiple" >
+                                        #foreach( $item_notificationType in $list_notificationType)
+                                            <option value="$!item_notificationType.notificationTypeCode"
+                                                #if($!listRelationSpsNotificationType)
+                                                    #foreach($!rNotificationType in $!listRelationSpsNotificationType)
+                                                        #if($!rNotificationType.notificationTypeCode==$!item_notificationType.notificationTypeCode)
+                                                    selected="selected"
+                                                        #end
+                                                    #end
+                                                #end
+                                            >$!item_notificationType.notificationTypeContent</option>
+                                        #end
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 control-label no-padding-right" for="list_country">#springMessage('tbtSps.tbinfo.tbtCountryCode')</label>
+                                <div class="col-sm-3">
+                                    <select name="countryCode"  id="countryCode" multiple="multiple" >
+                                        #foreach( $item_country in $list_country)
+                                            <option value="$!item_country.countryCode"
+                                                #if($!listRelationSpsNotificationCountry)
+                                                    #foreach($!rNotificationCountry in $!listRelationSpsNotificationCountry)
+                                                        #if($!rNotificationCountry.notificationCountryCode==$!item_country.countryCode)
+                                                    selected="selected"
+                                                        #end
+                                                    #end
+                                                #end
+                                            >$!item_country.countryContent</option>
+                                        #end
+                                    </select>
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                    <label class="col-sm-1 control-label no-padding-right" for="notificationType">农产品</label>
+                                    <div class="col-sm-3">
+                                        <select name="relationMedicineProductCode"  id="relationMedicineProductCode" multiple="multiple" >
+                                            #foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)
+                                                <option value="$!item_relationMedicineProduct.relationMedicineProductCode"
+                                                    #if($!listRelationMedicineProduct)
+                                                        #foreach($!r in $!listRelationMedicineProduct)
+                                                            #if($!r.relationMedicineProductCode==$!item_relationMedicineProduct.relationMedicineProductCode)
+                                                        selected="selected"
+                                                            #end
+                                                        #end
+                                                    #end
+                                                >$!item_relationMedicineProduct.relationMedicineProductCode</option>
+                                            #end
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-1 control-label no-padding-right" for="list_relationMedicine">农药</label>
+                                    <div class="col-sm-3">
+                                        <select name="relationMedicineCode"  id="relationMedicineCode" multiple="multiple" >
+                                            #foreach( $item_relationMedicine in $list_relationMedicine)
+                                                <option value="$!item_relationMedicine.relationMedicineCode"
+                                                    #if($!listRelationMedicine)
+                                                        #foreach($!r in $!listRelationMedicine)
+                                                            #if($!r.notificationCountryCode==$!item_relationMedicine.relationMedicineCode)
+                                                        selected="selected"
+                                                            #end
+                                                        #end
+                                                    #end
+                                                >$!item_relationMedicine.relationMedicineCode</option>
+                                            #end
+                                        </select>
+                                    </div>
+                                    <label class="col-sm-1 control-label no-padding-right" for="list_relationMedicine">发布年份</label>
+                                    <div class="col-sm-3">
+                                        <select name="publishDateYearBegin"  id="publishDateYearBegin"  >
+                                                <option value="2017">2017</option>
+                                        </select>-
+                                        <select name="publishDateYearEnd"  id="publishDateYearEnd"  >
+                                            <option value="2017">2017</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-8">
+                                        #parse("/layout/page.vm")
+                                        <button class="btn btn-info btn-sm" type="button" id="btn-query"><i class="icon-search"></i>#springMessage('view.lable.search')</button>
+                                        &nbsp; &nbsp; &nbsp;
+                                        <button class="btn btn-sm" type="reset" id="btn-reset"><i class="icon-undo"></i>#springMessage('view.lable.reset')</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<div class="col-xs-12 col-sm-12 table-responsive">
+                #parse("/spsInfo/index_content_solr.vm")
+			</div>
+        </div>
+
+        <script type="text/javascript">
+            var initConfigurationSet = {
+                enableFiltering: true,
+                includeSelectAllOption: true,
+                maxHeight: 280,
+                nonSelectedText: '请选择',
+                selectAllText: '全选',
+                filterPlaceholder: '搜索',
+                buttonWidth: '160px',
+                numberDisplayed: 1
+            };
+            // 多选下拉框checkbox select
+            $(document).ready(function() {  ;
+                $('#notificationTypeCodeQuery').multiselect(initConfigurationSet);
+                $('#countryCode').multiselect(initConfigurationSet);
+                $('#relationMedicineProductCode').multiselect(initConfigurationSet);
+                $('#relationMedicineCode').multiselect(initConfigurationSet);
+            });
+            // 搜索下拉框
+            var config = {
+                '.chosen-select' : {width:"100%", search_contains: true, no_results_text:'没有找到'}
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+            }
+        </script>
+        <script language="javascript">
+            $(function() {
+                $("#btn-query").click(function() {
+                    pageSubmit(1);
+                });
+            });
+            // Submit Search Form
+            function pageSubmit(pageNoParam) {
+                $("#curPage").val(pageNoParam);
+                $("#queryForm").attr("action", "$basePath/spsInfo/sorlQuery");
+                $("#queryForm").attr("method", "POST");
+                $("#queryForm").submit();
+            }
+        </script>
+    </body>
+</html>
