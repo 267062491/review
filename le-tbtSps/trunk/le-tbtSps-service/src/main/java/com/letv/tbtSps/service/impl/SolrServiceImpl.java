@@ -2,6 +2,7 @@ package com.letv.tbtSps.service.impl;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.letv.common.utils.config.PropertiesHelper;
 import com.letv.common.utils.serialize.JsonHelper;
 import com.letv.tbtSps.domain.dto.SolrDto;
 import com.letv.tbtSps.service.SolrService;
@@ -43,8 +44,8 @@ public class SolrServiceImpl implements SolrService {
         try {
             SOLR_URL = "http://localhost:8081/SHFW_SEARCH";
             SOLR_CORE = "jobs";
-//            SOLR_URL = PropertiesHelper.newInstance().getValue("solr.server");
-//            SOLR_CORE = PropertiesHelper.newInstance().getValue("solr.home.jobs");
+            SOLR_URL = PropertiesHelper.newInstance().getValue("solr.server");
+            SOLR_CORE = PropertiesHelper.newInstance().getValue("solr.home.jobs");
         } catch (Exception e) {
             LOG.error("SolrServiceImpl.static.error:",e);
         }

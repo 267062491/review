@@ -448,6 +448,11 @@
                 <artifactId>joda-time</artifactId>
                 <version>${joda-time.version}</version>
             </dependency>
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>2.3.18</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -524,6 +529,8 @@
 				<profile.language.default.locale>zh_CN</profile.language.default.locale>
 				<!-- 附件地址配置 -->
 				<profile.sps.attr.addr>/usr/local/attr/review</profile.sps.attr.addr>
+				<profile.sps.attr.addr.temp>/usr/local/attr/review/temp</profile.sps.attr.addr.temp>
+				<profile.sps.attr.addr.templet>/usr/local/attr/review/templet</profile.sps.attr.addr.templet>
 				<!-- solr配置 -->
 				<profile.solr.server>http://localhost:8080/SHFW_SEARCH</profile.solr.server>
 				<profile.solr.home.jobs>jobs</profile.solr.home.jobs>

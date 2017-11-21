@@ -9,6 +9,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.letv.common.utils.serialize.JsonHelper;
+import com.letv.tbtSps.utils.HttpClientUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
@@ -65,7 +67,24 @@ public class RelationMedicineResource {
             this.logger.error("查询相关农药数据异常", e);
             return WrapMapper.error();
         }
-    } 
+    }
+
+    @POST
+    @Path("/relationMedicine/saveRelationMedicine")
+    public Wrapper<?> saveRelationMedicine(RelationMedicineRequest request) {
+        if (null == request || null == request.getRelationMedicineCode()) {
+            this.logger.error("saveRelationMedicine 传入参数有误");
+            return WrapMapper.illegalArgument();
+        }
+
+        try {
+
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            this.logger.error("保存相关农药数据异常", e);
+            return WrapMapper.error();
+        }
+    }
 
     // 数据转换
     private RelationMedicineResponseDto convert(RelationMedicine relationMedicine) {
@@ -89,6 +108,22 @@ public class RelationMedicineResource {
             list.add(convert(relationMedicine));
         }
         return list;
-    } 
+    }
 
+    public static void main(String[] args) {
+        try {
+            RelationMedicineRequest request = new RelationMedicineRequest ();
+            request.setRelationMedicineCode("code");
+            request.setRelationMedicineZh("中文");
+            request.setRelationMedicineEm("en");
+            request.setRelationMedicineZhAlias("中文别名");
+            request.setYn(1);
+            System.out.println(JsonHelper.toJson(request));
+            String result = HttpClientUtil.postForObject(String.valueOf("http://localhost:8080/services/relationMedicine/saveRelationMedicine")
+                    , "application/json", JsonHelper.toJson(request));
+            System.out.print(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
