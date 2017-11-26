@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * 主界面控制器：首页、登录等
  * 
- * @author lijianzhong
+ * @author ygd
  */
 @Controller
 @RequestMapping("")
@@ -75,40 +75,16 @@ public class IndexController extends ReviewBaseController {
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String index(Model model, HttpServletRequest request) {
+        request.setAttribute("indexFlag",true);
         logger.debug("go to index page");
-        LoginUser loginUser = getCurrentUser();
-//        if (loginUser == null) {
-////            return login(model, request);
-////            return login(model, request, VIEW_INDEX);
-//            return login(model, request);
-//        }else{
-            /**
-             * 查询用户有用的一级菜单
-             */
-            RoleResourceQuery roleResourceQuery = new RoleResourceQuery () ;
-            roleResourceQuery.setUserCode(getLoginUserCode());
-            roleResourceQuery.setLevel(1);
-            roleResourceQuery.setButtonFlag(SystemConstant.YES);
-            roleResourceQuery.setPlatForm(ResourcePlant.PC);
-            LetvResponse<List<TreeDomain>> listLetvResponse = indexService.getLoginUserResource(roleResourceQuery) ;
-            if(listLetvResponse.getCode()==PortalSystemTipCodeEnum.SCUESS.getValue()){
-                model.addAttribute("firstMenus",listLetvResponse.getResult());
-            }
-            return VIEW_INDEX;
-//        }
+        return VIEW_INDEX;
+    }
+    @RequestMapping(value = "indexPage", method = RequestMethod.GET)
+    public String indexPage(Model model, HttpServletRequest request) {
+        logger.debug("go to index page");
+        return "indexPage";
     }
 
-    /**
-     * 进入登录页面
-     * @param model
-     * @param request
-     * @return
-     */
-//    @RequestMapping(value = "login", method = RequestMethod.GET)
-//    public String login(Model model, HttpServletRequest request) {
-//        setLocale(model, request);
-//        return "login";
-//    }
     /**
      * 进入登录页面
      * @param model
@@ -262,6 +238,21 @@ public class IndexController extends ReviewBaseController {
 
     /**
      * 设置用户菜单
+     model.addAttribute("user",true);// 用户
+     model.addAttribute("role",true);// 角色
+     model.addAttribute("notificationType",true);//通报类型管理
+     model.addAttribute("country",true);//通报成员管理
+     model.addAttribute("language",true);//原文语种
+     model.addAttribute("targereason",true);//目标理由
+     model.addAttribute("internationalStandard",true);//国际标准
+     model.addAttribute("relationMedicine",true);//相关农药
+     model.addAttribute("spsInfo",true);//sps通报
+     model.addAttribute("tbt",true);//tbt通报
+     model.addAttribute("indexReview",true);//通报评审
+     model.addAttribute("relationMedicineProduct",true);//相关农产品
+     model.addAttribute("indexExpertsReview",true);//专家评议
+     model.addAttribute("relationMedicine",true);//全文检索
+     model.addAttribute("relationMedicine",true);//统计
      * @param model
      * @param userName
      */
@@ -276,13 +267,6 @@ public class IndexController extends ReviewBaseController {
 
         for(UserRole userRole : userRoleList){
             if(userRole.getRoleCode().equals(RoleEnum.CCPR.getStatusCode())){
-//                    model.addAttribute("user",true);// 用户
-//                    model.addAttribute("role",true);// 角色
-//                    model.addAttribute("notificationType",true);//通报类型管理
-//                    model.addAttribute("country",true);//通报成员管理
-//                    model.addAttribute("language",true);//原文语种
-//                    model.addAttribute("targereason",true);//目标理由
-//                    model.addAttribute("internationalStandard",true);//国际标准
                 model.addAttribute("relationMedicine",true);//相关农药
                 model.addAttribute("spsInfo",true);//sps通报
                 model.addAttribute("tbt",true);//tbt通报
@@ -292,53 +276,19 @@ public class IndexController extends ReviewBaseController {
                 model.addAttribute("relationMedicine",true);//全文检索
                 model.addAttribute("relationMedicine",true);//统计
             }else if(userRole.getRoleCode().equals(RoleEnum.outExports.getStatusCode())){ // 外部专家
-//                    model.addAttribute("user",true);// 用户
-//                    model.addAttribute("role",true);// 角色
-//                    model.addAttribute("notificationType",true);//通报类型管理
-//                    model.addAttribute("country",true);//通报成员管理
-//                    model.addAttribute("language",true);//原文语种
-//                    model.addAttribute("targereason",true);//目标理由
-//                    model.addAttribute("internationalStandard",true);//国际标准
-//                    model.addAttribute("relationMedicine",true);//相关农药
-//                    model.addAttribute("spsInfo",true);//sps通报
-//                    model.addAttribute("tbt",true);//tbt通报
                 model.addAttribute("indexReview",true);//通报评审
-//                    model.addAttribute("relationMedicineProduct",true);//相关农产品
                 model.addAttribute("indexExpertsReview",true);//专家评议
                 model.addAttribute("relationMedicine",true);//全文检索
-//                    model.addAttribute("relationMedicine",true);//统计
             }else if(userRole.getRoleCode().equals(RoleEnum.notice_manager.getStatusCode())){// 通报管理员
-//                    model.addAttribute("user",true);// 用户
-//                    model.addAttribute("role",true);// 角色
-//                    model.addAttribute("notificationType",true);//通报类型管理
-//                    model.addAttribute("country",true);//通报成员管理
-//                    model.addAttribute("language",true);//原文语种
-//                    model.addAttribute("targereason",true);//目标理由
-//                    model.addAttribute("internationalStandard",true);//国际标准
                 model.addAttribute("relationMedicine",true);//相关农药
                 model.addAttribute("spsInfo",true);//sps通报
                 model.addAttribute("tbt",true);//tbt通报
-//                    model.addAttribute("indexReview",true);//通报评审
                 model.addAttribute("relationMedicineProduct",true);//相关农产品
-//                    model.addAttribute("indexExpertsReview",true);//专家评议
                 model.addAttribute("relationMedicine",true);//全文检索
-//                    model.addAttribute("relationMedicine",true);//统计
             }else if(userRole.getRoleCode().equals(RoleEnum.limit_manager.getStatusCode())){ // 限量数据管理员
-//                    model.addAttribute("user",true);// 用户
-//                    model.addAttribute("role",true);// 角色
-//                    model.addAttribute("notificationType",true);//通报类型管理
-//                    model.addAttribute("country",true);//通报成员管理
-//                    model.addAttribute("language",true);//原文语种
-//                    model.addAttribute("targereason",true);//目标理由
-//                    model.addAttribute("internationalStandard",true);//国际标准
                 model.addAttribute("relationMedicine",true);//相关农药
-//                    model.addAttribute("spsInfo",true);//sps通报
-//                    model.addAttribute("tbt",true);//tbt通报
-//                    model.addAttribute("indexReview",true);//通报评审
                 model.addAttribute("relationMedicineProduct",true);//相关农产品
-//                    model.addAttribute("indexExpertsReview",true);//专家评议
                 model.addAttribute("relationMedicine",true);//全文检索
-//                    model.addAttribute("relationMedicine",true);//统计
             }else if(userRole.getRoleCode().equals(RoleEnum.sys_manager.getStatusCode())){ // 系统管理员
                 model.addAttribute("user",true);// 用户
                 model.addAttribute("role",true);// 角色
@@ -350,9 +300,7 @@ public class IndexController extends ReviewBaseController {
                 model.addAttribute("relationMedicine",true);//相关农药
                 model.addAttribute("spsInfo",true);//sps通报
                 model.addAttribute("tbt",true);//tbt通报
-//                    model.addAttribute("indexReview",true);//通报评审
                 model.addAttribute("relationMedicineProduct",true);//相关农产品
-//                    model.addAttribute("indexExpertsReview",true);//专家评议
                 model.addAttribute("relationMedicine",true);//全文检索
                 model.addAttribute("relationMedicine",true);//统计
             }

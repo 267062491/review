@@ -110,4 +110,6 @@
     }
 </style>
 <script type="text/javascript" src="#springUrl('')/static/js/chosen.jquery.min.js"></script>
-
+#if($!request.getAttribute("indexFlag")==false)
+<script type="text/javascript" src="#springUrl('')/static/js/common/indexHidden.js"></script>
+#end

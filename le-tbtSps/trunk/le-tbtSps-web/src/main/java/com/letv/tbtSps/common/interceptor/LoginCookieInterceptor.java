@@ -31,6 +31,7 @@ public class LoginCookieInterceptor extends AbstractHandlerInterceptorAdapter {
     IndexService indexService;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        request.setAttribute("indexFlag",false);
         String uri = request.getRequestURI();
         if (getContext().isExclude(uri)) {
             LOG.debug("in request [" + uri + "], this url is excluded");

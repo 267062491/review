@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+
+	</head>
+	<body >
+
+    <img src="#springUrl('')/static/images/page1.png" width="100%"  style="margin-top:-6px;"/>
+	</body>
+</html>

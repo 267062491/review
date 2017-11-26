@@ -526,7 +526,7 @@
 				<!-- Portal权限认证配置 -->
                 <profile.portal.authen.flag>tbtSps</profile.portal.authen.flag>
                 <profile.portal.web.domain>localhost</profile.portal.web.domain>
-                <profile.portal.api.domain>http://localhost:8080/index</profile.portal.api.domain>
+                <profile.portal.api.domain>http://localhost:8080/index?indexFlag=false</profile.portal.api.domain>
                 <profile.portal.cookie.names>tbtSps</profile.portal.cookie.names>
                 <profile.portal.cookie.domains>localhost</profile.portal.cookie.domains>
 

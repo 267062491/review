@@ -60,7 +60,7 @@ public abstract class ReviewBaseController extends WrapController {
 //            loginUser.setWarehouseSimpleCode("LCF");
 //            loginUser.setUserType(1);
 //        }
-        Assert.notNull(loginUser, "loginUser must be not null");
+//        Assert.notNull(loginUser, "loginUser must be not null");
         return loginUser;
     }
 

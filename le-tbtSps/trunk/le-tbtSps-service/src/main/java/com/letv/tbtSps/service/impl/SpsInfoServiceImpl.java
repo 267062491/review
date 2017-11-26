@@ -159,6 +159,10 @@ public class SpsInfoServiceImpl implements SpsInfoService {
         boolean resultFlag = false;
         try {
             if (null != spsInfo && null != spsInfo.getId()) {
+                SpsInfo spsInfo1 = spsInfoManager.getSpsInfoById(spsInfo.getId());
+                List<String> ids = Lists.newArrayList();
+                ids.add(spsInfo1.getSpsCode());
+                SolrServiceImpl.deleteDocumentByIds(ids,SolrServiceImpl.SOLR_CORE);// 刪除数据库的同时删除索引
                 resultFlag = spsInfoManager.delete(spsInfo);
             } else {
                 LOG.warn("SpsInfoServiceImpl#delete param is illegal.");
@@ -362,21 +366,7 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             try{
                 boolean result = spsInfoManager.insertOrderInfo(map);
                 // 保存成功之后， 创建全文检索  TODO
-                try{
-                    // 2.通过bean添加document
-                    List<SolrDto> solrDtoList = new ArrayList<SolrDto>();
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                    SimpleDateFormat formatterYear = new SimpleDateFormat("yyyy");
-                    SolrDto solrDto = new SolrDto(spsCode,spsCode, notificationTypeCodeList, notificationTypeContentList, spsInfo.getCountryCode()
-                            , spsInfo.getCountryCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode()
-                            , relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicine.getRelationMedicineCode()
-                            , relationSpsRelationMedicine.getRelationMedicineCode(), relationSpsRelationMedicine.getRelationMedicineCode(), relationSpsRelationMedicine.getRelationMedicineCode(), formatter.format(spsInfo.getPublishDate())
-                            , formatterYear.format(spsInfo.getPublishDate()), spsInfo.getFileTitle(),spsInfo.getContentDes(),zhiDingCLL , xiuGaiCLL , shanChuCLL);
-                    solrDtoList.add(solrDto);
-                    SolrServiceImpl.addDocumentByBean(solrDtoList,SolrServiceImpl.SOLR_CORE);
-                }catch (Exception e){
-                    LOG.error("创建sps/tbt信息，创建索引失败:",e);
-                }
+                this.createSolrIndex(spsInfo, spsCode, zhiDingCLL, xiuGaiCLL, shanChuCLL, notificationTypeCodeList, notificationTypeContentList, relationSpsRelationMedicine, relationSpsRelationMedicineProduct);
             }catch (DuplicateKeyException e){
                 LOG.error("创建sps信息DuplicateKeyException异常：",e);
                 ret[0]=SystemCodeEnum.SPS_CODE_HAVE_EXISTS.getCode();
@@ -395,6 +385,25 @@ public class SpsInfoServiceImpl implements SpsInfoService {
         }
         return ret ;
     }
+
+    private void createSolrIndex(SpsInfo spsInfo, String spsCode, Integer zhiDingCLL, Integer xiuGaiCLL, Integer shanChuCLL, List<String> notificationTypeCodeList, List<String> notificationTypeContentList, RelationSpsRelationMedicine relationSpsRelationMedicine, RelationSpsRelationMedicineProduct relationSpsRelationMedicineProduct) {
+        try{
+            // 2.通过bean添加document
+            List<SolrDto> solrDtoList = new ArrayList<SolrDto>();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatterYear = new SimpleDateFormat("yyyy");
+            SolrDto solrDto = new SolrDto(spsCode,spsCode, notificationTypeCodeList, notificationTypeContentList, spsInfo.getCountryCode()
+                    , spsInfo.getCountryCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode()
+                    , relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicineProduct.getRelationMedicineProductCode(), relationSpsRelationMedicine.getRelationMedicineCode()
+                    , relationSpsRelationMedicine.getRelationMedicineCode(), relationSpsRelationMedicine.getRelationMedicineCode(), relationSpsRelationMedicine.getRelationMedicineCode(), formatter.format(spsInfo.getPublishDate())
+                    , formatterYear.format(spsInfo.getPublishDate()), spsInfo.getFileTitle(),spsInfo.getContentDes(),zhiDingCLL , xiuGaiCLL , shanChuCLL);
+            solrDtoList.add(solrDto);
+            SolrServiceImpl.addDocumentByBean(solrDtoList,SolrServiceImpl.SOLR_CORE);
+        }catch (Exception e){
+            LOG.error("创建sps/tbt信息，创建索引失败:",e);
+        }
+    }
+
     /**
      * 修改sps、btb数据
      * @param spsInfo
@@ -457,6 +466,7 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             /**
              * 拼装残留量信息
              */
+            Integer zhiDingCLL=0 ,  xiuGaiCLL=0 , shanChuCLL=0 ;
             List<Object> list_spsResidualInfo = JsonHelperImpl.jsonFormatArrayToListBean(SpsResidualInfo.class , contents);
             for(Object obj : list_spsResidualInfo){
                 SpsResidualInfo spsResidualInfo = (SpsResidualInfo) obj;
@@ -465,6 +475,13 @@ public class SpsInfoServiceImpl implements SpsInfoService {
                 spsResidualInfo.setUpdateTime(new Date());
                 spsResidualInfo.setUpdateUser(userName);
                 spsResidualInfo.setSpsCode(spsCode);
+                if("1".equals(spsResidualInfo.getUpdateType())){
+                    zhiDingCLL++ ;
+                }else if("2".equals(spsResidualInfo.getUpdateType())){
+                    xiuGaiCLL++ ;
+                }else if("3".equals(spsResidualInfo.getUpdateType())){
+                    shanChuCLL++;
+                }
             }
             SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
             spsInfoLogQuery.setSpsCode(spsCode);
@@ -484,10 +501,14 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             /**
              * 拼装通报类型
              */
+            List<String> notificationTypeCodeList = Lists.newArrayList();
+            List<String> notificationTypeContentList = Lists.newArrayList();
             List<RelationSpsNotificationType> list_relationSpsNotificationType = new ArrayList<RelationSpsNotificationType>();
             if(null!=spsBtbMulityDto.getNotificationType()){
                 for(String notificationType : spsBtbMulityDto.getNotificationType()){
                     list_relationSpsNotificationType.add(new RelationSpsNotificationType(spsCode,notificationType,userName));
+                    notificationTypeCodeList.add(notificationType);
+                    notificationTypeContentList.add(notificationType);
                 }
             }
             /**
@@ -538,7 +559,8 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             map.put("relationSpsRelationMedicineProduct",relationSpsRelationMedicineProduct);
             try{
                 boolean result = spsInfoManager.updateOrderInfo(map);
-                // 保存成功之后， 创建全文检索  TODO
+                // 保存成功之后， 创建全文检索
+                this.createSolrIndex(spsInfo, spsCode, zhiDingCLL, xiuGaiCLL, shanChuCLL, notificationTypeCodeList, notificationTypeContentList, relationSpsRelationMedicine, relationSpsRelationMedicineProduct);
 
             }catch (DuplicateKeyException e){
                 LOG.error("创建sps信息DuplicateKeyException异常：",e);

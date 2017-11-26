@@ -13,6 +13,11 @@
 	</head>
 	<body >
 		#parse("/layout/topFrame.vm")
-        <div id="main" ><iframe id="frame-content" frameborder="0"  scrolling="auto"></iframe></div>
+        <div id="main" >
+            <div id="indexViewDiv">
+                #parse("indexPage.vm")
+            </div>
+            <iframe id="frame-content" frameborder="0"  scrolling="auto"></iframe>
+        </div>
 	</body>
 </html>
