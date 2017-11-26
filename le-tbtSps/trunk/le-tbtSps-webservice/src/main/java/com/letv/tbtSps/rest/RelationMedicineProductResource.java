@@ -65,7 +65,25 @@ public class RelationMedicineProductResource {
             this.logger.error("查询相关农产品数据异常", e);
             return WrapMapper.error();
         }
-    } 
+    }
+
+    @POST
+    @Path("/relationMedicineProduct/saveRelationMedicineProduct")
+    public Wrapper<?> saveRelationMedicineProduct(RelationMedicineProductRequest request) {
+        if (null == request || null == request.getCaCode()) {
+            this.logger.error("getRelationMedicineProduct 传入参数有误");
+            return WrapMapper.illegalArgument();
+        }
+
+        try {
+            RelationMedicineProduct relationMedicineProduct = relationMedicineProductService.getRelationMedicineProductById(request.getId());
+            RelationMedicineProductResponseDto responseDto = convert(relationMedicineProduct);
+            return WrapMapper.ok().result(responseDto);
+        } catch (Exception e) {
+            this.logger.error("查询相关农产品数据异常", e);
+            return WrapMapper.error();
+        }
+    }
 
     // 数据转换
     private RelationMedicineProductResponseDto convert(RelationMedicineProduct relationMedicineProduct) {

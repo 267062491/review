@@ -11,8 +11,8 @@
 												relationMedicineProductCode: {required: true},
 						relationMedicineProductEn: {required: true},
 						relationMedicineProductZhAlias: {required: true},
-						back1: {required: true},
-						back2: {required: true},
+//						back1: {required: true},
+//						back2: {required: true},
 						relationMedicineProductZh: {required: true},
 						caCode: {required: true},
 					},
@@ -21,8 +21,8 @@
 						relationMedicineProductCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductCode')"},
 						relationMedicineProductEn: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductEn')"},
 						relationMedicineProductZhAlias: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZhAlias')"},
-						back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.back1')"},
-						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.back2')"},
+##						back1: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.back1')"},
+##						back2: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.back2')"},
 						relationMedicineProductZh: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZh')"},
 						caCode: { required: "#springMessage('view.lable.input')#springMessage('tbtSps.relationMedicineProduct.caCode')"},
 					}
@@ -72,21 +72,21 @@
                                     <div class="col-sm-4">
                                         <input type="text" name="relationMedicineProductZhAlias" id="relationMedicineProductZhAlias" class="col-xs-12 col-sm-12" value="$!relationMedicineProduct.relationMedicineProductZhAlias" />
                                     </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.relationMedicineProduct.back1')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="back1" id="back1" class="col-xs-12 col-sm-12" value="$!relationMedicineProduct.back1" />
-                                    </div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.relationMedicineProduct.back2')</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" name="back2" id="back2" class="col-xs-12 col-sm-12" value="$!relationMedicineProduct.back2" />
-                                    </div>
-									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="relationMedicineProductZh">#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZh')</label>
+                                    <label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="relationMedicineProductZh">#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZh')</label>
                                     <div class="col-sm-4">
                                         <input type="text" name="relationMedicineProductZh" id="relationMedicineProductZh" class="col-xs-12 col-sm-12" value="$!relationMedicineProduct.relationMedicineProductZh" />
                                     </div>
 								</div>
+##                                <div class="form-group">
+##                                    <label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back1">#springMessage('tbtSps.relationMedicineProduct.back1')</label>
+##                                    <div class="col-sm-4">
+##                                        <input type="text" name="back1" id="back1" class="col-xs-12 col-sm-12" value="$!relationMedicineProduct.back1" />
+##									</div>
+##                                    <label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="back2">#springMessage('tbtSps.relationMedicineProduct.back2')</label>
+##                                    <div class="col-sm-4">
+##                                        <input type="text" name="back2" id="back2" class="col-xs-12 col-sm-12" value="$!relationMedicineProduct.back2" />
+##									</div>
+##								</div>
 								<div class="form-group">
 									<label class="col-sm-offset-1 col-sm-1 control-label no-padding-right" for="caCode">#springMessage('tbtSps.relationMedicineProduct.caCode')</label>
                                     <div class="col-sm-4">

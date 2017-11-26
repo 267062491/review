@@ -453,6 +453,11 @@
 				<artifactId>freemarker</artifactId>
 				<version>2.3.18</version>
 			</dependency>
+			<dependency>
+				<groupId>io.codis.jodis</groupId>
+				<artifactId>jodis</artifactId>
+				<version>0.3.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -521,7 +526,7 @@
 				<!-- Portal权限认证配置 -->
                 <profile.portal.authen.flag>tbtSps</profile.portal.authen.flag>
                 <profile.portal.web.domain>localhost</profile.portal.web.domain>
-                <profile.portal.api.domain>http://localhost:8080/login</profile.portal.api.domain>
+                <profile.portal.api.domain>http://localhost:8080/index</profile.portal.api.domain>
                 <profile.portal.cookie.names>tbtSps</profile.portal.cookie.names>
                 <profile.portal.cookie.domains>localhost</profile.portal.cookie.domains>
 
@@ -532,7 +537,7 @@
 				<profile.sps.attr.addr.temp>/usr/local/attr/review/temp</profile.sps.attr.addr.temp>
 				<profile.sps.attr.addr.templet>/usr/local/attr/review/templet</profile.sps.attr.addr.templet>
 				<!-- solr配置 -->
-				<profile.solr.server>http://localhost:8080/SHFW_SEARCH</profile.solr.server>
+				<profile.solr.server>http://localhost:8081/SHFW_SEARCH</profile.solr.server>
 				<profile.solr.home.jobs>jobs</profile.solr.home.jobs>
 				<profile.sps.attr.addr>/usr/local/attr/review/spsAttr/</profile.sps.attr.addr>
 			</properties>

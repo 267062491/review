@@ -48,18 +48,18 @@ public abstract class ReviewBaseController extends WrapController {
     public LoginUser getLoginUser() {
 
         LoginUser loginUser = UserContext.get().getUser();
-        if(null==loginUser){
-            loginUser = new LoginUser();
-            loginUser.setUserId(1L);
-            loginUser.setUserName("liucaifeng");
-            loginUser.setCnName("刘彩凤");
-            loginUser.setWarehouseNo("1");
-            loginUser.setWarehouseName("刘彩凤的仓库");
-            loginUser.setLanguage("zh");
-            loginUser.setUserCode("liucaifeng");
-            loginUser.setWarehouseSimpleCode("LCF");
-            loginUser.setUserType(1);
-        }
+//        if(null==loginUser){
+//            loginUser = new LoginUser();
+//            loginUser.setUserId(1L);
+//            loginUser.setUserName("ygd");
+//            loginUser.setCnName("于國棟");
+//            loginUser.setWarehouseNo("1");
+//            loginUser.setWarehouseName("于國棟");
+//            loginUser.setLanguage("zh");
+//            loginUser.setUserCode("liucaifeng");
+//            loginUser.setWarehouseSimpleCode("LCF");
+//            loginUser.setUserType(1);
+//        }
         Assert.notNull(loginUser, "loginUser must be not null");
         return loginUser;
     }

@@ -1,9 +1,10 @@
-    <table class="table table-striped table-bordered table-condensed table-hover">
+    <table class=" table-striped table-bordered table-condensed table-hover">
         <tbody>
             #foreach( $item in $dataList)
-            <tr style="height: 200px">
-                <td>
-                    $!item.spsCode:$!item.fileTitle</br>
+            <tr style="max-height: 200px">
+                <td  style="word-break:break-all; word-wrap:break-all;">
+                    <a href="$basePath/spsInfo/intoDetail?spsCodeQuery=$!item.id" target="_blank"><span style="color: blue ;font-size: 16px">$!item.spsCode:$!item.fileTitle</span></a>
+                    </br>
                     $!item.contentDes</br>
                     通报成员:$!item.countryContent
                     &nbsp;&nbsp;&nbsp;

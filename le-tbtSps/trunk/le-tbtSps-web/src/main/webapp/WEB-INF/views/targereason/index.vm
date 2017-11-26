@@ -75,7 +75,7 @@
                 <table class="table table-striped table-bordered table-condensed table-hover">
                     <thead>
                         <tr>
-							<th class="center">#springMessage('tbtSps.targereason.id')</th>
+##							<th class="center">#springMessage('tbtSps.targereason.id')</th>
 							<th class="center">#springMessage('tbtSps.targereason.targetReasonCode')</th>
 							<th class="center">#springMessage('tbtSps.targereason.targetReasonContent')</th>
 							<th class="center">#springMessage('tbtSps.targereason.createTime')</th>
@@ -86,7 +86,7 @@
                     <tbody>
                         #foreach( $item in $dataList)
                             <tr>
-                                <td>$!item.id</td>
+##                                <td>$!item.id</td>
                                 <td>$!item.targetReasonCode</td>
                                 <td>$!item.targetReasonContent</td>
                                 <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>

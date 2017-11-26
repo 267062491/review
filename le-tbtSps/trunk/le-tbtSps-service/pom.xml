@@ -62,5 +62,9 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+		<dependency>
+			<groupId>io.codis.jodis</groupId>
+			<artifactId>jodis</artifactId>
+		</dependency>
 	</dependencies>
 </project>

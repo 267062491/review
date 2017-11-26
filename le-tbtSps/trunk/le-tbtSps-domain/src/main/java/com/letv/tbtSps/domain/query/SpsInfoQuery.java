@@ -18,9 +18,11 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
     private static final long serialVersionUID = 1L;
     
     /** id */
-	private Long id; 
+	private Long id;
     /** 通报编号(作为唯一键) */
 	private String spsCode; 
+    /** 通报编号(作为唯一键) */
+	private String spsCodeQuery;
     /** 通报成员,一般是国家 */
 	private String countryCode; 
     /** 发布日期 */
@@ -97,11 +99,11 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
     public Long getId(){
 		return id;
 	}
-	    
+
     public void setId(Long id) {
 		this.id = id;
 	}
-	
+
     public String getSpsCode(){
 		return spsCode;
 	}
@@ -396,5 +398,13 @@ public class SpsInfoQuery extends Query implements java.io.Serializable  {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getSpsCodeQuery() {
+        return spsCodeQuery;
+    }
+
+    public void setSpsCodeQuery(String spsCodeQuery) {
+        this.spsCodeQuery = spsCodeQuery;
     }
 }

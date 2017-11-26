@@ -36,7 +36,12 @@ public class MedicineProduccategoryRequest extends LetvRequest {
     /** 修改人 */
     private String updateUser; 
     /** yn */
-    private Integer yn; 
+    private Integer yn;
+
+    /**
+     * 操作标识  增加:add ; 修改:modify ;删除:del
+     */
+    private String optFlag ;
     
     public Long getId(){
         return id;
@@ -124,5 +129,13 @@ public class MedicineProduccategoryRequest extends LetvRequest {
         
     public void setYn(Integer yn) {
         this.yn = yn;
+    }
+
+    public String getOptFlag() {
+        return optFlag;
+    }
+
+    public void setOptFlag(String optFlag) {
+        this.optFlag = optFlag;
     }
 }

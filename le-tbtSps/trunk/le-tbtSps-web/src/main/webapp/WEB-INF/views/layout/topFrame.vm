@@ -8,29 +8,39 @@
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
                 <small>
-##                    <img src="#springUrl('')/static/avatars/logo.png" width="33%"  style="margin-top:-6px;"/>
-                    <span class="bold">瞎写</span>
+                    <img src="#springUrl('')/static/images/head.png" width="50%"  style="margin-top:-6px;"/>
+##                    <span class="bold">农科院</span>
                 </small>
             </a><!-- /.brand -->
         </div><!-- /.navbar-header -->
 
-        <div class="navbar-header pull-right" role="navigation">
-            <ul class="nav ace-nav">
-                <li class="green">
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="#springUrl('')/static/avatars/user.jpg" alt="Jason's Photo" />
-                        <span class="user-info"><small>欢迎光临,</small>$!name</span>
-                        <i class="icon-caret-down"></i>
-                    </a>
+##        <div class="navbar-header pull-right" role="navigation">
+##            <ul class="nav ace-nav">
+##                <li class="green">
+##                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+##                        <img class="nav-user-photo" src="#springUrl('')/static/avatars/user.jpg" alt="Jason's Photo" />
+##                        <span class="user-info"><small>欢迎光临,</small>$!name</span>
+##                        <i class="icon-caret-down"></i>
+##                    </a>
+##
+##                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+##                        <li><a href="#"><i class="icon-user"></i>个人资料</a></li>
+##                        <li><a href="javascript:void(0)" onclick="link('110','修改密码','/user/modifyPassword','10','系统管理');"><i class="icon-cog"></i>修改密码</a></li>
+##                        <li class="divider"></li>
+##                        <li><a href="#springUrl('')/quit"><i class="icon-off"></i>退出登录</a></li>
+##                    </ul>
+##                </li>
+##            </ul><!-- /.ace-nav -->
+##        </div>
 
-                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <li><a href="#"><i class="icon-user"></i>个人资料</a></li>
-                        <li><a href="javascript:void(0)" onclick="link('110','修改密码','/user/modifyPassword','10','系统管理');"><i class="icon-cog"></i>修改密码</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#springUrl('')/quit"><i class="icon-off"></i>退出登录</a></li>
-                    </ul>
-                </li>
-            </ul><!-- /.ace-nav -->
+        <div class="pull-right" >
+            #if($!loginFlag)
+                <span class="bold" style="font-size: large"><a href="quit">退出登录</a></span>
+                <br>
+                你好，$!userName
+            #else
+                <span class="bold" style="font-size: large"><a href="login">登录</a> </span>
+            #end
         </div><!-- /.navbar-header -->
     </div><!-- /.container -->
 </div>
@@ -53,9 +63,7 @@
         <ul>
             <!--
             <li class="selected"><a href="javascript:void(0)" onclick="link('200','首页','user','20','首页')">首页</a></li>-->
-        #if($!indexSolr)
             <li><a href="javascript:void(0)" onclick="link('240','全文检索','spsInfo/indexSolr','20','全文检索')">全文检索</a></li>
-        #end
         #if($!user)
             <li><a href="javascript:void(0)" onclick="link('200','用户','user','20','用户')">用户$!test</a></li>
         #end

@@ -1094,6 +1094,9 @@ public class SpsInfoServiceImpl implements SpsInfoService {
             }
             queryCondition.append(" )");
             qc = queryCondition.toString().replaceFirst("AND","");
+            if("(  )".equals(qc)){
+                qc="*:*";
+            }
         }
         // 开始年和结束年是必填的
         String fq = "publishDateYear:["+solrDtoQuery.getPublishDateYearBegin()+" TO "+solrDtoQuery.getPublishDateYearEnd()+"]" ;
@@ -1108,7 +1111,7 @@ public class SpsInfoServiceImpl implements SpsInfoService {
              start = pageUtil.getCurPage()*pageUtil.getPageSize();// 计算从哪条开始检索
         }
         Map<String , Object> map = SolrServiceImpl.solrQuery(SolrServiceImpl.SOLR_CORE ,qc,"id", "ASC"
-                , start , row, true, "countryCode",fq);
+                , start , row, true, "spsCode",fq);
         pageUtil.setTotalRow((Integer) map.get("totalItem"));
         pageUtil.init();
         List<SolrDto> solrDtoList = (List<SolrDto>) map.get("solrDtoList");

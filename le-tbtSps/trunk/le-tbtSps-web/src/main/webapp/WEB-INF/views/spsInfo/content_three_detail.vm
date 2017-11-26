@@ -1,0 +1,55 @@
+<table border="1px #ooo" id="tab" cellpadding="0"
+       cellspacing="0" width="30%" class='table table-striped table-bordered table-condensed table-hover'>
+    <tr align="center">
+        <td width="10%" type = "select">农药</td>
+        <td width="10%" type = "select">农产品</td>
+        <td width="10%" type = "select">修改类型</td>
+        <td width="10%" type = "text">残留量</td>
+        <td width="10%" type = "radio">单位</td>
+        <td width="10%" type = "text">安全期</td>
+        <td width="10%" type = "text">截止/撤销日期</td>
+    </tr>
+    #foreach($!item in $!listSpsResidualInfo)
+        <tr align='center'>
+            <td width='10%' type='select'>
+                    #foreach( $item_relationMedicine in $list_relationMedicine)
+                                #if($!item.medicineCode==$!item_relationMedicine.relationMedicineCode)
+                                    $!item_relationMedicine.relationMedicineZh
+                                #end
+                    #end
+            </td>
+            <td width='10%' type='select'>
+                    #foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)
+                            #if($!item.medicineProductCode==$!item_relationMedicineProduct.relationMedicineProductCode)
+                                $!item_relationMedicineProduct.relationMedicineProductZh
+                            #end
+                    #end
+            </td>
+            <td width='10%' type='select'>
+                    #foreach( $item_updateType in $list_updateType)
+                            #if($!item.updateType==$!item_updateType.updateTypeCode)
+                                $!item_updateType.updateTypeContent
+                            #end
+                    #end
+            </td>
+            <td width='10%' type='text'>$!item.residuaAmount</td>
+            <td width='10%' type='radio'>
+                        #if($!item.unit=="ppm")
+                            ppm
+                        #end
+                        &nbsp;&nbsp;
+                    #if($!item.unit=="kg")
+                        mg/kg
+                    #end
+            </td>
+            <td width='10%' type='text'>$!item.safeDay</td>
+            <td width='10%' type='select'>
+                    #foreach( $item_relationMedicine in $listDate)
+                            #if($!item.endDateIn==$!item_relationMedicine)
+                                $!item_relationMedicine
+                            #end
+                    #end
+            </td>
+        </tr>
+    #end
+</table>

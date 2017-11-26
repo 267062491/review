@@ -19,12 +19,12 @@
 						</tr>
 						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.relationMedicineZhAlias')</th><td id="r_relationMedicineZhAlias" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.back1')</th><td id="r_back1" style='width:25%;'></td>
+                            <th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.createTime')</th><td id="r_createTime" style='width:25%;'></td>
 						</tr>
-						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.back2')</th><td id="r_back2" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.createTime')</th><td id="r_createTime" style='width:25%;'></td>
-						</tr>
+##                        <tr>
+##                            <th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.back1')</th><td id="r_back1" style='width:25%;'></td>
+##                            <th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.back2')</th><td id="r_back2" style='width:25%;'></td>
+##						</tr>
 						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.updateTime')</th><td id="r_updateTime" style='width:25%;'></td>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicine.createUser')</th><td id="r_createUser" style='width:25%;'></td>

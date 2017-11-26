@@ -1,0 +1,13 @@
+<div>
+   #foreach($!item_attr in $!listSpsLogAttr)
+        <input type="hidden" name="fileNameId" value="$!item_attr.id" id="$!item_attr.id">
+        <span id="sp$!item_attr.id">
+        <a href="$basePath/fileDownload/download?fileName=$!item_attr.id">$!item_attr.fileName</a>&nbsp;
+        </span>
+    #end
+
+</div>
+<div>
+    &nbsp;
+</div>
+

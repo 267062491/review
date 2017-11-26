@@ -70,6 +70,7 @@ public class SolrDtoQuery extends Query implements Serializable{
     private String countryCode;
     /** 通报成员内容 */
     private String countryContent;
+    private List<String> countryCodeList;
 
     /** 相关农产品 */
     private String relationMedicineProductCode;
@@ -79,6 +80,7 @@ public class SolrDtoQuery extends Query implements Serializable{
     private String relationMedicineProductZhAlias;
     /** 相关农产品中文 */
     private String relationMedicineProductZh;
+    private List<String> relationMedicineProductCodeList;
 
 
     /** 相关农药编码 */
@@ -89,6 +91,7 @@ public class SolrDtoQuery extends Query implements Serializable{
     private String relationMedicineEm;
     /** 相关农药中文别名 */
     private String relationMedicineZhAlias;
+    private List<String> relationMedicineCodeList;
 
     /**
      * 发布时间
@@ -309,6 +312,31 @@ public class SolrDtoQuery extends Query implements Serializable{
 
     public void setPublishDateYearEnd(String publishDateYearEnd) {
         this.publishDateYearEnd = publishDateYearEnd;
+    }
+
+
+    public List<String> getCountryCodeList() {
+        return countryCodeList;
+    }
+
+    public void setCountryCodeList(List<String> countryCodeList) {
+        this.countryCodeList = countryCodeList;
+    }
+
+    public List<String> getRelationMedicineProductCodeList() {
+        return relationMedicineProductCodeList;
+    }
+
+    public void setRelationMedicineProductCodeList(List<String> relationMedicineProductCodeList) {
+        this.relationMedicineProductCodeList = relationMedicineProductCodeList;
+    }
+
+    public List<String> getRelationMedicineCodeList() {
+        return relationMedicineCodeList;
+    }
+
+    public void setRelationMedicineCodeList(List<String> relationMedicineCodeList) {
+        this.relationMedicineCodeList = relationMedicineCodeList;
     }
 
     @Override

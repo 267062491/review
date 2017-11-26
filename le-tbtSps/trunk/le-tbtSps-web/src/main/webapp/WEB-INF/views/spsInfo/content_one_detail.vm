@@ -1,0 +1,168 @@
+<div class="row">
+    <input type="hidden" name="id" value="$!spsInfo.id">
+    <div class="col-xs-12 col-sm-12">
+        <div class="form-group">
+            <span style="color: red">
+                <label class="col-sm-1 control-label no-padding-right" for="spsCode">#springMessage('tbtSps.spsInfo.spsCode')</label>
+            </span>
+            <div class="col-sm-3">
+                    $!spsInfo.spsCode
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="publishDate">#springMessage('tbtSps.tbinfo.publishDate')</label>
+            <div class="col-sm-3">
+                $!dateTool.format('yyyy-MM-dd',$!spsInfo.publishDate)
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="language">*#springMessage('tbtSps.language')</label>
+            <div class="col-sm-3">
+                    #foreach( $item_language in $list_language)
+                                #if($!listRelationSpsLanguage)
+                                    #foreach($!rLanguage in $!listRelationSpsLanguage)
+                                        #if($!rLanguage.languageCode==$!item_language.languageCode)
+                                        $!item_language.languageContent
+                                            &nbsp;&nbsp;
+                                        #end
+                                    #end
+                                #end
+
+                    #end
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="countryCode">*#springMessage('tbtSps.spsInfo.countryCode')</label>
+            <div class="col-sm-3">
+                    #foreach( $item_country in $list_country)
+                            #if($!item_country.countryCode==$!spsInfo.countryCode)
+                                $!item_country.countryContent &nbsp;&nbsp;
+                            #end
+                    #end
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="spsOrg">#springMessage('tbtSps.spsInfo.spsOrg')</label>
+            <div class="col-sm-3">
+                    $!spsInfo.spsOrg
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="notificationType">#springMessage('tbtSps.notificationType')</label>
+            <div class="col-sm-3">
+                    #foreach( $item_notificationType in $list_notificationType)
+                            #if($!listRelationSpsNotificationType)
+                                #foreach($!rNotificationType in $!listRelationSpsNotificationType)
+                                    #if($!rNotificationType.notificationTypeCode==$!item_notificationType.notificationTypeCode)
+                                        $!item_notificationType.notificationTypeContent
+                                        &nbsp;&nbsp;
+                                    #end
+                                #end
+                            #end
+                    #end
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="coverProduct">#springMessage('tbtSps.spsInfo.coverProduct')</label>
+            <div class="col-sm-10">
+                $!spsInfo.coverProduct
+            </div>
+        </div>
+        <div>&nbsp;</div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="fileTitle">#springMessage('tbtSps.spsInfo.fileTitle')</label>
+            <div class="col-sm-10">
+                $!spsInfo.fileTitle
+            </div>
+        </div>
+        <div>&nbsp;</div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="contentDes">#springMessage('tbtSps.spsInfo.contentDes')</label>
+            <div class="col-sm-10">
+                $!spsInfo.contentDes
+            </div>
+        </div>
+        <div>&nbsp;</div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="targetReason">#springMessage('tbtSps.tbinfo.targetReason')</label>
+            <div class="col-sm-3">
+                    #foreach( $item_targereason in $list_targereason)
+                            #if($!listRelationSpsTargetreason)
+                                #foreach($!rTargetreason in $!listRelationSpsTargetreason)
+                                    #if($!rTargetreason.targetReasonCode==$!item_targereason.targetReasonCode)
+                                        $!item_targereason.targetReasonContent
+                                        &nbsp;&nbsp;
+                                    #end
+                                #end
+                            #end
+                    #end
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="internationalStandard">#springMessage('tbtSps.internationalStandard')</label>
+            <div class="col-sm-3">
+                    #foreach( $item_internationalStandard in $list_internationalStandard)
+                            #if($!listRelationSpsInternationlStandard)
+                                #foreach($!rStandard in $!listRelationSpsInternationlStandard)
+                                    #if($!rStandard.internationalStandardCode==$!item_internationalStandard.internationalStandardCode)
+                                        $!item_internationalStandard.internationalStandardContent
+                                        &nbsp;&nbsp;
+                                    #end
+                                #end
+                            #end
+                    #end
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="standardYn">#springMessage('tbtSps.spsInfo.standardYn')</label>
+            <div class="col-sm-3">
+
+                                                    #if($!standardYnFlag!="")
+                                                        #springMessage('constan.yes')
+                                                    #else
+                                                        #if($!spsInfo.standardYn==1)
+                                                            #springMessage('constan.yes')
+                                                        #end
+                                                    #end
+
+                &nbsp;&nbsp;
+
+                                    #if($!spsInfo.standardYn==0)
+                                        #springMessage('constan.no')
+                                    #end
+
+            </div>
+        </div>
+        <div class="form-group" >
+            <label class="col-sm-1 control-label no-padding-right" for="errorReason">#springMessage('tbtSps.spsInfo.errorReason')</label>
+            <div class="col-sm-10">
+                $!spsInfo.errorReason
+            </div>
+        </div>
+        <div>&nbsp;</div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="oraLink">#springMessage('tbtSps.spsInfo.oraLink')</label>
+            <div class="col-sm-10">
+                $!spsInfo.oraLink
+            </div>
+        </div>
+        <div>&nbsp;</div>
+        <div class="form-group">
+            <label class="col-sm-1 control-label no-padding-right" for="internationalStandard">#springMessage('tbtSps.tbresidualInfo.medicineCode.add')</label>
+            <div class="col-sm-3">
+                #foreach( $item_relationMedicine in $list_relationMedicine)
+                    #if($!listRelationSpsRelationMedicine)
+                        #foreach($!medicine in $!listRelationSpsRelationMedicine)
+                            #if($!medicine.relationMedicineCode==$!item_relationMedicine.relationMedicineCode)
+                                $!item_relationMedicine.relationMedicineZh
+                                &nbsp;&nbsp;
+                            #end
+                        #end
+                    #end
+                #end
+            </div>
+            <label class="col-sm-1 control-label no-padding-right" for="internationalStandard">#springMessage('tbtSps.tbresidualInfo.medicineProductCode.add')</label>
+            <div class="col-sm-3">
+                #foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)
+                        #if($!listRelationSpsRelationMedicineProduct)
+                            #foreach($!medicineProduct in $!listRelationSpsRelationMedicineProduct)
+                                #if($!medicineProduct.relationMedicineProductCode==$!item_relationMedicineProduct.relationMedicineProductCode)
+                                    $!item_relationMedicineProduct.relationMedicineProductZh
+                                    &nbsp;&nbsp;
+                                #end
+                            #end
+                        #end
+                #end
+            </div>
+        </div>
+    </div>
+</div>
+

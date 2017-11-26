@@ -10,7 +10,7 @@ import java.util.Date;
  * Created by ygd on 2017/11/21.
  */
 public class DateHelperImpl extends DateHelper {
-
+    public static final String DATE_FORMAT_YEAR = "yyyy";
     /**
      * var1-var2 得到两个日期相差的天数
      * @param var1
@@ -23,6 +23,13 @@ public class DateHelperImpl extends DateHelper {
         return day.intValue() ;
     }
 
+    /**
+     * 获取当前年
+     * @return
+     */
+    public static String getNowYear(){
+        return getCurrentDateStr(DATE_FORMAT_YEAR);
+    }
     public static void main(String[] args) {
         DateHelper.parseDate("2017-11-21");
         DateHelper.parseDate("2017-11-25");

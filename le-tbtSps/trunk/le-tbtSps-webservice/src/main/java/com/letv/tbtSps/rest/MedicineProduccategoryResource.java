@@ -65,7 +65,25 @@ public class MedicineProduccategoryResource {
             this.logger.error("查询农产品分类数据异常", e);
             return WrapMapper.error();
         }
-    } 
+    }
+
+    @POST
+    @Path("/medicineProduccategory/saveMedicineProduccategory")
+    public Wrapper<?> saveMedicineProduccategory(MedicineProduccategoryRequest request) {
+        if (null == request || null == request.getId()) {
+            this.logger.error("getMedicineProduccategory 传入参数有误");
+            return WrapMapper.illegalArgument();
+        }
+
+        try {
+            MedicineProduccategory medicineProduccategory = medicineProduccategoryService.getMedicineProduccategoryById(request.getId());
+            MedicineProduccategoryResponseDto responseDto = convert(medicineProduccategory);
+            return WrapMapper.ok().result(responseDto);
+        } catch (Exception e) {
+            this.logger.error("查询农产品分类数据异常", e);
+            return WrapMapper.error();
+        }
+    }
 
     // 数据转换
     private MedicineProduccategoryResponseDto convert(MedicineProduccategory medicineProduccategory) {

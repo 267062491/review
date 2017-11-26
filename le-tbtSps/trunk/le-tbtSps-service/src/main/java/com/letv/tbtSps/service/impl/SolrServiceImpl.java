@@ -42,8 +42,8 @@ public class SolrServiceImpl implements SolrService {
 
     static {
         try {
-            SOLR_URL = "http://localhost:8081/SHFW_SEARCH";
-            SOLR_CORE = "jobs";
+//            SOLR_URL = "http://localhost:8081/SHFW_SEARCH";
+//            SOLR_CORE = "jobs";
             SOLR_URL = PropertiesHelper.newInstance().getValue("solr.server");
             SOLR_CORE = PropertiesHelper.newInstance().getValue("solr.home.jobs");
         } catch (Exception e) {
@@ -139,7 +139,7 @@ public class SolrServiceImpl implements SolrService {
             sq.setHighlightSimplePre("<font color='red'>");
             sq.setHighlightSimplePost("</font>");
             if(!StringUtils.isEmpty(fq)){
-                sq.addFilterQuery("fq");
+                sq.addFilterQuery(fq);
             }
 
             QueryResponse result = solrClient.query(sq);
@@ -160,9 +160,25 @@ public class SolrServiceImpl implements SolrService {
                     Map.Entry<String, SimpleOrderedMap> entry = (Map.Entry<String, SimpleOrderedMap>) it.next();
                     if(null!=entry.getKey() && entry.getKey().equals(solrDto.getId())){
                         SimpleOrderedMap simpleOrderedMap = entry.getValue();
-                        List<String> simpleOrderedList = (List<String>) simpleOrderedMap.get("countryContent");
+                        List<String> simpleOrderedList = (List<String>) simpleOrderedMap.get("countryContent");// 通报成员内容高亮
                         if(null!=simpleOrderedList){
                             solrDto.setCountryContent(simpleOrderedList.get(0));// TODO: 2017/11/20 这里有个问题，高亮的时候，如果多值，只能设置一个高亮
+                        }
+                        List<String> spsCodeList = (List<String>) simpleOrderedMap.get("spsCode");// 通报编码高亮
+                        if(null!=spsCodeList){
+                            solrDto.setSpsCode(spsCodeList.get(0));
+                        }
+                        List<String> notificationTypeCodeList = (List<String>) simpleOrderedMap.get("notificationTypeCode");// 通报类型高亮
+                        if(null!=notificationTypeCodeList){
+                            solrDto.setNotificationTypeContent(notificationTypeCodeList);
+                        }
+                        List<String> relationMedicineProductZhList = (List<String>) simpleOrderedMap.get("relationMedicineProductZh");// 农产品高亮
+                        if(null!=relationMedicineProductZhList){
+                            solrDto.setRelationMedicineProductZh(relationMedicineProductZhList.get(0));
+                        }
+                        List<String> relationMedicineZhList = (List<String>) simpleOrderedMap.get("relationMedicineZh");// 农药高亮
+                        if(null!=relationMedicineZhList){
+                            solrDto.setRelationMedicineZh(relationMedicineZhList.get(0));
                         }
                         break;
                     }

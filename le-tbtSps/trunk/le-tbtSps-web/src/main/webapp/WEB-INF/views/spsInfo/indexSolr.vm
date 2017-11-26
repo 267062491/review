@@ -23,17 +23,17 @@
 								<div class="form-group">
                                 <label class="col-sm-1 control-label no-padding-right" for="status">通报编号</label>
                                 <div class="col-sm-3">
-                                    <input name="spsCode" type="text">
+                                    <input name="spsCode" type="text" value="$!query.spsCode">
                                 </div>
                                 <label class="col-sm-1 control-label no-padding-right" for="notificationType">#springMessage('tbtSps.notificationType')</label>
                                 <div class="col-sm-3">
                                     <select name="notificationTypeCodeQuery"  id="notificationTypeCodeQuery" multiple="multiple" >
                                         #foreach( $item_notificationType in $list_notificationType)
                                             <option value="$!item_notificationType.notificationTypeCode"
-                                                #if($!listRelationSpsNotificationType)
-                                                    #foreach($!rNotificationType in $!listRelationSpsNotificationType)
-                                                        #if($!rNotificationType.notificationTypeCode==$!item_notificationType.notificationTypeCode)
-                                                    selected="selected"
+                                                #if($!query.notificationTypeCode)
+                                                    #foreach($!rNotificationType in $!query.notificationTypeCode)
+                                                        #if($!rNotificationType==$!item_notificationType.notificationTypeCode)
+                                                            selected="selected"
                                                         #end
                                                     #end
                                                 #end
@@ -46,10 +46,10 @@
                                     <select name="countryCode"  id="countryCode" multiple="multiple" >
                                         #foreach( $item_country in $list_country)
                                             <option value="$!item_country.countryCode"
-                                                #if($!listRelationSpsNotificationCountry)
-                                                    #foreach($!rNotificationCountry in $!listRelationSpsNotificationCountry)
-                                                        #if($!rNotificationCountry.notificationCountryCode==$!item_country.countryCode)
-                                                    selected="selected"
+                                                #if($!query.countryCodeList)
+                                                    #foreach($!rNotificationCountry in $!query.countryCodeList)
+                                                        #if($!rNotificationCountry==$!item_country.countryCode)
+                                                            selected="selected"
                                                         #end
                                                     #end
                                                 #end
@@ -64,10 +64,10 @@
                                         <select name="relationMedicineProductCode"  id="relationMedicineProductCode" multiple="multiple" >
                                             #foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)
                                                 <option value="$!item_relationMedicineProduct.relationMedicineProductCode"
-                                                    #if($!listRelationMedicineProduct)
-                                                        #foreach($!r in $!listRelationMedicineProduct)
-                                                            #if($!r.relationMedicineProductCode==$!item_relationMedicineProduct.relationMedicineProductCode)
-                                                        selected="selected"
+                                                    #if($!query.relationMedicineProductCodeList)
+                                                        #foreach($!r in $!query.relationMedicineProductCodeList)
+                                                            #if($!r==$!item_relationMedicineProduct.relationMedicineProductCode)
+                                                                selected="selected"
                                                             #end
                                                         #end
                                                     #end
@@ -80,10 +80,10 @@
                                         <select name="relationMedicineCode"  id="relationMedicineCode" multiple="multiple" >
                                             #foreach( $item_relationMedicine in $list_relationMedicine)
                                                 <option value="$!item_relationMedicine.relationMedicineCode"
-                                                    #if($!listRelationMedicine)
-                                                        #foreach($!r in $!listRelationMedicine)
-                                                            #if($!r.notificationCountryCode==$!item_relationMedicine.relationMedicineCode)
-                                                        selected="selected"
+                                                    #if($!query.relationMedicineCodeList)
+                                                        #foreach($!r in $!query.relationMedicineCodeList)
+                                                            #if($!r==$!item_relationMedicine.relationMedicineCode)
+                                                                selected="selected"
                                                             #end
                                                         #end
                                                     #end
@@ -94,10 +94,22 @@
                                     <label class="col-sm-1 control-label no-padding-right" for="list_relationMedicine">发布年份</label>
                                     <div class="col-sm-3">
                                         <select name="publishDateYearBegin"  id="publishDateYearBegin"  >
-                                                <option value="2017">2017</option>
+                                            #foreach($!r in $!year)
+                                                <option value="$!r"
+                                                    #if($!r==$!query.publishDateYearBegin)
+                                                        selected="selected"
+                                                    #end
+                                                >$!r</option>
+                                            #end
                                         </select>-
                                         <select name="publishDateYearEnd"  id="publishDateYearEnd"  >
-                                            <option value="2017">2017</option>
+                                            #foreach($!r in $!year)
+                                                <option value="$!r"
+                                                    #if($!r==$!query.publishDateYearEnd)
+                                                        selected="selected"
+                                                    #end
+                                                >$!r</option>
+                                            #end
                                         </select>
                                     </div>
                                 </div>

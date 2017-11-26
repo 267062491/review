@@ -10,6 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.letv.common.utils.serialize.JsonHelper;
+import com.letv.tbtSps.sdk.api.request.MedicineProduccategoryRequest;
+import com.letv.tbtSps.sdk.api.request.RelationMedicineProductRequest;
 import com.letv.tbtSps.utils.HttpClientUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -118,10 +120,29 @@ public class RelationMedicineResource {
             request.setRelationMedicineEm("en");
             request.setRelationMedicineZhAlias("中文别名");
             request.setYn(1);
-            System.out.println(JsonHelper.toJson(request));
-            String result = HttpClientUtil.postForObject(String.valueOf("http://localhost:8080/services/relationMedicine/saveRelationMedicine")
-                    , "application/json", JsonHelper.toJson(request));
-            System.out.print(result);
+//            System.out.println(JsonHelper.toJson(request));
+//            String result = HttpClientUtil.postForObject(String.valueOf("http://localhost:8080/services/relationMedicine/saveRelationMedicine")
+//                    , "application/json", JsonHelper.toJson(request));
+//            System.out.print(result);
+
+            MedicineProduccategoryRequest medicineProduccategoryRequest = new MedicineProduccategoryRequest();
+            medicineProduccategoryRequest.setCaCode("分类编码");
+            medicineProduccategoryRequest.setCaName("分类名称");
+            medicineProduccategoryRequest.setCaCodeNum(1L);// 分类数字编码
+            medicineProduccategoryRequest.setOptFlag("save");
+            medicineProduccategoryRequest.setCaOrder(1);// 分类顺序
+            medicineProduccategoryRequest.setPCode("父分类编码");
+            medicineProduccategoryRequest.setYn(1);
+//            System.out.println(JsonHelper.toJson(medicineProduccategoryRequest));
+
+            RelationMedicineProductRequest relationMedicineProductRequest = new RelationMedicineProductRequest();
+            relationMedicineProductRequest.setOptFlag("add");
+            relationMedicineProductRequest.setCaCode("分类编码");
+            relationMedicineProductRequest.setRelationMedicineProductCode("农产品编码");
+            relationMedicineProductRequest.setRelationMedicineProductEn("农产品英文名称");
+            relationMedicineProductRequest.setRelationMedicineProductZh("农产品中文名称");
+            relationMedicineProductRequest.setYn(1);
+            System.out.print(JsonHelper.toJson(relationMedicineProductRequest));
         } catch (Exception e) {
             e.printStackTrace();
         }

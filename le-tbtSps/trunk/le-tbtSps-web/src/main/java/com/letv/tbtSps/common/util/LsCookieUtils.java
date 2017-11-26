@@ -86,7 +86,7 @@ public class LsCookieUtils {
         HttpSession session = request.getSession();
         session.setAttribute(userCode,cookieValue);
         String sessionId = session.getId();
-        int expiry = 3 * 60 * 60*10000;// 有效期为3小时
+        int expiry = 3 * 60 * 60;// 有效期为3小时
         Cookie cookie = new Cookie(name,sessionId+"_"+userCode );
         cookie.setDomain(domain);
         cookie.setPath(path);

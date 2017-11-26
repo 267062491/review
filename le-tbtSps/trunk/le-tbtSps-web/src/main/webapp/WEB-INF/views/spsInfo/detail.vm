@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-cn" >
+    <head>
+		#parse("/layout/head.vm")
+        <script src="#springUrl('')/static/js/bootstrap-multiselect.js"></script>
+        <link rel="stylesheet" href="#springUrl('')/static/css/bootstrap-multiselect.css" />
+##        <link rel="stylesheet" href="#springUrl('')/static/css/content_tab.css" />
+        <script src="#springUrl('')/static/js/prefixfree.min.js"></script>
+
+        <link rel="stylesheet" href="#springUrl('')/static/beatpicker/css/BeatPicker.min.css"/>
+        <script src="#springUrl('')/static/beatpicker/js/BeatPicker.js"></script>
+        <script src="#springUrl('')/static/beatpicker/documents/js/prism.js"></script>
+
+        <script src="#springUrl('')/static/js/textAreaShow.js"></script>
+        <style type="text/css">
+            .multiselect {
+                background: #fff;
+                border: 1px solid #d5d5d5;
+                line-height: 28px;
+            }
+        </style>
+        <style>
+            @import url("http://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
+            @import url("http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css");
+            *, *:before, *:after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html, body {
+                /*min-height: 100%;*/
+                /*max-height: 200&;*/
+                height: 100%;    改变整个高度;
+            }
+
+            body {
+                font: 14px/1 'Open Sans', sans-serif;
+                color: #555;
+                background: #eee;
+            }
+
+            h1 {
+                padding: 50px 0;
+                font-weight: 400;
+                text-align: center;
+            }
+
+            p {
+                margin: 0 0 20px;
+                line-height: 1.5;
+            }
+
+            main {
+                /*height: 110%;*/
+                min-width: 320px;
+                width: 99.5%;
+                padding: 0px;
+                margin: 0 auto;
+                background: #fff;
+            }
+
+            section {
+                display: none;
+                padding: 20px 0 0;
+                border-top: 1px solid white;
+            }
+
+            input {
+                /*display: none;*/
+            }
+
+            label {
+                display: inline-block;
+                margin: 0 0 -1px;
+                padding: 15px 25px;
+                font-weight: 600;
+                text-align: center;
+                color: #bbb;
+                border: 1px solid transparent;
+            }
+
+            label:before {
+                font-family: fontawesome;
+                font-weight: normal;
+                margin-right: 10px;
+            }
+
+            label[for*='1']:before {
+                content: '\f1cb';
+            }
+
+            label[for*='2']:before {
+                content: '\f17d';
+            }
+
+            label[for*='3']:before {
+                content: '\f16b';
+            }
+
+            label[for*='4']:before {
+                content: '\f1a9';
+            }
+
+            label:hover {
+                color: #888;
+                cursor: pointer;
+            }
+
+            input:checked + label {
+                color: #555;
+                border: 1px solid #ddd;
+                border-top: 2px solid orange;
+                border-bottom: 1px solid #fff;
+            }
+
+            #tab1:checked ~ #content1,
+            #tab2:checked ~ #content2,
+            #tab3:checked ~ #content3 {
+                display: block;
+            }
+
+            @media screen and (max-width: 650px) {
+                label {
+                    font-size: 0;
+                }
+
+                label:before {
+                    margin: 0;
+                    font-size: 18px;
+                }
+            }
+            @media screen and (max-width: 400px) {
+                label {
+                    padding: 15px;
+                }
+            }
+
+        </style>
+    </head>
+	<body style="background: white">
+    <form  id="spsInfo_form" class="form-horizontal" >
+        <input type="hidden" name="type" value="sps">
+    <main >
+        <input id="tab1" type="radio" name="tabs" checked style="display: none">
+        <label for="tab1">sps信息添加</label>
+
+        <input id="tab2" type="radio" name="tabs" style="display: none">
+        <label for="tab2">附件信息</label>
+
+        <input id="tab3" type="radio" name="tabs" style="display: none">
+        <label for="tab3">残留量</label>
+        <section id="content1">
+            #parse("/spsInfo/content_one_detail.vm")
+        </section>
+        <section id="content2">
+            #parse("/spsInfo/content_two_detail.vm")
+        </section>
+        <section id="content3">
+            #parse("/spsInfo/content_three_detail.vm")
+        </section>
+
+    </main>
+    </form>
+
+    <script type="text/javascript">
+
+        // ****************表格添加，删除行 开始********************************
+        /**
+         * 为table指定行添加一行
+         * tab 表id
+         * row 行数，如：0->第一行 1->第二行 -2->倒数第二行 -1->最后一行
+         * trHtml 添加行的html代码
+         */
+        function addTr(tab, row, trHtml){
+            //获取table最后一行 $("#tab tr:last")
+            //获取table第一行 $("#tab tr").eq(0)
+            //获取table倒数第二行 $("#tab tr").eq(-2)
+            var $tr=$("#"+tab+" tr").eq(row);
+            if($tr.size()==0){
+                alert("指定的table id或行数不存在！");
+                return;
+            }
+            $tr.after(trHtml);
+        }
+
+        function delTr(ckb){
+            //获取选中的复选框，然后循环遍历删除
+            var ckbs=$("input[name="+ckb+"]:checked");
+            if(ckbs.size()==0){
+                alert("要删除指定行，需选中要删除的行！");
+                return;
+            }
+            ckbs.each(function(){
+                $(this).parent().parent().remove();
+            });
+        }
+
+        var count = 0 ;
+        var lineNo = 0;
+        function addTr2(tab, row){
+            count = count+1 ;
+            var config = {
+                '.chosen-select' : {width:"100%", search_contains: true, no_results_text:'没有找到'}
+            }
+            for (var selector in config) {     debugger ;
+                $(selector).chosen(config[selector]);
+            }
+            lineNo = lineNo +1 ;
+            if(count == 1){
+                var trHtml="<tr align='center'>" +
+                        "<td width='5%' type='checkbox'><input type='checkbox' name='ckb'/></td>" +
+                        "<td width='10%' type='select'><select name = 'medicineCode' id= 'medicineCode' class='chosen-select'> <option value=''>#springMessage('tbtSps.please.choose')</option> #foreach( $item_relationMedicine in $list_relationMedicine)<option value='$!item_relationMedicine.relationMedicineCode'>$!item_relationMedicine.relationMedicineZh</option>#end</select></td>" +
+                        "<td width='10%' type='select'><select name = 'medicineProductCode' id= 'medicineProductCode' class='chosen-select'> <option value=''>#springMessage('tbtSps.please.choose')</option>#foreach( $item_relationMedicineProduct in $list_relationMedicineProduct)<option value='$!item_relationMedicineProduct.relationMedicineProductCode'>$!item_relationMedicineProduct.relationMedicineProductZh</option>#end</select></td>" +
+                        "<td width='10%' type='select'><select name = 'updateType' id= 'updateType' class='chosen-select'> <option value=''>#springMessage('tbtSps.please.choose')</option>#foreach( $item_updateType in $list_updateType)<option value='$!item_updateType.updateTypeCode'>$!item_updateType.updateTypeContent</option>#end</select></td>" +
+                        "<td width='10%' type='text'><input type='text' name='residuaAmount'/></td>" +
+                        "<td width='10%' type='radio'><input type='radio' name='unit"+lineNo+"' value = 'ppm' checked />ppm &nbsp;&nbsp;<input type='radio' name='unit"+lineNo+"' value = 'kg' />mg/kg</td>" +
+                        "<td width='10%' type='text'><input type='text' name='safeDay'/></td>" +
+                        "<td width='10%' type='select'><select name = 'endDateIn' id= 'endDateIn' class='chosen-select'> <option value=''>#springMessage('tbtSps.please.choose')</option> #foreach( $item_relationMedicine in $listDate)<option value='$!item_relationMedicine'>$!item_relationMedicine</option>#end</select></td>" +
+                        "</tr>";
+                addTr(tab, row, trHtml);
+                addTr2(tab, row);
+            }
+
+            count = 0 ;
+        }
+
+        function delTr2(){
+            delTr('ckb');
+        }
+        function delTr3(){
+            delTr('attr_ckb');
+        }
+        function addTr3(tab, row){
+            var trHtml="<tr align='center'>" +
+                    "<td width='5%'><input type='checkbox' name='attr_ckb'/></td>" +
+                    "<td width='10%'><input type='file' name='file'/></td>" +
+                    "</tr>";
+            addTr(tab, row, trHtml);
+        }
+        // ****************表格添加，删除行 结束********************************
+
+        // ****************获取表格数据， 并且转换成json数组 开始********************************
+        var keysArr = new Array("","medicineCode", "medicineProductCode","updateType","residuaAmount","unit","safeDay","endDateIn");//可以根据表格的列数添加
+        function TableToJson(tableid,fromRow,fromColum) { //tableid是你要转化的表的表名，是一个字符串，如"example"
+            debugger ;
+            var rows = document.getElementById(tableid).rows.length; //获得行数(包括thead)
+            var colums = document.getElementById(tableid).rows[0].cells.length; //获得列数
+            var json = "[";
+            var tdValue;
+            for (var i = fromRow; i < rows; i++) { //每行
+                json += "{";
+                for (var j = fromColum; j < colums; j++) {
+                    var td_type = $("#"+tableid+" tr:eq("+i+") td:eq("+j+")").attr("type") ;// 获得td自定义的属性
+                    tdName = keysArr[j]; //Json数据的键
+                    json += "\""; //加上一个双引号
+                    json += tdName;
+                    json += "\"";
+                    json += ":";
+                    if ("select"==td_type ) {
+                        tdValue = $('#'+tableid+' tr:eq('+i+') td:eq('+j+') select').val() ;
+                    } else if ("text"==td_type ) {
+                        tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+j+") input").val() ;
+                    } else if ("radio"==td_type) {
+                        tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+j+") input[type='radio']:checked").val() ;
+                    } else{
+                        tdValue =$("#"+tableid+" tr:eq("+i+") td:eq("+j+")").text() ;
+                    }
+                    json += "\"";
+                    json += tdValue;
+                    json += "\"";
+                    json += ",";
+                }
+                json = json.substring(0, json.length - 1);
+                json += "}";
+                json += ",";
+            }
+            if(json!="["){
+                json = json.substring(0, json.length - 1);
+                json += "]";
+            }else{
+                json = "" ;
+            }
+
+            return json;
+        }
+
+        // ****************获取表格数据， 并且转换成json数组 结束********************************
+
+        $(function() {
+            // 点击提交按钮
+            $("#btn-submit").click(function(){
+                var tableContent = TableToJson('tab',1,1);
+                $("#table_content").val(tableContent) ;
+                var formData = new FormData($( "#spsInfo_form" )[0]);
+                $.ajax({
+                    url: '$basePath/spsInfo/createOrderInfo' ,
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (returndata) {
+                        dialog.alert(returndata.message) ;
+                        if(returndata.code==200){
+                            window.location.href="$basePath/spsInfo/queryByPage?type=sps"
+                        }
+
+                    },
+                    error: function (returndata) {
+                        dialog.alert("出问题了，联系管理员吧");
+                    }
+                });
+            });
+            $("#displayDiv").click(function(){
+                $("#hiddenDiv").hide();
+            });
+            $("#showDiv").click(function(){
+                $("#hiddenDiv").show();
+            });
+            $("#btn-back").click(function(){
+                window.history.go(-1);
+            });
+        });
+        /**
+         * 删除附件
+         * @param id
+         */
+        function delAttr(id){
+            $("#"+id).val("");
+            $("#sp"+id).remove();
+        }
+    </script>
+
+
+
+    <script type="text/javascript">
+        var initConfigurationSet = {
+            enableFiltering: true,
+            includeSelectAllOption: true,
+            maxHeight: 280,
+            nonSelectedText: '请选择',
+            selectAllText: '全选',
+            filterPlaceholder: '搜索',
+            buttonWidth: '160px',
+            numberDisplayed: 1
+        };
+        // 多选下拉框checkbox select
+        $(document).ready(function() {  ;
+            $('#notificationType').multiselect(initConfigurationSet);
+            $('#language').multiselect(initConfigurationSet);
+            $('#targetReason').multiselect(initConfigurationSet);
+            $('#internationalStandard').multiselect(initConfigurationSet);
+        });
+        // 搜索下拉框
+        var config = {
+            '.chosen-select' : {width:"100%", search_contains: true, no_results_text:'没有找到'}
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
+
+	</body>
+</html>

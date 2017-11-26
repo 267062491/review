@@ -13,6 +13,7 @@ import com.letv.tbtSps.domain.*;
 import com.letv.tbtSps.domain.dto.*;
 import com.letv.tbtSps.domain.query.*;
 import com.letv.tbtSps.service.*;
+import com.letv.tbtSps.utils.DateHelperImpl;
 import com.letv.tbtSps.utils.JsonHelperImpl;
 import com.letv.tbtSps.utils.ParameterLoad;
 import com.letv.tbtSps.utils.constant.SystemConstant;
@@ -159,11 +160,18 @@ public class SpsInfoController extends ReviewBaseController {
      */
     @RequestMapping(value = "addForward")
     public String addForward(Model model,SpsInfoQuery spsInfoQuery) {
+        addForwardInfo(model, spsInfoQuery);
+        if("tbt".equals(spsInfoQuery.getType())){
+            return viewPrefix + "/addTBT";
+        }
+        return viewPrefix + "/add";
+    }
 
+    private void addForwardInfo(Model model, SpsInfoQuery spsInfoQuery) {
         /**
          * 组装页面显示的数据  ,当修改的时候走if逻辑
          */
-        if(null!=spsInfoQuery.getId()){
+        if(null!=spsInfoQuery.getId() ){
             /**
              * spsInfo基础信息
               */
@@ -248,12 +256,102 @@ public class SpsInfoController extends ReviewBaseController {
         model.addAttribute("list_relationMedicineProduct",list_relationMedicineProduct);
         model.addAttribute("list_updateType",list_updateType);
         model.addAttribute("listDate",listDate);
-        if("tbt".equals(spsInfoQuery.getType())){
-            return viewPrefix + "/addTBT";
-        }
-        return viewPrefix + "/add";
     }
 
+
+    @RequestMapping(value = "intoDetail")
+    public String intoDetail(Model model,SpsInfoQuery spsInfoQuery){
+        /**
+         * 组装页面显示的数据  ,当修改的时候走if逻辑
+         */
+        if(!StringUtils.isEmpty(spsInfoQuery.getSpsCodeQuery()) ){
+            spsInfoQuery.setSpsCode(spsInfoQuery.getSpsCodeQuery());
+            /**
+             * spsInfo基础信息
+             */
+            List<SpsInfo> listSpsInfo = spsInfoService.querySpsInfoList(spsInfoQuery) ;
+            SpsInfo spsInfo = listSpsInfo.get(0);
+            String spsCode = spsInfo.getSpsCode();
+            // 原文语种信息
+            RelationSpsLanguageQuery relationSpsLanguageQuery = new RelationSpsLanguageQuery();
+            relationSpsLanguageQuery.setSpsCode(spsCode);
+            List<RelationSpsLanguage> listRelationSpsLanguage = relationSpsLanguageService.queryRelationSpsLanguageList(relationSpsLanguageQuery);
+            RelationSpsNotificationTypeQuery relationSpsNotificationTypeQuery = new RelationSpsNotificationTypeQuery();
+            relationSpsNotificationTypeQuery.setSpsCode(spsCode);
+            List<RelationSpsNotificationType> listRelationSpsNotificationType = relationSpsNotificationTypeService.queryRelationSpsNotificationTypeList(relationSpsNotificationTypeQuery);
+            RelationSpsTargereasonQuery relationSpsTargereasonQuery = new RelationSpsTargereasonQuery();
+            relationSpsTargereasonQuery.setSpsCode(spsCode);
+            List<RelationSpsTargereason> listRelationSpsTargetreason = relationSpsTargereasonService.queryRelationSpsTargereasonList(relationSpsTargereasonQuery);
+            RelationSpsInternationalStandardQuery relationSpsInternationalStandardQuery = new RelationSpsInternationalStandardQuery();
+            relationSpsInternationalStandardQuery.setSpsCode(spsCode);
+            List<RelationSpsInternationalStandard> listRelationSpsInternationlStandard = relationSpsInternationalStandardService.queryRelationSpsInternationalStandardList(relationSpsInternationalStandardQuery);
+            RelationSpsRelationMedicineQuery relationSpsRelationMedicineQuery = new RelationSpsRelationMedicineQuery();
+            relationSpsRelationMedicineQuery.setSpsCode(spsCode);
+            List<RelationSpsRelationMedicine> listRelationSpsRelationMedicine = relationSpsRelationMedicineService.queryRelationSpsRelationMedicineList(relationSpsRelationMedicineQuery);
+            RelationSpsRelationMedicineProductQuery relationSpsRelationMedicineProductQuery = new RelationSpsRelationMedicineProductQuery();
+            relationSpsRelationMedicineProductQuery.setSpsCode(spsCode);
+            List<RelationSpsRelationMedicineProduct> listRelationSpsRelationMedicineProduct = relationSpsRelationMedicineProductService.queryRelationSpsRelationMedicineProductList(relationSpsRelationMedicineProductQuery);
+            model.addAttribute("spsInfo",spsInfo);
+            model.addAttribute("listRelationSpsLanguage",listRelationSpsLanguage);
+            model.addAttribute("listRelationSpsNotificationType",listRelationSpsNotificationType);
+            model.addAttribute("listRelationSpsTargetreason",listRelationSpsTargetreason);
+            model.addAttribute("listRelationSpsInternationlStandard",listRelationSpsInternationlStandard);
+            model.addAttribute("listRelationSpsRelationMedicine",listRelationSpsRelationMedicine);
+            model.addAttribute("listRelationSpsRelationMedicineProduct",listRelationSpsRelationMedicineProduct);
+
+            /**
+             * spsInfo 附件信息
+             */
+            SpsInfoLogQuery spsInfoLogQuery = new SpsInfoLogQuery();
+            spsInfoLogQuery.setSpsCode(spsCode);
+            spsInfoLogQuery.setState(Sps_Tbt_InfoStatus.UN_FENPEI.getStatusCode());
+            List<SpsInfoLog> listSpsInfoLog = spsInfoLogService.querySpsInfoLogList(spsInfoLogQuery)  ;
+            if(!CollectionUtils.isEmpty(listSpsInfoLog)){
+                SpsInfoLog spsInfoLog = listSpsInfoLog.get(0);
+                SpsLogAttrQuery spsLogAttrQuery = new SpsLogAttrQuery();
+                spsLogAttrQuery.setSpsCode(spsCode);
+                spsLogAttrQuery.setLogAttrRelation(spsInfoLog.getLogAttrRelation());
+                List<SpsLogAttr> listSpsLogAttr = spsLogAttrService.querySpsLogAttrList(spsLogAttrQuery) ;
+                model.addAttribute("listSpsLogAttr",listSpsLogAttr);
+            }
+            /**
+             * spsInfo 农药农产品信息
+             */
+            SpsResidualInfoQuery spsResidualInfoQuery = new SpsResidualInfoQuery();
+            spsResidualInfoQuery.setSpsCode(spsCode);
+
+            List<SpsResidualInfo> listSpsResidualInfo = spsResidualInfoService.querySpsResidualInfoList(spsResidualInfoQuery) ;
+            for(SpsResidualInfo spsResidualInfo : listSpsResidualInfo){
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String dateString = formatter.format(spsResidualInfo.getEndDate());
+                spsResidualInfo.setEndDateIn(dateString);
+            }
+
+            model.addAttribute("listSpsResidualInfo",listSpsResidualInfo);
+        }else{
+            model.addAttribute("standardYnFlag","standardYnFlag");
+        }
+
+        List<Country> list_country = parameterLoad.getList_country();
+        List<Language> list_language = parameterLoad.getList_language();
+        List<NotificationType> list_notificationType = parameterLoad.getList_notificationType();
+        List<Targereason> list_targereason = parameterLoad.getList_targereason();
+        List<InternationalStandard> list_internationalStandard =  parameterLoad.getList_internationalStandard();
+        List<RelationMedicine> list_relationMedicine = parameterLoad.getList_relationMedicine();
+        List<RelationMedicineProduct> list_relationMedicineProduct = parameterLoad.getList_relationMedicineProduct();
+        List<UpdateType> list_updateType = parameterLoad.getList_updateType();
+        List<String> listDate = parameterLoad.getListDate();
+        model.addAttribute("list_country",list_country);
+        model.addAttribute("list_language",list_language);
+        model.addAttribute("list_notificationType",list_notificationType);
+        model.addAttribute("list_targereason",list_targereason);
+        model.addAttribute("list_internationalStandard",list_internationalStandard);
+        model.addAttribute("list_relationMedicine",list_relationMedicine);
+        model.addAttribute("list_relationMedicineProduct",list_relationMedicineProduct);
+        model.addAttribute("list_updateType",list_updateType);
+        model.addAttribute("listDate",listDate);
+        return viewPrefix + "/detail";
+    }
     /**
      * sps信息表----添加
      * 
@@ -377,17 +475,18 @@ public class SpsInfoController extends ReviewBaseController {
             return illegalArgument();
         }
 
-        try {
-            SpsInfo spsInfo = spsInfoService.getSpsInfoById(query.getId());
-            if (spsInfo != null) {
-                return new Wrapper<SpsInfo>().result(spsInfo);
-            } else {
-                return WrapMapper.wrap(Wrapper.ERROR_CODE, "查询sps信息表详情失败！");
-            }
-        } catch (Exception e) {
-            LOG.warn("detail spsInfo has error.", e);
-            return error();
-        }
+//        try {
+//            SpsInfo spsInfo = spsInfoService.getSpsInfoById(query.getId());
+//            if (spsInfo != null) {
+//                return new Wrapper<SpsInfo>().result(spsInfo);
+//            } else {
+//                return WrapMapper.wrap(Wrapper.ERROR_CODE, "查询sps信息表详情失败！");
+//            }
+//        } catch (Exception e) {
+//            LOG.warn("detail spsInfo has error.", e);
+//            return error();
+//        }
+        return null ;
     }
 
     /**
@@ -984,15 +1083,15 @@ public class SpsInfoController extends ReviewBaseController {
      * @return
      */
     @RequestMapping(value = "indexSolr")
-    public String indexSolr(Model model) {
-        List<Country> list_country = parameterLoad.getList_country();
-        List<NotificationType> list_notificationType = parameterLoad.getList_notificationType();
-        List<RelationMedicine> list_relationMedicine = parameterLoad.getList_relationMedicine();
-        List<RelationMedicineProduct> list_relationMedicineProduct = parameterLoad.getList_relationMedicineProduct();
-        model.addAttribute("list_country",list_country); // 通报成员
-        model.addAttribute("list_notificationType",list_notificationType) ;// 通报类型
-        model.addAttribute("list_relationMedicine",list_relationMedicine);
-        model.addAttribute("list_relationMedicineProduct",list_relationMedicineProduct);
+    public String indexSolr(Model model,SolrDtoQuery query ) {
+        query.setPublishDateYearBegin(DateHelperImpl.getNowYear());
+        query.setPublishDateYearEnd(DateHelperImpl.getNowYear());
+        model.addAttribute("list_country",parameterLoad.getList_country()); // 通报成员
+        model.addAttribute("list_notificationType",parameterLoad.getList_notificationType()) ;// 通报类型
+        model.addAttribute("list_relationMedicine",parameterLoad.getList_relationMedicine());
+        model.addAttribute("list_relationMedicineProduct",parameterLoad.getList_relationMedicineProduct());
+        model.addAttribute("year",parameterLoad.getListYear());
+        model.addAttribute("query", query);
         return viewPrefix + "/indexSolr";
     }
 
@@ -1000,9 +1099,49 @@ public class SpsInfoController extends ReviewBaseController {
     public String sorlQuery(SolrDtoQuery query , Model model, PageUtil page){
         try {
             List<SolrDto> solrDtoList = solrDtoList = spsInfoService.sorlQuery(query,page);
+
+            if(!StringUtils.isEmpty(query.getNotificationTypeCodeQuery())){
+                String[] strs = query.getNotificationTypeCodeQuery().split(",");
+                List<String> ll = Lists.newArrayList();
+                for(String str : strs){
+                    ll.add(str);
+                }
+                query.setNotificationTypeCode(ll);
+            }
+            if(!StringUtils.isEmpty(query.getCountryCode())){
+                String[] strs = query.getCountryCode().split(",");
+                List<String> ll = Lists.newArrayList();
+                for(String str : strs){
+                    ll.add(str);
+                }
+                query.setCountryCodeList(ll);
+            }
+            if(!StringUtils.isEmpty(query.getRelationMedicineProductCode())){
+                String[] strs = query.getRelationMedicineProductCode().split(",");
+                List<String> ll = Lists.newArrayList();
+                for(String str : strs){
+                    ll.add(str);
+                }
+                query.setRelationMedicineProductCodeList(ll);
+            }
+            if(!StringUtils.isEmpty(query.getRelationMedicineCode())){
+                String[] strs = query.getRelationMedicineCode().split(",");
+                List<String> ll = Lists.newArrayList();
+                for(String str : strs){
+                    ll.add(str);
+                }
+                query.setRelationMedicineCodeList(ll);
+            }
+
             model.addAttribute("dataList",solrDtoList);
             model.addAttribute("query", query);// 查询参数
             model.addAttribute("page", page);// 分页
+            model.addAttribute("list_country",parameterLoad.getList_country()); // 通报成员
+            model.addAttribute("list_notificationType",parameterLoad.getList_notificationType()) ;// 通报类型
+            model.addAttribute("list_relationMedicine",parameterLoad.getList_relationMedicine());
+            model.addAttribute("list_relationMedicineProduct",parameterLoad.getList_relationMedicineProduct());
+            model.addAttribute("year",parameterLoad.getListYear());
+            model.addAttribute("nowYear", DateHelperImpl.getNowYear());
             return viewPrefix + "/indexSolr" ;
         } catch (Exception e) {
             logger.info("spsInfoController.sorlQuery.e:",e);

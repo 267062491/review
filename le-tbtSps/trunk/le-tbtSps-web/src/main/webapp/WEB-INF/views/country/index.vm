@@ -89,7 +89,7 @@
                 <table class="table table-striped table-bordered table-condensed table-hover">
                     <thead>
                         <tr>
-							<th class="center">#springMessage('tbtSps.country.id')</th>
+##							<th class="center">#springMessage('tbtSps.country.id')</th>
 							<th class="center">#springMessage('tbtSps.country.countryCode')</th>
 							<th class="center">#springMessage('tbtSps.country.countryContent')</th>
 							<th class="center">#springMessage('tbtSps.country.simpleName')</th>
@@ -103,7 +103,7 @@
                     <tbody>
                         #foreach( $item in $dataList)
                             <tr>
-                                <td>$!item.id</td>
+##                                <td>$!item.id</td>
                                 <td>$!item.countryCode</td>
                                 <td>$!item.countryContent</td>
                                 <td>$!item.simpleName</td>

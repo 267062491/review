@@ -75,7 +75,7 @@
                 <table class="table table-striped table-bordered table-condensed table-hover">
                     <thead>
                         <tr>
-							<th class="center">#springMessage('tbtSps.internationalStandard.id')</th>
+##							<th class="center">#springMessage('tbtSps.internationalStandard.id')</th>
 							<th class="center">#springMessage('tbtSps.internationalStandard.internationalStandardCode')</th>
 							<th class="center">#springMessage('tbtSps.internationalStandard.internationalStandardContent')</th>
 							<th class="center">#springMessage('tbtSps.internationalStandard.createTime')</th>
@@ -86,7 +86,7 @@
                     <tbody>
                         #foreach( $item in $dataList)
                             <tr>
-                                <td>$!item.id</td>
+##                                <td>$!item.id</td>
                                 <td>$!item.internationalStandardCode</td>
                                 <td>$!item.internationalStandardContent</td>
                                 <td>$!dateTool.format('yyyy-MM-dd HH:mm:ss ',$!item.createTime)</td>

@@ -7,6 +7,7 @@ import com.letv.common.utils.wrap.WrapMapper;
 import com.letv.common.utils.wrap.Wrapper;
 import com.letv.tbtSps.common.controller.ReviewBaseController;
 import com.letv.tbtSps.common.cotext.LoginUser;
+import com.letv.tbtSps.common.cotext.UserContext;
 import com.letv.tbtSps.domain.User;
 import com.letv.tbtSps.domain.UserRole;
 import com.letv.tbtSps.domain.query.RoleResourceQuery;
@@ -18,6 +19,7 @@ import com.letv.tbtSps.service.ResourceService;
 import com.letv.tbtSps.service.RoleResourceService;
 import com.letv.tbtSps.service.UserRoleService;
 import com.letv.tbtSps.utils.JsonHelperImpl;
+import com.letv.tbtSps.utils.ParameterLoad;
 import com.letv.tbtSps.utils.PortalWeb;
 import com.letv.tbtSps.utils.constant.PortalSystemTipCodeEnum;
 import com.letv.tbtSps.utils.constant.ResourcePlant;
@@ -62,7 +64,8 @@ public class IndexController extends ReviewBaseController {
     private PortalWeb portalWeb ;
     @Autowired
     private UserRoleService userRoleService;
-
+    @Autowired
+    private ParameterLoad parameterLoad;
     private final Log logger = LogFactory.getLog(this.getClass());
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -74,11 +77,11 @@ public class IndexController extends ReviewBaseController {
     public String index(Model model, HttpServletRequest request) {
         logger.debug("go to index page");
         LoginUser loginUser = getCurrentUser();
-        if (loginUser == null) {
+//        if (loginUser == null) {
+////            return login(model, request);
+////            return login(model, request, VIEW_INDEX);
 //            return login(model, request);
-//            return login(model, request, VIEW_INDEX);
-            return login(model, request);
-        }else{
+//        }else{
             /**
              * 查询用户有用的一级菜单
              */
@@ -92,7 +95,7 @@ public class IndexController extends ReviewBaseController {
                 model.addAttribute("firstMenus",listLetvResponse.getResult());
             }
             return VIEW_INDEX;
-        }
+//        }
     }
 
     /**
@@ -193,6 +196,7 @@ public class IndexController extends ReviewBaseController {
     }
 
     private void setCookie(HttpServletRequest request,HttpServletResponse response, User user) {
+
         if (null == user) {
             return;
         }
@@ -205,6 +209,7 @@ public class IndexController extends ReviewBaseController {
         loginUser.setUserType(user.getUserType());
         String cookieValue = loginUser.toString();// 用户信息的json值
         portalWeb.setCookies(request,response, cookieValue ,user.getUserCode() );
+        UserContext.set(loginUser);
     }
 
     /**
@@ -266,6 +271,9 @@ public class IndexController extends ReviewBaseController {
         userRoleQuery.setUserCode(userName);
         List<UserRole>  userRoleList = userRoleService.queryUserRoleList(userRoleQuery);
         model.addAttribute("indexSolr",true);//全文检索
+        model.addAttribute("loginFlag", org.apache.commons.lang.StringUtils.isNotEmpty(this.getLoginUserName()));//是否登录
+        model.addAttribute("userName",this.getLoginUserCnName());//是否登录
+
         for(UserRole userRole : userRoleList){
             if(userRole.getRoleCode().equals(RoleEnum.CCPR.getStatusCode())){
 //                    model.addAttribute("user",true);// 用户
@@ -350,4 +358,5 @@ public class IndexController extends ReviewBaseController {
             }
         }
     }
+
 }

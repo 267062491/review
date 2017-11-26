@@ -16,9 +16,9 @@
 						<tr>
                             <th class="center" style='width:25%;'>#springMessage('tbtSps.role.roleName')</th><td id="r_roleName" style='width:75%;' colspan="3"></td>
 						</tr>
-						<tr>
-                            <th class="center" style='width:25%;'>tbtSps.warehouse.warehouseName</th><td id="r_warehouseName" style='width:75%;' colspan="3"></td>
-						</tr>
+##						<tr>
+##                            <th class="center" style='width:25%;'>tbtSps.warehouse.warehouseName</th><td id="r_warehouseName" style='width:75%;' colspan="3"></td>
+##						</tr>
 						<tr>
                             <th class="center" style='width:25%;'>#springMessage('tbtSps.user.duty')</th><td id="r_duty" style='width:25%;'></td>
                             <th class="center" style='width:25%;'>#springMessage('tbtSps.user.userAddress')</th><td id="r_userAddress" style='width:25%;'></td>

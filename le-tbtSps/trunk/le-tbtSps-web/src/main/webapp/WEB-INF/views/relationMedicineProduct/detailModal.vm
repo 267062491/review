@@ -17,10 +17,10 @@
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductEn')</th><td id="r_relationMedicineProductEn" style='width:25%;'></td>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZhAlias')</th><td id="r_relationMedicineProductZhAlias" style='width:25%;'></td>
 						</tr>
-						<tr>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicineProduct.back1')</th><td id="r_back1" style='width:25%;'></td>
-							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicineProduct.back2')</th><td id="r_back2" style='width:25%;'></td>
-						</tr>
+##						<tr>
+##							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicineProduct.back1')</th><td id="r_back1" style='width:25%;'></td>
+##							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicineProduct.back2')</th><td id="r_back2" style='width:25%;'></td>
+##						</tr>
 						<tr>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicineProduct.relationMedicineProductZh')</th><td id="r_relationMedicineProductZh" style='width:25%;'></td>
 							<th class="center" style='width:25%;'>#springMessage('tbtSps.relationMedicineProduct.caCode')</th><td id="r_caCode" style='width:25%;'></td>
