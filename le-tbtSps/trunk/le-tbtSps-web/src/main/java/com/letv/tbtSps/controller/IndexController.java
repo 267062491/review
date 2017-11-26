@@ -252,7 +252,7 @@ public class IndexController extends ReviewBaseController {
      model.addAttribute("relationMedicineProduct",true);//相关农产品
      model.addAttribute("indexExpertsReview",true);//专家评议
      model.addAttribute("relationMedicine",true);//全文检索
-     model.addAttribute("relationMedicine",true);//统计
+     model.addAttribute("statistics",true);//统计
      * @param model
      * @param userName
      */
@@ -274,7 +274,7 @@ public class IndexController extends ReviewBaseController {
                 model.addAttribute("relationMedicineProduct",true);//相关农产品
                 model.addAttribute("indexExpertsReview",true);//专家评议
                 model.addAttribute("relationMedicine",true);//全文检索
-                model.addAttribute("relationMedicine",true);//统计
+                model.addAttribute("statistics",true);//统计
             }else if(userRole.getRoleCode().equals(RoleEnum.outExports.getStatusCode())){ // 外部专家
                 model.addAttribute("indexReview",true);//通报评审
                 model.addAttribute("indexExpertsReview",true);//专家评议
@@ -302,7 +302,7 @@ public class IndexController extends ReviewBaseController {
                 model.addAttribute("tbt",true);//tbt通报
                 model.addAttribute("relationMedicineProduct",true);//相关农产品
                 model.addAttribute("relationMedicine",true);//全文检索
-                model.addAttribute("relationMedicine",true);//统计
+                model.addAttribute("statistics",true);//统计
             }
         }
     }

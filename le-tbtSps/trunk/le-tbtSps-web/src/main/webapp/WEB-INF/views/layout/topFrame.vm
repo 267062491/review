@@ -8,7 +8,7 @@
         <div class="navbar-header pull-left">
             <a href="#" class="navbar-brand">
                 <small>
-                    <img src="#springUrl('')/static/images/head.png" width="50%"  style="margin-top:-6px;"/>
+                    <img src="#springUrl('')/static/images/head.png" width="50%"  style="margin-top:-6px;position:absolute;"/>
 ##                    <span class="bold">农科院</span>
                 </small>
             </a><!-- /.brand -->
@@ -36,8 +36,8 @@
         <div class="pull-right" >
             #if($!loginFlag)
                 <span class="bold" style="font-size: large"><a href="quit">退出登录</a></span>
-                <br>
-                你好，$!userName
+                <br><br>
+                <span style="color: white;font-size: 16px">你好，$!userName</span>
             #else
                 <span class="bold" style="font-size: large"><a href="login">登录</a> </span>
             #end
@@ -103,9 +103,8 @@
             <li><a href="javascript:void(0)" onclick="link('240','专家评议','spsInfo/indexExpertsReview','20','专家评议')">专家评议</a></li>
         #end
         #if($!relationMedicine)
-            <li><a href="javascript:void(0)" onclick="link('240','统计','relationMedicine','20','统计')">统计</a></li>
+            <li><a href="javascript:void(0)" onclick="link('240','统计','statistics','20','统计')">统计</a></li>
         #end
-##            <li><a href="javascript:void(0)" onclick="link('320','参数','systemPar','20','参数')">参数</a></li>
         </ul>
     </div>
 </div>
