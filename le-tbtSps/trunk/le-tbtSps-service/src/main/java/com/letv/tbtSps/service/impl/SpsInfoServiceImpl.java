@@ -475,11 +475,11 @@ public class SpsInfoServiceImpl implements SpsInfoService {
                 spsResidualInfo.setUpdateTime(new Date());
                 spsResidualInfo.setUpdateUser(userName);
                 spsResidualInfo.setSpsCode(spsCode);
-                if("1".equals(spsResidualInfo.getUpdateType())){
+                if("001".equals(spsResidualInfo.getUpdateType())){
                     zhiDingCLL++ ;
-                }else if("2".equals(spsResidualInfo.getUpdateType())){
+                }else if("002".equals(spsResidualInfo.getUpdateType())){
                     xiuGaiCLL++ ;
-                }else if("3".equals(spsResidualInfo.getUpdateType())){
+                }else if("003".equals(spsResidualInfo.getUpdateType())){
                     shanChuCLL++;
                 }
             }

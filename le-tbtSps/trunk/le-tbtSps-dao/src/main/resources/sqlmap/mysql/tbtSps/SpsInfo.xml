@@ -76,7 +76,7 @@
 		        <if test="contentDes != null and contentDes != ''">
                 	content_des = #{contentDes,jdbcType=VARCHAR},
 		        </if>
-		        <if test="standardYn != null and standardYn != ''">
+		        <if test="standardYn != null ">
                 	standard_yn = #{standardYn,jdbcType=DECIMAL},
 		        </if>
 		        <if test="oraLink != null and oraLink != ''">
@@ -208,7 +208,7 @@
     <!-- 常用的查询Where条件 -->
     <sql id="querySpsInfoListWhere">
     	yn = 1
-        <if test="id != null and id != ''">
+        <if test="id != null ">
         	and id = #{id,jdbcType=DECIMAL}
         </if>
         <if test="spsCode != null and spsCode != ''">
@@ -232,7 +232,7 @@
         <if test="contentDes != null and contentDes != ''">
         	and content_des = #{contentDes,jdbcType=VARCHAR}
         </if>
-        <if test="standardYn != null and standardYn != ''">
+        <if test="standardYn != null ">
         	and standard_yn = #{standardYn,jdbcType=DECIMAL}
         </if>
         <if test="oraLink != null and oraLink != ''">

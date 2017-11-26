@@ -139,7 +139,7 @@
                     >
             </div>
         </div>
-        <div class="form-group" style="display: none" id="hiddenDiv">
+        <div class="form-group" #if($!spsInfo.standardYn!=0) style="display: none" #end id="hiddenDiv">
             <label class="col-sm-1 control-label no-padding-right" for="errorReason">#springMessage('tbtSps.spsInfo.errorReason')</label>
             <div class="col-sm-10">
                 <textarea name="errorReason" id="errorReason" class="form-control" rows="3">$!spsInfo.errorReason</textarea>

@@ -135,12 +135,6 @@ public class SpsInfoController extends ReviewBaseController {
             model.addAttribute("dataList", dataList);// 通报状态
             model.addAttribute("query", query);// 查询参数
             model.addAttribute("page", page);// 分页
-//            if(!StringUtils.isEmpty(query.getCountryCode())){
-//                SpsInfoQuery spsInfoQuery = new SpsInfoQuery ();
-//                spsInfoQuery.setCountryCode(query.getCountryCode());
-//                List<SpsInfo> list_date = spsInfoService.queryCountryDateByCountry(spsInfoQuery);
-//                model.addAttribute("list_date", list_date);
-//            }
             model.addAttribute("list_spsBtbState",parameterLoad.getList_spsBtbState()) ;// 通报状态
             model.addAttribute("list_country", parameterLoad.getList_country()); // 通报成员
             model.addAttribute("list_date",parameterLoad.getListYear()) ;// 年份
